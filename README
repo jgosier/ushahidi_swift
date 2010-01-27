@@ -1,0 +1,7 @@
+==========================
+Ushahidi Swift River 0.0.0
+==========================
+
+Swift River is a platform that verifies crowd sourced reports that are then forwarded on to Ushahidi for mapping. There's a global emergency.  Twitter, blogs and the news are all ablaze with updates and reports.  Swift River is being designed to sit in-between Ushahidi instances and the deluge of information coming from the internet.  The system has a dual function, to help Ushahidi 'sweep' through and find only relevant content (avoiding duplicates and chatter), while also offering the public and casual users a way to identify relevant sources of news on any given subject.
+
+It is currently being built as a scalable sister platform to Ushahidi.  It's being build largely on the same codebase (KohanaPHP) with various modules and APIs that power more complex components.
