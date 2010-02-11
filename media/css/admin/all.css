@@ -1070,6 +1070,11 @@ input.long {
 input.long2 {
 	width:300px;
 }
+
+input.long3 {
+	width:250px;
+}
+
 .second { margin:13px 0 0 !important;}
 .link-row h4{ padding-top:11px;}
 /*-- f-col-bottom --*/
@@ -1902,4 +1907,8 @@ html[xmlns] .clearfix {
 }
 
 /*--  --*/
+.text_Feeds input.text
+{
+	/*width:350px;*/
+}
 /*--  --*/

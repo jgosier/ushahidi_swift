@@ -29,8 +29,9 @@ class Main_Controller extends Template_Controller {
     {
         parent::__construct();	
 
-        // Load cache
+			  // Load cache
         $this->cache = new Cache;
+
 
 		// Load Session
 		$this->session = Session::instance();
@@ -71,67 +72,109 @@ class Main_Controller extends Template_Controller {
         // Get custom CSS file from settings
         $this->template->header->site_style = Kohana::config('settings.site_style');
 		
-		// Display News Feed?
-		$this->template->header->allow_feed = Kohana::config('settings.allow_feed');
-		
-		// Javascript Header
-		$this->template->header->map_enabled = FALSE;
-		$this->template->header->validator_enabled = TRUE;
-		$this->template->header->datepicker_enabled = FALSE;
-		$this->template->header->photoslider_enabled = FALSE;
-		$this->template->header->videoslider_enabled = FALSE;
-		$this->template->header->protochart_enabled = FALSE;
-		$this->template->header->main_page = FALSE;
-		
-		$footerjs = new View('footer_form_js');
-		
-		// Pack the javascript using the javascriptpacker helper
-		$myPacker = new javascriptpacker($footerjs , 'Normal', false, false);
-		$footerjs = $myPacker->pack();
-		
-		$this->template->header->js = $footerjs;
-		
-		$this->template->header->this_page = "";
-		
-		// Google Analytics
-		$google_analytics = Kohana::config('settings.google_analytics');
-		$this->template->footer->google_analytics = $this->_google_analytics($google_analytics);
-		
-		// *** Locales/Languages ***
-		// First Get Available Locales
-		$this->template->header->locales_array = $this->cache->get('locales');
-		
-		// Locale form submitted?
-		if (isset($_GET['l']) && !empty($_GET['l']))
-		{
-			$this->session->set('locale', $_GET['l']);
-		}
-		// Has a locale session been set?
-		if ($this->session->get('locale',FALSE))
-		{
-			// Change current locale
-			Kohana::config_set('locale.language', $_SESSION['locale']);
-		}
-		$this->template->header->l = Kohana::config('locale.language');
-		
-		//Set up tracking gif
-		if($_SERVER['SERVER_NAME'] != 'localhost' && $_SERVER['SERVER_NAME'] != '127.0.0.1'){
-			$track_url = $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
-		}else{
-			$track_url = 'null';
-		}
-		$this->template->footer->tracker_url = 'http://tracker.ushahidi.com/track.php?url='.urlencode($track_url).'&lang='.$this->template->header->l.'&version='.Kohana::config('version.ushahidi_version');
-        // Load profiler
+				// Display News Feed?
+				$this->template->header->allow_feed = Kohana::config('settings.allow_feed');
+				
+				// Javascript Header
+				$this->template->header->map_enabled = FALSE;
+				$this->template->header->validator_enabled = TRUE;
+				$this->template->header->datepicker_enabled = FALSE;
+				$this->template->header->photoslider_enabled = FALSE;
+				$this->template->header->videoslider_enabled = FALSE;
+				$this->template->header->protochart_enabled = FALSE;
+				$this->template->header->main_page = FALSE;
+				
+				$footerjs = new View('footer_form_js');
+				
+				// Pack the javascript using the javascriptpacker helper
+				$myPacker = new javascriptpacker($footerjs , 'Normal', false, false);
+				$footerjs = $myPacker->pack();
+				
+				$this->template->header->js = $footerjs;
+				
+				$this->template->header->this_page = "";
+				
+				// Google Analytics
+				$google_analytics = Kohana::config('settings.google_analytics');
+				$this->template->footer->google_analytics = $this->_google_analytics($google_analytics);
+				
+				// *** Locales/Languages ***
+				// First Get Available Locales
+				$this->template->header->locales_array = $this->cache->get('locales');
+				
+				// Locale form submitted?
+				if (isset($_GET['l']) && !empty($_GET['l']))
+				{
+					$this->session->set('locale', $_GET['l']);
+				}
+				// Has a locale session been set?
+				if ($this->session->get('locale',FALSE))
+				{
+					// Change current locale
+					Kohana::config_set('locale.language', $_SESSION['locale']);
+				}
+				$this->template->header->l = Kohana::config('locale.language');
+				
+				//Set up tracking gif
+				if($_SERVER['SERVER_NAME'] != 'localhost' && $_SERVER['SERVER_NAME'] != '127.0.0.1'){
+					$track_url = $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
+				}else{
+					$track_url = 'null';
+				}
+				$this->template->footer->tracker_url = 'http://tracker.ushahidi.com/track.php?url='.urlencode($track_url).'&lang='.$this->template->header->l.'&version='.Kohana::config('version.ushahidi_version');
+		        // Load profiler
         // $profiler = new Profiler;
         
         // Get tracking javascript for stats
         $this->template->footer->ushahidi_stats = $this->_ushahidi_stats();
     }
 
-    public function index()
+
+		private function get_new_feeds()
+		{
+
+					
+				//get all the admin feeds in database.
+				foreach (ORM::factory('feed')->select('id','feed_url')->find_all() as $dbfeed )
+				{				
+							
+						$feed = new SimplePie();				
+						$feed->enable_order_by_date(true);
+						$feed->set_feed_url($dbfeed->feed_url);
+						$feed->set_cache_location(APPPATH.'cache');
+						$feed->init();						
+																									
+						foreach($feed->get_items() as $item)
+						{
+							$itemobj = new Feed_Item_Model();		
+							$itemobj->feed_id = $dbfeed->id;
+							$itemobj->item_title = $item->get_title();
+							$itemobj->item_description = $item->get_description();
+							$itemobj->item_link = $item->get_permalink();
+							$itemobj->item_description = $item->get_description();
+							$itemobj->item_date = date($item->get_date('Y m d h:m:s'));
+						//	$itemobj->item_source = $item->get_author(); //temporary not working.
+							if(count(ORM::factory('feed_item')->where('item_link',$item->get_permalink())->find_all()) == 0)	
+							 {
+							 		$itemobj->save();
+							 }
+						}
+				}
+				
+		 }
+/**
+This is the index function called by default.
+
+
+*/
+    public function index($page,$page_no,$catholder="",$category_id = 0)
     {		
         $this->template->header->this_page = 'home';
         $this->template->content = new View('main');
+		
+			//try getting new feeds
+		  $this->get_new_feeds();
+		
 		
         // Get all active top level categories
         $parent_categories = array();
@@ -151,7 +194,7 @@ class Main_Controller extends Template_Controller {
 			}
 			
 			// Put it all together
-            $parent_categories[$category->id] = array( 
+        $parent_categories[$category->id] = array( 
 				$category->category_title, 
 				$category->category_color,
 				$children
@@ -220,12 +263,36 @@ class Main_Controller extends Template_Controller {
 		$this->template->content->phone_array = $phone_array;
 		
 
+	
+	//Cache items to the database.
+		
+
+	// Filter By Category
+		$category_filter = ( isset($category_id) && !empty($category_id) && !$category_id == 0 )
+			? " feed_id in ( SELECT id FROM feed  WHERE category_id = ".$category_id." ) " : " 1=1 ";
+	
+//	echo " location /Application/main/index  Category_filter query = ".$category_filter."<br/>";
+
+		$numItems_per_page = 6;
+
+	//Set up pagination for the rss feeds.
+		$pagination = new Pagination(array(
+				'base_url' => '/main/index/',
+				'uri_segment' => 'page',
+				'items_per_page' => (int) $numItems_per_page,
+				'style' => 'digg',
+				'total_items' => ORM::factory('feed_item')->where($category_filter)->count_all()
+				));
+	
+	
 		// Get RSS News Feeds
 		$this->template->content->feeds = ORM::factory('feed_item')
-			->limit('10')
+						->where($category_filter)
             ->orderby('item_date', 'desc')
-            ->find_all();
+            ->find_all( $numItems_per_page ,$numItems_per_page*$page_no);
 		
+		$this->template->content->pagination = $pagination;
+		$this->template->content->selected_category = $category_id;
 		
 		
         // Get The START, END and most ACTIVE Incident Dates

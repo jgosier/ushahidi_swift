@@ -4,5 +4,10 @@
  *
  * Sets the default route to "welcome"
  */
-$config['_default'] = 'main';
-$config['feed/atom'] = 'feed/index/atom';
+
+
+$config['_default'] = 'main/index/page/1/category/0';	
+$config['main'] = 'main/index/page/1/category/0'
+
+
+?>

@@ -31,7 +31,8 @@ class Error_Controller extends Controller
 		<p><strong>Did you follow a link from another site? </strong><br />
 		Links from other sites can sometimes be outdated or misspelled. <a href=\"#\">Tell us</a> where you came from and we can try to contact the other site in order to fix the problem.</p>
 		<p><strong>Did you type the URL? </strong><br />
-		You may have typed the address (URL) incorrectly. Check to make sure you've got the exact right spelling, capitalization, etc. </p>";
+		You may have typed the address (URL) incorrectly. Check to make sure you've got the exact right spelling, capitalization, etc. </p>
+		<br/> server url ".$_SERVER['PHP_SELF'];
 
 		$this->layout->render(true);
 	}

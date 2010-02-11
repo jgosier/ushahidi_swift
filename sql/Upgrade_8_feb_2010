@@ -1,0 +1,1964 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Feb 08, 2010 at 04:04 PM
+-- Server version: 5.1.37
+-- PHP Version: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `ushahidi`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alert`
+--
+
+CREATE TABLE IF NOT EXISTS `alert` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `alert_type` tinyint(4) NOT NULL COMMENT '1 - MOBILE, 2 - EMAIL',
+  `alert_recipient` varchar(200) DEFAULT NULL,
+  `alert_code` varchar(30) DEFAULT NULL,
+  `alert_confirmed` tinyint(4) NOT NULL DEFAULT '0',
+  `alert_lat` varchar(150) DEFAULT NULL,
+  `alert_lon` varchar(150) DEFAULT NULL,
+  `alert_radius` tinyint(4) NOT NULL DEFAULT '20',
+  `alert_ip` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_alert_code` (`alert_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `alert`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alert_sent`
+--
+
+CREATE TABLE IF NOT EXISTS `alert_sent` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) NOT NULL,
+  `alert_id` bigint(20) NOT NULL,
+  `alert_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `alert_sent`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `locale` varchar(10) NOT NULL DEFAULT 'en_US',
+  `category_type` tinyint(4) DEFAULT NULL,
+  `category_title` varchar(255) DEFAULT NULL,
+  `category_description` text,
+  `category_color` varchar(20) DEFAULT NULL,
+  `category_image` varchar(100) DEFAULT NULL,
+  `category_image_shadow` varchar(100) DEFAULT NULL,
+  `category_visible` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `category_visible` (`category_visible`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_title`, `category_description`, `category_color`, `category_image`, `category_image_shadow`, `category_visible`) VALUES
+(1, 0, 'en_US', 5, 'TWITTER', 'TWITTER', 'FFFFFF', NULL, NULL, 1),
+(2, 0, 'en_US', 5, 'SMS', 'SMS', 'FFFFFF', NULL, NULL, 1),
+(3, 0, 'en_US', 5, 'BLOGS', 'BLOGS', 'FFFFFF', NULL, NULL, 1),
+(4, 0, 'en_US', 5, 'NEWS', 'NEWS', 'FFFFFF', NULL, NULL, 1),
+(5, 0, 'en_US', 5, 'OTHERS', 'OTHERS', 'FFFFFF', NULL, NULL, 1),
+(10, 0, 'en_US', 5, 'EMAILS', 'EMAILS', 'FFFFFF', NULL, NULL, 1),
+(6, 0, 'en_US', 5, 'GOVERNMENT FORCES', 'GOVERNMENT FORCES', '9999FF', NULL, NULL, 0),
+(7, 0, 'en_US', 5, 'CIVILIANS', 'CIVILIANS', '66CC00', NULL, NULL, 0),
+(8, 0, 'en_US', 5, 'LOOTING', 'LOOTING', 'FFCC00', NULL, NULL, 0),
+(9, 0, 'en_US', 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', NULL, NULL, 0),
+(11, 0, 'en_US', 5, 'TWITTERSEARCH', 'TWITTERSEARCH', 'FFFFFF', NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `category_lang` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL,
+  `locale` varchar(10) DEFAULT NULL,
+  `category_title` varchar(255) DEFAULT NULL,
+  `category_description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `category_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `city`
+--
+
+CREATE TABLE IF NOT EXISTS `city` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `country_id` int(11) DEFAULT NULL,
+  `city` varchar(200) DEFAULT NULL,
+  `city_lat` varchar(150) DEFAULT NULL,
+  `city_lon` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `city`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cluster`
+--
+
+CREATE TABLE IF NOT EXISTS `cluster` (
+  `id` int(11) NOT NULL,
+  `location_id` bigint(20) NOT NULL DEFAULT '0',
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  `latitude_min` double NOT NULL,
+  `longitude_min` double NOT NULL,
+  `latitude_max` double NOT NULL,
+  `longitude_max` double NOT NULL,
+  `child_count` int(11) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  `left_side` int(11) NOT NULL,
+  `right_side` int(11) NOT NULL,
+  `level` int(11) NOT NULL,
+  `incident_id` bigint(20) NOT NULL DEFAULT '0',
+  `incident_title` varchar(255) DEFAULT NULL,
+  `incident_date` int(10) NOT NULL DEFAULT '0',
+  `category_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `category_color` varchar(20) NOT NULL DEFAULT '990000',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `cluster`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment`
+--
+
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) NOT NULL,
+  `user_id` int(11) DEFAULT '0',
+  `comment_author` varchar(100) DEFAULT NULL,
+  `comment_email` varchar(120) DEFAULT NULL,
+  `comment_description` text,
+  `comment_ip` varchar(100) DEFAULT NULL,
+  `comment_rating` varchar(15) NOT NULL DEFAULT '0',
+  `comment_spam` tinyint(4) NOT NULL DEFAULT '0',
+  `comment_active` tinyint(4) NOT NULL DEFAULT '0',
+  `comment_date` datetime DEFAULT NULL,
+  `comment_date_gmt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `comment`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country`
+--
+
+CREATE TABLE IF NOT EXISTS `country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `iso` varchar(10) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `capital` varchar(100) DEFAULT NULL,
+  `cities` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=248 ;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`id`, `iso`, `country`, `capital`, `cities`) VALUES
+(1, 'AD', 'Andorra', 'Andorra la Vella', 0),
+(2, 'AE', 'United Arab Emirates', 'Abu Dhabi', 0),
+(3, 'AF', 'Afghanistan', 'Kabul', 0),
+(4, 'AG', 'Antigua and Barbuda', 'St. John''s', 0),
+(5, 'AI', 'Anguilla', 'The Valley', 0),
+(6, 'AL', 'Albania', 'Tirana', 0),
+(7, 'AM', 'Armenia', 'Yerevan', 0),
+(8, 'AN', 'Netherlands Antilles', 'Willemstad', 0),
+(9, 'AO', 'Angola', 'Luanda', 0),
+(10, 'AQ', 'Antarctica', '', 0),
+(11, 'AR', 'Argentina', 'Buenos Aires', 0),
+(12, 'AS', 'American Samoa', 'Pago Pago', 0),
+(13, 'AT', 'Austria', 'Vienna', 0),
+(14, 'AU', 'Australia', 'Canberra', 0),
+(15, 'AW', 'Aruba', 'Oranjestad', 0),
+(16, 'AX', 'Aland Islands', 'Mariehamn', 0),
+(17, 'AZ', 'Azerbaijan', 'Baku', 0),
+(18, 'BA', 'Bosnia and Herzegovina', 'Sarajevo', 0),
+(19, 'BB', 'Barbados', 'Bridgetown', 0),
+(20, 'BD', 'Bangladesh', 'Dhaka', 0),
+(21, 'BE', 'Belgium', 'Brussels', 0),
+(22, 'BF', 'Burkina Faso', 'Ouagadougou', 0),
+(23, 'BG', 'Bulgaria', 'Sofia', 0),
+(24, 'BH', 'Bahrain', 'Manama', 0),
+(25, 'BI', 'Burundi', 'Bujumbura', 0),
+(26, 'BJ', 'Benin', 'Porto-Novo', 0),
+(27, 'BL', 'Saint Barthélemy', 'Gustavia', 0),
+(28, 'BM', 'Bermuda', 'Hamilton', 0),
+(29, 'BN', 'Brunei', 'Bandar Seri Begawan', 0),
+(30, 'BO', 'Bolivia', 'La Paz', 0),
+(31, 'BR', 'Brazil', 'Brasília', 0),
+(32, 'BS', 'Bahamas', 'Nassau', 0),
+(33, 'BT', 'Bhutan', 'Thimphu', 0),
+(34, 'BV', 'Bouvet Island', '', 0),
+(35, 'BW', 'Botswana', 'Gaborone', 0),
+(36, 'BY', 'Belarus', 'Minsk', 0),
+(37, 'BZ', 'Belize', 'Belmopan', 0),
+(38, 'CA', 'Canada', 'Ottawa', 0),
+(39, 'CC', 'Cocos Islands', 'West Island', 0),
+(40, 'CD', 'Democratic Republic of the Congo', 'Kinshasa', 0),
+(41, 'CF', 'Central African Republic', 'Bangui', 0),
+(42, 'CG', 'Congo Brazzavile', 'Brazzaville', 0),
+(43, 'CH', 'Switzerland', 'Berne', 0),
+(44, 'CI', 'Ivory Coast', 'Yamoussoukro', 0),
+(45, 'CK', 'Cook Islands', 'Avarua', 0),
+(46, 'CL', 'Chile', 'Santiago', 0),
+(47, 'CM', 'Cameroon', 'Yaoundé', 0),
+(48, 'CN', 'China', 'Beijing', 0),
+(49, 'CO', 'Colombia', 'Bogotá', 0),
+(50, 'CR', 'Costa Rica', 'San José', 0),
+(51, 'CS', 'Serbia and Montenegro', 'Belgrade', 0),
+(52, 'CU', 'Cuba', 'Havana', 0),
+(53, 'CV', 'Cape Verde', 'Praia', 0),
+(54, 'CX', 'Christmas Island', 'Flying Fish Cove', 0),
+(55, 'CY', 'Cyprus', 'Nicosia', 0),
+(56, 'CZ', 'Czech Republic', 'Prague', 0),
+(57, 'DE', 'Germany', 'Berlin', 0),
+(58, 'DJ', 'Djibouti', 'Djibouti', 0),
+(59, 'DK', 'Denmark', 'Copenhagen', 0),
+(60, 'DM', 'Dominica', 'Roseau', 0),
+(61, 'DO', 'Dominican Republic', 'Santo Domingo', 0),
+(62, 'DZ', 'Algeria', 'Algiers', 0),
+(63, 'EC', 'Ecuador', 'Quito', 0),
+(64, 'EE', 'Estonia', 'Tallinn', 0),
+(65, 'EG', 'Egypt', 'Cairo', 0),
+(66, 'EH', 'Western Sahara', 'El-Aaiun', 0),
+(67, 'ER', 'Eritrea', 'Asmara', 0),
+(68, 'ES', 'Spain', 'Madrid', 0),
+(69, 'ET', 'Ethiopia', 'Addis Ababa', 0),
+(70, 'FI', 'Finland', 'Helsinki', 0),
+(71, 'FJ', 'Fiji', 'Suva', 0),
+(72, 'FK', 'Falkland Islands', 'Stanley', 0),
+(73, 'FM', 'Micronesia', 'Palikir', 0),
+(74, 'FO', 'Faroe Islands', 'Tórshavn', 0),
+(75, 'FR', 'France', 'Paris', 0),
+(76, 'GA', 'Gabon', 'Libreville', 0),
+(77, 'GB', 'United Kingdom', 'London', 0),
+(78, 'GD', 'Grenada', 'St. George''s', 0),
+(79, 'GE', 'Georgia', 'Tbilisi', 0),
+(80, 'GF', 'French Guiana', 'Cayenne', 0),
+(81, 'GG', 'Guernsey', 'St Peter Port', 0),
+(82, 'GH', 'Ghana', 'Accra', 0),
+(83, 'GI', 'Gibraltar', 'Gibraltar', 0),
+(84, 'GL', 'Greenland', 'Nuuk', 0),
+(85, 'GM', 'Gambia', 'Banjul', 0),
+(86, 'GN', 'Guinea', 'Conakry', 0),
+(87, 'GP', 'Guadeloupe', 'Basse-Terre', 0),
+(88, 'GQ', 'Equatorial Guinea', 'Malabo', 0),
+(89, 'GR', 'Greece', 'Athens', 0),
+(90, 'GS', 'South Georgia and the South Sandwich Islands', 'Grytviken', 0),
+(91, 'GT', 'Guatemala', 'Guatemala City', 0),
+(92, 'GU', 'Guam', 'Hagåtña', 0),
+(93, 'GW', 'Guinea-Bissau', 'Bissau', 0),
+(94, 'GY', 'Guyana', 'Georgetown', 0),
+(95, 'HK', 'Hong Kong', 'Hong Kong', 0),
+(96, 'HM', 'Heard Island and McDonald Islands', '', 0),
+(97, 'HN', 'Honduras', 'Tegucigalpa', 0),
+(98, 'HR', 'Croatia', 'Zagreb', 0),
+(99, 'HT', 'Haiti', 'Port-au-Prince', 0),
+(100, 'HU', 'Hungary', 'Budapest', 0),
+(101, 'ID', 'Indonesia', 'Jakarta', 0),
+(102, 'IE', 'Ireland', 'Dublin', 0),
+(103, 'IL', 'Israel', 'Jerusalem', 0),
+(104, 'IM', 'Isle of Man', 'Douglas, Isle of Man', 0),
+(105, 'IN', 'India', 'New Delhi', 0),
+(106, 'IO', 'British Indian Ocean Territory', 'Diego Garcia', 0),
+(107, 'IQ', 'Iraq', 'Baghdad', 0),
+(108, 'IR', 'Iran', 'Tehran', 0),
+(109, 'IS', 'Iceland', 'Reykjavík', 0),
+(110, 'IT', 'Italy', 'Rome', 0),
+(111, 'JE', 'Jersey', 'Saint Helier', 0),
+(112, 'JM', 'Jamaica', 'Kingston', 0),
+(113, 'JO', 'Jordan', 'Amman', 0),
+(114, 'JP', 'Japan', 'Tokyo', 0),
+(115, 'KE', 'Kenya', 'Nairobi', 0),
+(116, 'KG', 'Kyrgyzstan', 'Bishkek', 0),
+(117, 'KH', 'Cambodia', 'Phnom Penh', 0),
+(118, 'KI', 'Kiribati', 'South Tarawa', 0),
+(119, 'KM', 'Comoros', 'Moroni', 0),
+(120, 'KN', 'Saint Kitts and Nevis', 'Basseterre', 0),
+(121, 'KP', 'North Korea', 'Pyongyang', 0),
+(122, 'KR', 'South Korea', 'Seoul', 0),
+(123, 'KW', 'Kuwait', 'Kuwait City', 0),
+(124, 'KY', 'Cayman Islands', 'George Town', 0),
+(125, 'KZ', 'Kazakhstan', 'Astana', 0),
+(126, 'LA', 'Laos', 'Vientiane', 0),
+(127, 'LB', 'Lebanon', 'Beirut', 0),
+(128, 'LC', 'Saint Lucia', 'Castries', 0),
+(129, 'LI', 'Liechtenstein', 'Vaduz', 0),
+(130, 'LK', 'Sri Lanka', 'Colombo', 0),
+(131, 'LR', 'Liberia', 'Monrovia', 0),
+(132, 'LS', 'Lesotho', 'Maseru', 0),
+(133, 'LT', 'Lithuania', 'Vilnius', 0),
+(134, 'LU', 'Luxembourg', 'Luxembourg', 0),
+(135, 'LV', 'Latvia', 'Riga', 0),
+(136, 'LY', 'Libya', 'Tripolis', 0),
+(137, 'MA', 'Morocco', 'Rabat', 0),
+(138, 'MC', 'Monaco', 'Monaco', 0),
+(139, 'MD', 'Moldova', 'Chi_in_u', 0),
+(140, 'ME', 'Montenegro', 'Podgorica', 0),
+(141, 'MF', 'Saint Martin', 'Marigot', 0),
+(142, 'MG', 'Madagascar', 'Antananarivo', 0),
+(143, 'MH', 'Marshall Islands', 'Uliga', 0),
+(144, 'MK', 'Macedonia', 'Skopje', 0),
+(145, 'ML', 'Mali', 'Bamako', 0),
+(146, 'MM', 'Myanmar', 'Yangon', 0),
+(147, 'MN', 'Mongolia', 'Ulan Bator', 0),
+(148, 'MO', 'Macao', 'Macao', 0),
+(149, 'MP', 'Northern Mariana Islands', 'Saipan', 0),
+(150, 'MQ', 'Martinique', 'Fort-de-France', 0),
+(151, 'MR', 'Mauritania', 'Nouakchott', 0),
+(152, 'MS', 'Montserrat', 'Plymouth', 0),
+(153, 'MT', 'Malta', 'Valletta', 0),
+(154, 'MU', 'Mauritius', 'Port Louis', 0),
+(155, 'MV', 'Maldives', 'Malé', 0),
+(156, 'MW', 'Malawi', 'Lilongwe', 0),
+(157, 'MX', 'Mexico', 'Mexico City', 0),
+(158, 'MY', 'Malaysia', 'Kuala Lumpur', 0),
+(159, 'MZ', 'Mozambique', 'Maputo', 0),
+(160, 'NA', 'Namibia', 'Windhoek', 0),
+(161, 'NC', 'New Caledonia', 'Nouméa', 0),
+(162, 'NE', 'Niger', 'Niamey', 0),
+(163, 'NF', 'Norfolk Island', 'Kingston', 0),
+(164, 'NG', 'Nigeria', 'Abuja', 0),
+(165, 'NI', 'Nicaragua', 'Managua', 0),
+(166, 'NL', 'Netherlands', 'Amsterdam', 0),
+(167, 'NO', 'Norway', 'Oslo', 0),
+(168, 'NP', 'Nepal', 'Kathmandu', 0),
+(169, 'NR', 'Nauru', 'Yaren', 0),
+(170, 'NU', 'Niue', 'Alofi', 0),
+(171, 'NZ', 'New Zealand', 'Wellington', 0),
+(172, 'OM', 'Oman', 'Muscat', 0),
+(173, 'PA', 'Panama', 'Panama City', 0),
+(174, 'PE', 'Peru', 'Lima', 0),
+(175, 'PF', 'French Polynesia', 'Papeete', 0),
+(176, 'PG', 'Papua New Guinea', 'Port Moresby', 0),
+(177, 'PH', 'Philippines', 'Manila', 0),
+(178, 'PK', 'Pakistan', 'Islamabad', 0),
+(179, 'PL', 'Poland', 'Warsaw', 0),
+(180, 'PM', 'Saint Pierre and Miquelon', 'Saint-Pierre', 0),
+(181, 'PN', 'Pitcairn', 'Adamstown', 0),
+(182, 'PR', 'Puerto Rico', 'San Juan', 0),
+(183, 'PS', 'Palestinian Territory', 'East Jerusalem', 0),
+(184, 'PT', 'Portugal', 'Lisbon', 0),
+(185, 'PW', 'Palau', 'Koror', 0),
+(186, 'PY', 'Paraguay', 'Asunción', 0),
+(187, 'QA', 'Qatar', 'Doha', 0),
+(188, 'RE', 'Reunion', 'Saint-Denis', 0),
+(189, 'RO', 'Romania', 'Bucharest', 0),
+(190, 'RS', 'Serbia', 'Belgrade', 0),
+(191, 'RU', 'Russia', 'Moscow', 0),
+(192, 'RW', 'Rwanda', 'Kigali', 0),
+(193, 'SA', 'Saudi Arabia', 'Riyadh', 0),
+(194, 'SB', 'Solomon Islands', 'Honiara', 0),
+(195, 'SC', 'Seychelles', 'Victoria', 0),
+(196, 'SD', 'Sudan', 'Khartoum', 0),
+(197, 'SE', 'Sweden', 'Stockholm', 0),
+(198, 'SG', 'Singapore', 'Singapur', 0),
+(199, 'SH', 'Saint Helena', 'Jamestown', 0),
+(200, 'SI', 'Slovenia', 'Ljubljana', 0),
+(201, 'SJ', 'Svalbard and Jan Mayen', 'Longyearbyen', 0),
+(202, 'SK', 'Slovakia', 'Bratislava', 0),
+(203, 'SL', 'Sierra Leone', 'Freetown', 0),
+(204, 'SM', 'San Marino', 'San Marino', 0),
+(205, 'SN', 'Senegal', 'Dakar', 0),
+(206, 'SO', 'Somalia', 'Mogadishu', 0),
+(207, 'SR', 'Suriname', 'Paramaribo', 0),
+(208, 'ST', 'Sao Tome and Principe', 'São Tomé', 0),
+(209, 'SV', 'El Salvador', 'San Salvador', 0),
+(210, 'SY', 'Syria', 'Damascus', 0),
+(211, 'SZ', 'Swaziland', 'Mbabane', 0),
+(212, 'TC', 'Turks and Caicos Islands', 'Cockburn Town', 0),
+(213, 'TD', 'Chad', 'N''Djamena', 0),
+(214, 'TF', 'French Southern Territories', 'Martin-de-Viviès', 0),
+(215, 'TG', 'Togo', 'Lomé', 0),
+(216, 'TH', 'Thailand', 'Bangkok', 0),
+(217, 'TJ', 'Tajikistan', 'Dushanbe', 0),
+(218, 'TK', 'Tokelau', '', 0),
+(219, 'TL', 'East Timor', 'Dili', 0),
+(220, 'TM', 'Turkmenistan', 'Ashgabat', 0),
+(221, 'TN', 'Tunisia', 'Tunis', 0),
+(222, 'TO', 'Tonga', 'Nuku''alofa', 0),
+(223, 'TR', 'Turkey', 'Ankara', 0),
+(224, 'TT', 'Trinidad and Tobago', 'Port of Spain', 0),
+(225, 'TV', 'Tuvalu', 'Vaiaku', 0),
+(226, 'TW', 'Taiwan', 'Taipei', 0),
+(227, 'TZ', 'Tanzania', 'Dar es Salaam', 0),
+(228, 'UA', 'Ukraine', 'Kiev', 0),
+(229, 'UG', 'Uganda', 'Kampala', 0),
+(230, 'UM', 'United States Minor Outlying Islands', '', 0),
+(231, 'US', 'United States', 'Washington', 0),
+(232, 'UY', 'Uruguay', 'Montevideo', 0),
+(233, 'UZ', 'Uzbekistan', 'Tashkent', 0),
+(234, 'VA', 'Vatican', 'Vatican City', 0),
+(235, 'VC', 'Saint Vincent and the Grenadines', 'Kingstown', 0),
+(236, 'VE', 'Venezuela', 'Caracas', 0),
+(237, 'VG', 'British Virgin Islands', 'Road Town', 0),
+(238, 'VI', 'U.S. Virgin Islands', 'Charlotte Amalie', 0),
+(239, 'VN', 'Vietnam', 'Hanoi', 0),
+(240, 'VU', 'Vanuatu', 'Port Vila', 0),
+(241, 'WF', 'Wallis and Futuna', 'Matâ''Utu', 0),
+(242, 'WS', 'Samoa', 'Apia', 0),
+(243, 'YE', 'Yemen', 'San‘a’', 0),
+(244, 'YT', 'Mayotte', 'Mamoudzou', 0),
+(245, 'ZA', 'South Africa', 'Pretoria', 0),
+(246, 'ZM', 'Zambia', 'Lusaka', 0),
+(247, 'ZW', 'Zimbabwe', 'Harare', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feed`
+--
+
+CREATE TABLE IF NOT EXISTS `feed` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `feed_name` varchar(255) DEFAULT NULL,
+  `feed_url` varchar(255) DEFAULT NULL,
+  `category_id` int(5) NOT NULL,
+  `weight` decimal(10,2) NOT NULL,
+  `feed_cache` text,
+  `feed_active` tinyint(4) DEFAULT '1',
+  `feed_update` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=217 ;
+
+--
+-- Dumping data for table `feed`
+--
+
+INSERT INTO `feed` (`id`, `feed_name`, `feed_url`, `category_id`, `weight`, `feed_cache`, `feed_active`, `feed_update`) VALUES
+(211, '+256-783613262', '+256-783613262', 2, '0.00', NULL, 1, 1265631317),
+(212, 'http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml', 'http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml', 3, '100.00', NULL, 1, 1265631321),
+(213, 'http://www.cnn.com/?eref=rss_topstories', 'http://www.cnn.com/?eref=rss_topstories', 4, '100.00', NULL, 1, 1265631324),
+(214, 'http://rss.news.yahoo.com/rss/business', 'http://rss.news.yahoo.com/rss/business', 5, '100.00', NULL, 1, 1265631332),
+(215, 'http://rss.news.yahoo.com/rss/entertainment', 'http://rss.news.yahoo.com/rss/entertainment', 5, '100.00', NULL, 1, 1265631338),
+(216, 'ivan.kavuma@appfrica.org', 'ivan.kavuma@appfrica.org', 10, '0.00', NULL, 1, 1265631343);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `id` tinyint(11) NOT NULL AUTO_INCREMENT,
+  `feedback_mesg` text NOT NULL,
+  `feedback_status` tinyint(3) NOT NULL,
+  `feedback_dateadd` datetime DEFAULT NULL,
+  `feedback_datemodify` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `feedback`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback_person`
+--
+
+CREATE TABLE IF NOT EXISTS `feedback_person` (
+  `id` tinyint(11) NOT NULL AUTO_INCREMENT,
+  `feedback_id` tinyint(11) NOT NULL,
+  `person_email` varchar(30) NOT NULL,
+  `person_date` datetime DEFAULT NULL,
+  `person_ip` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `feedback_person`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feed_item`
+--
+
+CREATE TABLE IF NOT EXISTS `feed_item` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `feed_id` int(11) NOT NULL,
+  `location_id` bigint(20) DEFAULT '0',
+  `incident_id` int(11) NOT NULL DEFAULT '0',
+  `item_title` varchar(255) DEFAULT NULL,
+  `item_description` text,
+  `item_link` varchar(255) DEFAULT NULL,
+  `item_date` datetime DEFAULT NULL,
+  `item_source` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=537 ;
+
+--
+-- Dumping data for table `feed_item`
+--
+
+INSERT INTO `feed_item` (`id`, `feed_id`, `location_id`, `incident_id`, `item_title`, `item_description`, `item_link`, `item_date`, `item_source`) VALUES
+(232, 26, 0, 0, 'Bomber jail visit ''inappropriate''', 'The Scottish justice secretary''s visit to see the man convicted of the Lockerbie bombing was "inappropriate", an inquiry says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/scotland/south_of_scotland/8499177.stm', '0000-00-00 00:00:00', NULL),
+(233, 26, 0, 0, 'Karachi bomb kills Shia Muslims', 'At least 11 people are killed by a bomb attack on Shia Muslims in the Pakistani city of Karachi, hospital officials say, with about 50 injured.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8500077.stm', '0000-00-00 00:00:00', NULL),
+(234, 26, 0, 0, 'Two die in India militant attack', 'Two persons, including a policeman, die in a militant attack in Indian-administered Kashmir, police officials say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499940.stm', '0000-00-00 00:00:00', NULL),
+(235, 26, 0, 0, 'Bombings hit Iraq Shia pilgrims', 'Suicide bombers kill at least eight Shia pilgrims and injure 25 during a major ceremony in the Iraqi city of Karbala, police say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/in_depth/8500131.stm', '0000-00-00 00:00:00', NULL),
+(236, 26, 0, 0, 'Bodies find sparks murder inquiry', 'Murder detectives investigating the deaths of two women at a home in Shropshire find a man''s body nearby.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/shropshire/8499708.stm', '0000-00-00 00:00:00', NULL),
+(237, 26, 0, 0, 'Haiti warns US case ''distracting''', 'Haiti''s prime minister says the US missionaries charged with child abduction are overshadowing the needs of earthquake victims.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8499679.stm', '0000-00-00 00:00:00', NULL),
+(238, 26, 0, 0, 'China to put duties on US chicken', 'China is to enforce anti-dumping duties on US chicken imports, accusing poultry firms of exporting the meat at unfairly low prices.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8500016.stm', '0000-00-00 00:00:00', NULL),
+(239, 26, 0, 0, 'Dave saved: Australia''s erotic-photo banker keeps his job', 'An Australian banker caught viewing erotic images in the background of a live TV interview will keep his job, his bank says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8500037.stm', '0000-00-00 00:00:00', NULL),
+(240, 26, 0, 0, 'Men At Work slam rip-off ruling', 'Men at Work''s Colin Hay has issued an angry statement calling the Down Under plagiarism case ''opportunistic greed''.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8499973.stm', '0000-00-00 00:00:00', NULL),
+(241, 26, 0, 0, 'Deal to see NI devolution in April', 'The two main political parties in Northern Ireland reach agreement in a long-running dispute over policing and justice.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/northern_ireland/8499992.stm', '0000-00-00 00:00:00', NULL),
+(242, 26, 0, 0, 'Red Cross convoy attacked in Gaza', 'A roadside explosion hits a Red Cross convoy near the Erez crossing in northern Gaza on Thursday.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8499981.stm', '0000-00-00 00:00:00', NULL),
+(243, 26, 0, 0, 'BA''s $79m loss beats expectations', 'British Airways says it made a loss of £50m ($79m) in the three months to December 2009, which was smaller than expected.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499691.stm', '0000-00-00 00:00:00', NULL),
+(244, 26, 0, 0, 'Chechnya militants kill soldiers', 'Militants kill five Russian soldiers in the troubled North Caucasus region of Chechnya, officials say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8499848.stm', '0000-00-00 00:00:00', NULL),
+(245, 26, 0, 0, 'Burundi troops go on mutiny trial', 'Thirty-three Burundian soldiers accused of mutinying over pay while serving as peacekeepers in Somalia go on trial.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8499975.stm', '0000-00-00 00:00:00', NULL),
+(246, 26, 0, 0, 'Shackleton''s whisky dug from South Pole ice', 'Five crates of Scotch whisky and brandy belonging to polar explorer Ernest Shackleton have been recovered from the ice after a century.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/scotland/8499931.stm', '0000-00-00 00:00:00', NULL),
+(247, 26, 0, 0, 'Personal insolvency ''record high''', 'The number of people who were declared insolvent in England and Wales hit a record high in the last quarter of 2009, figures show.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499939.stm', '0000-00-00 00:00:00', NULL),
+(248, 26, 0, 0, 'Embattled climate chief supported', 'India gives its full support to embattled climate change chief Rajendra Pachauri, under attack over recent scientific errors.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8499702.stm', '0000-00-00 00:00:00', NULL),
+(249, 26, 0, 0, 'Uganda gay bill ''will be changed''', 'Uganda''s controversial Anti-Homosexuality Bill is likely to be changed, a minister tells the BBC.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8499798.stm', '0000-00-00 00:00:00', NULL),
+(250, 26, 0, 0, 'Toyota considers recalling Prius', 'Toyota is considering recalling some Prius models in Japan and the US after concerns about its brakes, the carmaker says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499770.stm', '0000-00-00 00:00:00', NULL),
+(251, 26, 0, 0, 'Dangerous dogs ''for sale in pubs''', 'Dangerous dogs bred illegally are being sold to strangers in London pubs for £250 for use as weapons by gangs, an MP says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/london/8499711.stm', '0000-00-00 00:00:00', NULL),
+(252, 26, 0, 0, 'Nina Wang will ''fraud'' man bailed', 'Feng shui master Tony Chan is bailed amid allegations he forged a will to win the estate of Asia''s richest woman, Nina Wang.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8499804.stm', '0000-00-00 00:00:00', NULL),
+(253, 26, 0, 0, 'Murphy death caused by pneumonia', 'US actress Brittany Murphy died of pneumonia, a Los Angeles coroner rules.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8499218.stm', '0000-00-00 00:00:00', NULL),
+(254, 26, 0, 0, 'Russia ''dumped waste in Baltic''', 'The Russian military dumped nuclear waste into the Baltic Sea in the early 1990s, Swedish media reports say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8499762.stm', '0000-00-00 00:00:00', NULL),
+(255, 26, 0, 0, 'England role tempts Aussie Lawson', 'Former Australia fast bowler Geoff Lawson tells BBC Sport he is interested in applying for the job of England bowling coach.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/cricket/england/8499785.stm', '0000-00-00 00:00:00', NULL),
+(256, 26, 0, 0, 'India state agrees to statue squad', 'A plan for a special police force to protect statues of an Indian politician and her mentors is approved in Uttar Pradesh.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499673.stm', '0000-00-00 00:00:00', NULL),
+(257, 26, 0, 0, 'Polynesia battered by Cyclone Oli', 'Thousands of people are evacuated from their homes as Cyclone Oli hits the islands of French Polynesia.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8497969.stm', '0000-00-00 00:00:00', NULL),
+(258, 26, 0, 0, 'Europe debt fears hit Asia stocks', 'Asian shares fall heavily as concerns about government debt levels in Europe continue to hit global stock markets.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499699.stm', '0000-00-00 00:00:00', NULL),
+(259, 26, 0, 0, 'Terry braced for Capello meeting', 'John Terry is set to meet England boss Fabio Capello on Friday to discuss his future as national team captain.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/football/8495604.stm', '0000-00-00 00:00:00', NULL),
+(260, 26, 0, 0, 'Dig for history', 'Archaeology and the struggle for Jerusalem', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8480304.stm', '0000-00-00 00:00:00', NULL),
+(261, 26, 0, 0, 'Panda diplomacy', 'Why China and the US can agree to disagree', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8499658.stm', '0000-00-00 00:00:00', NULL),
+(262, 26, 0, 0, 'Hubble shows Pluto ''turning red''', 'Nasa scientists say that dwarf planet Pluto, on the edge of our solar system, is becoming increasingly red.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8499660.stm', '0000-00-00 00:00:00', NULL),
+(263, 26, 0, 0, 'North Korea ''to free US activist''', 'North Korea is to release a US man detained since December for illegally entering the country, the state news agency says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8499645.stm', '0000-00-00 00:00:00', NULL),
+(264, 26, 0, 0, 'No Gaza judgement by UN chief Ban', 'The head of the UN says it is not yet possible to say if Israel and the Palestinians are adequately probing the Gaza conflict.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8499655.stm', '0000-00-00 00:00:00', NULL),
+(265, 26, 0, 0, 'Expenses charges decision awaited', 'Prosecutors are set to reveal whether they will bring criminal charges against six MPs and peers over expenses claims.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8499590.stm', '0000-00-00 00:00:00', NULL),
+(266, 26, 0, 0, 'Among the Taliban', '''My father tried to make me into a suicide bomber''', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499578.stm', '0000-00-00 00:00:00', NULL),
+(267, 26, 0, 0, 'Secret of sperm sprint uncovered', 'A mechanism which starts sperm swimming near the egg could lead to new forms of male contraception, say scientists.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8498362.stm', '0000-00-00 00:00:00', NULL),
+(268, 26, 0, 0, 'Trauma services ''not good enough''', 'Hundreds of people who suffer serious injuries are dying due to poor care, according to a report from the National Audit Office.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8499413.stm', '0000-00-00 00:00:00', NULL),
+(269, 26, 0, 0, 'Artificial pancreas diabetes hope', 'Scientists in Cambridge show that an "artificial pancreas" can be used to regulate blood sugar in children with Type 1 diabetes.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8498993.stm', '0000-00-00 00:00:00', NULL),
+(270, 26, 0, 0, 'US looks at Prius brake problems', 'The US opens an investigation into brake problems in the Toyota Prius, as the carmaker''s stream of bad news continues.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8497471.stm', '0000-00-00 00:00:00', NULL),
+(271, 26, 0, 0, 'Dinosaur had colourful feathers', 'A study of a 150 million year old dinosaur fossil has revealed it had striking multi-coloured feathers', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8498142.stm', '0000-00-00 00:00:00', NULL),
+(272, 26, 0, 0, 'Murky story', 'Fragmented picture of convicted Pakistani doctor', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499322.stm', '0000-00-00 00:00:00', NULL),
+(273, 26, 0, 0, 'Ancient Indian language dies out', 'The last speaker of the Bo language in India''s Andaman Islands dies at the age of about 85, a leading linguist says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8498534.stm', '0000-00-00 00:00:00', NULL),
+(274, 26, 0, 0, 'Bank of America sued over Merrill', 'Legal action has begun against Bank of America, accusing former bosses of duping investors during the takeover of Merrill Lynch.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499281.stm', '0000-00-00 00:00:00', NULL),
+(275, 26, 0, 0, 'It''s quiz time!', 'Zuma has a new child, but how many wives has he had?', 'http://news.bbc.co.uk/go/rss/-/2/hi/in_depth/8498996.stm', '0000-00-00 00:00:00', NULL),
+(276, 26, 0, 0, 'Iceland warns EU over Icesave row', 'Iceland''s PM urges EU leaders not to link the Icesave bank dispute to IMF aid for Iceland''s battered economy.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8497738.stm', '0000-00-00 00:00:00', NULL),
+(277, 26, 0, 0, 'How can US-China relations be repaired?', 'Tensions between the US and China have grown after a spate of diplomatic rows. What next for the two nations?', 'http://newsforums.bbc.co.uk/nol/thread.jspa?forumID=7474', '0000-00-00 00:00:00', NULL),
+(278, 26, 0, 0, 'Do you count?', 'Why some are reluctant to feature in the US Census', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8497275.stm', '0000-00-00 00:00:00', NULL),
+(279, 26, 0, 0, 'Symbian switches to open source', 'The group behind the world''s most popular smartphone operating system - Symbian - is giving away "billions of dollars" of code for free.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8496263.stm', '0000-00-00 00:00:00', NULL),
+(280, 26, 0, 0, 'Phishing scam hits carbon permits', 'Online criminals have created fake carbon registries and managed to steal permits worth 3 million euros.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8497129.stm', '0000-00-00 00:00:00', NULL),
+(281, 26, 0, 0, 'BBC World News', '', 'http://www.bbcworldnews.com/Pages/default.aspx', '0000-00-00 00:00:00', NULL),
+(282, 26, 0, 0, 'Rapist murdered mother and girl', 'A man admits raping and murdering a 10-year-old girl and murdering her mother in their Ayrshire home.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/scotland/glasgow_and_west/8499943.stm', '0000-00-00 00:00:00', NULL),
+(283, 26, 0, 0, 'Hammer attack man refused damages', 'A teenager left brain damaged in a hammer attack at his school loses his High Court battle for compensation.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/wiltshire/8500218.stm', '0000-00-00 00:00:00', NULL),
+(284, 26, 0, 0, 'Microsoft tackles 17-year old bug', 'A 17-year old vulnerability that dates from the days of DOS is being patched in Microsoft''s February security update.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8499859.stm', '0000-00-00 00:00:00', NULL),
+(285, 26, 0, 0, 'Euro MPs shun data deal with US', 'A committee of Euro MPs moves to block the renewal of a deal allowing US anti-terror officials to access Europeans'' bank data.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8500132.stm', '0000-00-00 00:00:00', NULL),
+(286, 26, 0, 0, 'World''s oldest monastery restored', 'Egypt completes the restoration of Saint Anthony''s, reputedly the world''s oldest Christian monastery.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8500091.stm', '0000-00-00 00:00:00', NULL),
+(287, 26, 0, 0, 'Zuma son ''happy to share father''', 'The son of South African President Jacob Zuma says he is happy to share his proudly polygamous father.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8499978.stm', '0000-00-00 00:00:00', NULL),
+(288, 26, 0, 0, 'US objects to Google books plan', 'The US Department of Justice says that it is still not satisfied with a deal that would allow Google to build a digital library.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8500022.stm', '0000-00-00 00:00:00', NULL),
+(289, 26, 0, 0, 'Fatal blast hits Afghan dog fight', 'A bomb attack on a dog fight in southern Afghanistan kills at least three people and injures at least 30 more, police say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499868.stm', '0000-00-00 00:00:00', NULL),
+(290, 26, 0, 0, 'Cabin boy was youngest WWII hero', 'A 14-year-old cabin boy is confirmed as the UK''s youngest known service member to have been killed in WWII.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8498113.stm', '0000-00-00 00:00:00', NULL),
+(291, 26, 17, 0, 'Ship seized by pirates ''stormed''', 'Danish special forces storm a ship captured by Somali pirates and free 25 crew members, an EU naval spokesman says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8500611.stm', '2010-02-05 16:53:00', NULL),
+(292, 26, 0, 0, 'No Gaza judgement by UN chief Ban', 'The head of the UN says it is not yet possible to say if Israel and the Palestinians are adequately probing the Gaza conflict.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8499655.stm', '2010-02-05 16:51:00', NULL),
+(293, 26, 0, 0, 'Surprise fall in US unemployment', 'The US unemployment rate unexpectedly fell in January, to its lowest level in five months, official figures show.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8500625.stm', '2010-02-05 16:45:00', NULL),
+(294, 26, 18, 0, 'Deadly double bombing in Karachi', 'An explosion kills at least 10 people at a Pakistani hospital where victims of an earlier bomb were being treated, Karachi police say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8500077.stm', '2010-02-05 16:42:00', NULL),
+(295, 26, 0, 0, 'Bodies find sparks murder inquiry', 'Murder detectives investigating the deaths of two women at a home in Shropshire find a man''s body nearby.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/shropshire/8500682.stm', '2010-02-05 16:38:00', NULL),
+(296, 26, 0, 0, 'Rapist murdered mother and girl', 'A man is jailed for 32 years for raping and murdering a 10-year-old girl and murdering her mother in their Ayrshire home.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/scotland/glasgow_and_west/8499943.stm', '2010-02-05 16:36:00', NULL),
+(297, 26, 19, 0, 'Four UK politicians face charges', 'Four British parliamentarians are to face criminal charges over their expenses, the UK prosecution service announces.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8499590.stm', '2010-02-05 16:22:00', NULL),
+(298, 26, 0, 0, 'Heating up', 'A profile of the UN''s troubled top climate change official', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8499845.stm', '2010-02-05 16:19:00', NULL),
+(299, 26, 0, 0, 'Facebook dominates UK mobile use', 'Facebook accounts for nearly half of all the time people in the UK spend going online using their phones, according to figures.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8500368.stm', '2010-02-05 16:12:00', NULL),
+(300, 26, 0, 0, 'Botswana recalls Zimbabwe envoys', 'Botswana recalls two diplomats from Harare in protest at the detention of wildlife officers.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8500523.stm', '2010-02-05 15:57:00', NULL),
+(301, 26, 0, 0, 'Hammer attack boy refused damages', 'A teenager left brain damaged in a hammer attack at his school loses his High Court battle for compensation.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/wiltshire/8500218.stm', '2010-02-05 15:56:00', NULL),
+(302, 26, 0, 0, 'Robinson ''has cleared his name''', 'The NI Secretary of State says Peter Robinson has no questions to answer over allegations about his wife''s financial affairs.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/northern_ireland/8500508.stm', '2010-02-05 15:52:00', NULL),
+(303, 26, 0, 0, 'Dynamic Pluto revealed in images', 'Images from the Hubble Space Telescope reveal that the icy dwarf planet Pluto undergoes dramatic seasonal changes.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8498455.stm', '2010-02-05 15:47:00', NULL),
+(304, 26, 20, 0, 'Deal to see NI devolution in April', 'The two main political parties in Northern Ireland reach agreement in a long-running dispute over policing and justice.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/northern_ireland/8499992.stm', '2010-02-05 15:46:00', NULL),
+(305, 26, 0, 0, 'Toyota boss apologises for recall', 'Toyota President Akio Toyoda apologises for the recall of millions of cars and pledges to target quality control.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499770.stm', '2010-02-05 15:38:00', NULL),
+(306, 26, 21, 0, 'Woods linked with February return', 'Tiger Woods is reportedly targeting a comeback in the WGC Match Play Championship in Arizona.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/golf/8500307.stm', '2010-02-05 15:37:00', NULL),
+(307, 26, 0, 0, 'BA''s Â£50m loss beats expectations', 'British Airways says it made a loss of Â£50m ($79m) in the three months to December 2009, which was smaller than expected.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499691.stm', '2010-02-05 15:32:00', NULL),
+(308, 26, 0, 0, 'Personal insolvency ''record high''', 'The number of people who were declared insolvent in England and Wales hit a record high in the last quarter of 2009, figures show.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499939.stm', '2010-02-05 15:20:00', NULL),
+(309, 26, 0, 0, 'Debt fears hit European shares', 'European shares fall sharply for the second straight day amid continued concerns about government debt levels.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8499699.stm', '2010-02-05 15:18:00', NULL),
+(310, 26, 22, 0, 'Embattled climate chief supported', 'India gives its full support to embattled climate change chief Rajendra Pachauri, under attack over recent scientific errors.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8499702.stm', '2010-02-05 15:08:00', NULL),
+(311, 26, 0, 0, 'Transplant first in kidney sister', 'A pioneering procedure has allowed a British woman to get a new kidney from her sister - even though the organ would normally be rejected.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8500320.stm', '2010-02-05 15:03:00', NULL),
+(312, 26, 23, 0, 'Bombings hit Iraq Shia pilgrims', 'Suicide bombers kill 27 Shia pilgrims and injure dozens during a major ceremony in the Iraqi city of Karbala, police say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8500131.stm', '2010-02-05 15:02:00', NULL),
+(313, 26, 0, 0, 'Lost your tongue?', 'The importance of preserving dying languages', 'http://news.bbc.co.uk/go/rss/-/2/hi/in_depth/8500108.stm', '2010-02-05 15:02:00', NULL),
+(314, 26, 0, 0, 'Microsoft tackles 17-year-old bug', 'A 17-year-old vulnerability that dates from the days of DOS is being patched in Microsoft''s February security update.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8499859.stm', '2010-02-05 14:36:00', NULL),
+(315, 26, 0, 0, 'Euro MPs shun data deal with US', 'A committee of Euro MPs moves to block the renewal of a deal allowing US anti-terror officials to access Europeans'' bank data.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8500132.stm', '2010-02-05 14:33:00', NULL),
+(316, 26, 0, 0, 'Burundi peace troops ''mutinied''', 'Thirty-three Burundian soldiers accused of mutinying over pay while serving as peacekeepers in Somalia go on trial.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8499975.stm', '2010-02-05 14:30:00', NULL),
+(317, 26, 24, 0, 'Terry set for talks with Capello', 'John Terry is set to discuss his future as England captain with team boss Fabio Capello on Friday.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/football/8495604.stm', '2010-02-05 14:27:00', NULL),
+(318, 26, 0, 0, 'China to put duties on US chicken', 'China is to enforce anti-dumping duties on US chicken imports, accusing poultry firms of exporting at unfairly low prices.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8500016.stm', '2010-02-05 14:27:00', NULL),
+(319, 26, 0, 0, 'Dame Tanni nominated for peerage', 'Britain''s top paralympian is set to become a "people''s peer" after a recommendation from the House of Lords Appointments Commission.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8500200.stm', '2010-02-05 14:19:00', NULL),
+(320, 26, 0, 0, 'World''s oldest monastery restored', 'Egypt completes the restoration of Saint Anthony''s, reputedly the world''s oldest Christian monastery.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8500091.stm', '2010-02-05 14:12:00', NULL),
+(321, 26, 0, 0, 'Polynesia battered by Cyclone Oli', 'One man dies and thousands of people are evacuated from their homes as Cyclone Oli hits French Polynesia.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8497969.stm', '2010-02-05 14:01:00', NULL),
+(322, 26, 0, 0, 'Zuma son ''happy to share father''', 'The son of South African President Jacob Zuma says he is happy to share his proudly polygamous father.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8499978.stm', '2010-02-05 13:59:00', NULL),
+(323, 26, 0, 0, 'US objects to Google books plan', 'The US Department of Justice says that it is still not satisfied with a deal that would allow Google to build a digital library.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8500022.stm', '2010-02-05 13:54:00', NULL),
+(324, 26, 0, 0, 'Giant at bay', 'Asia''s ''living fossil'' at risk from modern world pressures', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8498023.stm', '2010-02-05 13:45:00', NULL),
+(325, 26, 0, 0, 'Haiti warns US case ''distracting''', 'Haiti''s prime minister says the US missionaries charged with child abduction are overshadowing the needs of earthquake victims.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8499679.stm', '2010-02-05 13:36:00', NULL),
+(326, 26, 25, 0, 'Dave saved: Australia''s erotic-photo banker keeps his job', 'An Australian banker caught viewing erotic images in the background of a live TV interview will keep his job, his bank says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8500037.stm', '2010-02-05 13:30:00', NULL),
+(327, 26, 0, 0, 'Men At Work slam rip-off ruling', 'Men at Work''s Colin Hay has issued an angry statement calling the Down Under plagiarism case ''opportunistic greed''.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8499973.stm', '2010-02-05 13:28:00', NULL),
+(328, 26, 0, 0, 'Chechnya militants kill soldiers', 'Militants kill five Russian soldiers in the troubled North Caucasus region of Chechnya, officials say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8499848.stm', '2010-02-05 12:59:00', NULL),
+(329, 26, 26, 0, 'Shackleton''s whisky dug from South Pole ice', 'Five crates of Scotch whisky and brandy belonging to polar explorer Ernest Shackleton have been recovered from the ice after a century.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/scotland/8499931.stm', '2010-02-05 12:56:00', NULL),
+(330, 26, 27, 0, 'Post-Katrina spirit', 'New Orleans Saints head to Super Bowl', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/other_sports/american_football/8499913.stm', '2010-02-05 12:45:00', NULL),
+(331, 26, 0, 0, 'Fatal blast hits Afghan dog fight', 'A bomb attack on a dog fight in southern Afghanistan kills at least three people and injures at least 30 more, police say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499868.stm', '2010-02-05 12:22:00', NULL),
+(332, 26, 0, 0, 'Murphy death caused by pneumonia', 'US actress Brittany Murphy died of pneumonia, a Los Angeles coroner rules.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8499218.stm', '2010-02-05 11:46:00', NULL),
+(333, 26, 0, 0, 'Russia ''dumped waste in Baltic''', 'The Russian military dumped nuclear waste into the Baltic Sea in the early 1990s, Swedish media reports say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8499762.stm', '2010-02-05 11:31:00', NULL),
+(334, 26, 0, 0, 'India state agrees to statue squad', 'A plan for a special police force to protect statues of an Indian politician and her mentors is approved in Uttar Pradesh.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499673.stm', '2010-02-05 11:03:00', NULL),
+(335, 26, 28, 0, 'Among the Taliban', '''My father tried to make me into a suicide bomber''', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8499578.stm', '2010-02-05 03:16:00', NULL),
+(336, 26, 0, 0, 'Artificial pancreas diabetes hope', 'Scientists in Cambridge show that an "artificial pancreas" can be used to regulate blood sugar in children with Type 1 diabetes.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8498993.stm', '2010-02-05 03:06:00', NULL),
+(337, 26, 0, 0, 'US looks at Prius brake problems', 'The US opens an investigation into brake problems in the Toyota Prius, as the carmaker''s stream of bad news continues.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8497471.stm', '2010-02-05 01:57:00', NULL),
+(338, 26, 0, 0, 'It''s quiz time!', 'Zuma has a new child, but how many wives has he had?', 'http://news.bbc.co.uk/go/rss/-/2/hi/in_depth/8498996.stm', '2010-02-04 19:29:00', NULL),
+(339, 26, 29, 0, 'How can US-China relations be repaired?', 'Tensions between the US and China have grown after a spate of diplomatic rows. What next for the two nations?', 'http://newsforums.bbc.co.uk/nol/thread.jspa?forumID=7474', '2010-02-04 13:27:00', NULL),
+(340, 26, 0, 0, 'BBC World News', NULL, 'http://www.bbcworldnews.com/Pages/default.aspx', '2009-09-29 15:16:00', NULL),
+(341, 26, 30, 0, 'Lebanon ''retrieves'' jet black box', 'Lebanese search teams have retrieved the black box flight recorders from the Ethiopian Airlines jet that crashed into the Mediterranean, reports say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8502741.stm', '2010-02-07 13:20:00', NULL),
+(342, 26, 31, 0, 'Cloud forces shuttle launch delay', 'Low cloud at the Kennedy Space Center in Florida prevents the shuttle Endeavour from launching on a final night flight to the ISS.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8501849.stm', '2010-02-07 12:57:00', NULL),
+(343, 26, 0, 0, 'Emotional Campbell defends Blair', 'Alastair Campbell denies Tony Blair misled MPs or Parliament over the intelligence in the run-up to the 2003 Iraq war.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8502730.stm', '2010-02-07 12:54:00', NULL),
+(344, 26, 32, 0, 'US snow causes major power cuts', 'Tens of thousands of people remain without power in Washington DC and nearby states after a record snowstorm.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502700.stm', '2010-02-07 12:33:00', NULL),
+(345, 26, 33, 0, 'UK cutting foreign student visas', 'The UK is to cut the number of visas it issues to foreign students in an attempt to stamp out abuses of the system.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8502640.stm', '2010-02-07 12:19:00', NULL),
+(346, 26, 34, 0, 'Ukraine begins tense run-off poll', 'Ukrainians vote in a presidential election run-off, after a bruising campaign and warnings of mass street protests.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8502614.stm', '2010-02-07 12:13:00', NULL),
+(347, 26, 35, 0, 'Iran sets new nuclear challenge', 'Iran''s leader asks the country''s nuclear chief to begin enriching uranium to 20%, in a new challenge to Western powers.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8502705.stm', '2010-02-07 11:52:00', NULL),
+(348, 26, 0, 0, 'Man hurt at football match dies', 'A man who was injured during Stoke City''s Premier League match against Blackburn Rovers dies in hospital.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/staffordshire/8502701.stm', '2010-02-07 11:34:00', NULL),
+(349, 26, 0, 0, 'Pledge of one-to-one cancer care', 'Every cancer patient in England will be offered one-to-one care by specialist nurses if Labour wins the election, the PM is to say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8502492.stm', '2010-02-07 11:22:00', NULL),
+(350, 26, 0, 0, 'Jazz star Johnny Dankworth dies', 'Sir John Dankworth, a mainstay of the British jazz scene for more than 60 years, has died, his family has confirmed.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8502621.stm', '2010-02-07 10:59:00', NULL),
+(351, 26, 0, 0, 'Quake strikes off Japan islands', 'A magnitude-6.4 quake strikes off the southern coast of Japan, near the Ryukyu Islands.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8502688.stm', '2010-02-07 10:39:00', NULL),
+(352, 26, 0, 0, 'Synod to lobby over women bishops', 'The Church of England''s governing body is expected to put renewed pressure on bishops over delays in the introduction of female bishops.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8502633.stm', '2010-02-07 08:36:00', NULL),
+(353, 26, 0, 0, 'Palin lashes Obama at Tea Party', 'Sarah Palin attacks Barack Obama as she urges a return to conservative principles, at the first US Tea Party convention.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8498688.stm', '2010-02-07 07:56:00', NULL),
+(354, 26, 36, 0, 'Mexico town inaugurates first church dedicated to exorcism', 'The first Mexican church dedicated to exorcisms is inaugurated in the central city of Queretaro.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502665.stm', '2010-02-07 06:02:00', NULL),
+(355, 26, 37, 0, 'Out of the brothel', 'From the Calcutta streets to a New York university', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8456643.stm', '2010-02-07 05:20:00', NULL),
+(356, 26, 0, 0, 'Tories plan school powers shift', 'Local authorities in England could lose many of their planning powers regarding schools if the Conservatives win the election.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8502553.stm', '2010-02-07 05:11:00', NULL),
+(357, 26, 0, 0, 'A life in jazz', 'Sir John Dankworth worked with the greats of jazz', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8502647.stm', '2010-02-07 04:55:00', NULL),
+(358, 26, 38, 0, 'Iran cuts ties with British Museum amid row over Persian treasure', 'Iran''s national museum is to cut ties with the British Museum amid a dispute over the loan of an ancient Persian treasure.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/arts_and_culture/8502654.stm', '2010-02-07 04:53:00', NULL),
+(359, 26, 0, 0, 'Happy and green', 'What is behind the success story of Costa Rica?', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8498456.stm', '2010-02-07 04:29:00', NULL),
+(360, 26, 0, 0, 'Call to cut caffeine in alcohol', 'Legal limits should be placed on the amount of caffeine in alcoholic drinks such as Buckfast, Scottish Labour says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/scotland/8501865.stm', '2010-02-07 04:27:00', NULL),
+(361, 26, 39, 0, 'Corruption fears', 'Aid delays in Haiti raise suspicions about old scourge', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502616.stm', '2010-02-07 04:17:00', NULL),
+(362, 26, 0, 0, 'G7 pledges to cancel Haiti debt', 'The world''s top seven industrialised nations vow to cancel Haiti''s debts in the wake of its devastating earthquake.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502567.stm', '2010-02-07 03:15:00', NULL),
+(363, 26, 40, 0, 'Brazil nun accused ''back in jail''', 'A Brazilian landowner accused of ordering the murder of an American nun is back in jail ahead of a new trial, reports say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502635.stm', '2010-02-07 03:03:00', NULL),
+(364, 26, 41, 0, 'Nations await Euro 2012 draw', 'England are among the top seeds as they, Scotland, Wales and Northern Ireland await Sunday''s Euro 2012  qualifying draw.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/football/8500038.stm', '2010-02-07 01:54:00', NULL),
+(365, 26, 0, 0, 'Zuma apologises over love-child', 'South African President Jacob Zuma apologises for fathering an illegitimate child, after a national outcry.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8502229.stm', '2010-02-06 20:50:00', NULL),
+(366, 26, 42, 0, 'O''Driscoll frustrated after Ireland win', 'Brian O''Driscoll describes Ireland''s display as "mediocre" after the Grand Slam holders labour to beat Italy 29-11 in Saturday''s Six Nations opener.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/rugby_union/irish/8502270.stm', '2010-02-06 20:31:00', NULL),
+(367, 26, 0, 0, 'French aid worker freed in Chad', 'A French aid worker seized in Chad last year is released unharmed, the Red Cross says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8502173.stm', '2010-02-06 20:04:00', NULL),
+(368, 26, 0, 0, 'Keira Knightley ''stalker'' charged', 'A 41-year-old man appears in court charged with harassing actress Keira Knightley.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/england/london/8501822.stm', '2010-02-06 19:25:00', NULL),
+(369, 26, 0, 0, 'Iraq video ''shows US contractor''', 'A Shia militant group in Iraq posts an internet video showing a man who appears to be a missing US military contractor.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8502054.stm', '2010-02-06 19:02:00', NULL),
+(370, 26, 0, 0, 'Dinosaur footprint haul in China', 'Scientists in China say they have discovered more than 3,000 dinosaur footprints, all facing in the same direction.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8502076.stm', '2010-02-06 18:29:00', NULL),
+(371, 26, 0, 0, 'Delays mar Nigeria regional poll', 'Voting for a new governor in Nigeria''s volatile Anambra state is delayed as police refuse to escort ballot papers.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8502042.stm', '2010-02-06 17:57:00', NULL),
+(372, 26, 0, 0, '''Not your slave''', 'In Paris, service doesn''t necessarily come with a smile', 'http://news.bbc.co.uk/go/rss/-/2/hi/programmes/from_our_own_correspondent/8500246.stm', '2010-02-06 15:03:00', NULL),
+(373, 26, 43, 0, 'Frontline cops', 'A Mexican widow joins police tackling the drug cartels', 'http://news.bbc.co.uk/go/rss/-/2/hi/programmes/from_our_own_correspondent/8500577.stm', '2010-02-06 15:02:00', NULL),
+(374, 26, 0, 0, 'PM urges calm after Pakistan bombs', 'Mourners attend funerals for more than a dozen people killed in bomb attacks targeting Shia Muslims in the Pakistani city of Karachi.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8501607.stm', '2010-02-06 14:33:00', NULL),
+(375, 26, 0, 0, 'Australia in huge China coal deal', 'An Australian firm signs a $60bn deal to supply coal to Chinese power stations from a mine to be built in Queensland.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8501777.stm', '2010-02-06 13:18:00', NULL),
+(376, 26, 0, 0, '''Outrage'' over BAE deal', 'Campaigners express anger as defence group BAE Systems strikes a deal to end UK and US investigations into its affairs.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8501689.stm', '2010-02-06 13:01:00', NULL),
+(377, 26, 0, 0, 'Afghan villagers shot ''in error''', 'Afghan police shoot dead seven young men near the Pakistani border after mistaking them for insurgents, a police official says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8501751.stm', '2010-02-06 12:11:00', NULL),
+(378, 26, 0, 0, 'Row over girl''s Rio Carnival role', 'A row erupts in Brazil as a young girl is given what is traditionally a "sexy" role as a samba queen in the Rio de Janeiro Carnival.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8501724.stm', '2010-02-06 11:52:00', NULL),
+(379, 26, 0, 0, 'Freed US man leaves North Korea', 'US activist Robert Park arrives in Beijing after being freed from detention in North Korea, reports from South Korea say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8501691.stm', '2010-02-06 07:46:00', NULL),
+(380, 26, 0, 0, 'Portugal police find ''Eta cache''', 'Portuguese police seize half a tonne of explosives they suspect belonged to Basque separatist group Eta.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8501688.stm', '2010-02-06 05:35:00', NULL),
+(381, 26, 0, 0, 'Premature birth gene clue found', 'DNA differences which appear to affect the risk of giving birth early have been found by US scientists.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8498712.stm', '2010-02-06 02:56:00', NULL),
+(382, 26, 0, 0, 'Jackson''s doctor ''to be charged''', 'Los Angeles prosecutors will file a criminal case against Michael Jackson''s doctor on Monday in connection with the singer''s death, LA County district attorney''s office says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8494682.stm', '2010-02-06 00:34:00', NULL),
+(383, 26, 0, 0, 'Pirate bill could ''breach rights''', 'An influential group of MPs and peers says the government''s plans to illegal file-sharing could breach the rights of net users.', 'http://news.bbc.co.uk/go/rss/-/2/hi/technology/8500876.stm', '2010-02-05 20:49:00', NULL),
+(384, 26, 0, 0, 'Climate scepticism ''on the rise''', 'The British public has become increasingly sceptical about climate change, a poll for BBC News suggests.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8500443.stm', '2010-02-05 19:56:00', NULL),
+(385, 26, 44, 0, 'India v South Africa live score', 'India take on South Africa in the first Test at Nagpur.', 'http://news.bbc.co.uk/go/rss/-/sport1/shared/fds/hi/statistics/cricket/scorecards/2010/2/85698/html/scorecard.stm', '2010-02-03 17:05:00', NULL),
+(386, 197, 0, 0, 'Toyota''s once-golden resale value gets dented \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_toyota_used_car_value"><img src="http://d.yimg.com/a/p/ap/20100207/capt.c81382b250df434088a5d397750f50ed.toyota_recall_used_car_value_nyrm201.jpg?x=130&amp;y=88&amp;q=85&amp;sig=83AC4yomcQcXLHPOA9pJAA--" align="left" height="88" width="130" alt="Laura Benin poses with her 2009 Toyota Corolla LE outside her home in the Queens borough of New York, Saturday, Feb. 6, 2010. (AP Photo/Robert Mecea)" border="0" /></a>AP - Toyota owners looking to trade in their cars have little reason to sing the carmaker''s old ad slogan, "I love what you do for me &mdash; Toyota!"</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_toyota_used_car_value', '0000-00-00 00:00:00', NULL),
+(387, 197, 0, 0, 'Stocks narrowly mixed ahead of market open \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_st_ma_re/us_wall_street"><img src="http://d.yimg.com/a/p/ap/20100207/capt.e89d419d208041338423a73ae41a035a.wall_street_week_ahead_nybz146.jpg?x=130&amp;y=91&amp;q=85&amp;sig=cwRCJObRtRF9AnhdjKeL1A--" align="left" height="91" width="130" alt="FILE - In this Thursday, Feb. 4, 2010 file photo, traders Richard Newman, left, and Albert Young work on the floor of the New York Stock Exchange. On Thursday, the Standard &amp; Poor''s 500 index suffered its biggest one-day drop in more than nine months because of worries about debt problems in Greece, Portugal and Spain. (AP Photo/Richard Drew, File)" border="0" /></a>AP - Stock futures are trading in a narrow range after a roller-coaster performance last week that saw major indexes decline for the fourth consecutive week.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_st_ma_re/us_wall_street', '0000-00-00 00:00:00', NULL),
+(388, 197, 0, 0, 'AP analysis: US economic stress hit a peak in Dec. \n    (AP)', 'AP - Weakness in Western energy-producing states helped raise the average U.S. county''s economic stress in December to its highest point since The Associated Press began analyzing conditions in more than 3,100 U.S. counties in October 2007.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_stress_map', '0000-00-00 00:00:00', NULL),
+(389, 197, 0, 0, 'Hasbro 4Q profit rises on sales of boys'' products \n    (AP)', 'AP - Hasbro says sales of action figures and other toys aimed at boys and strong entertainment and licensing revenue helped push its fourth-quarter profit sharply higher.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_earns_hasbro', '0000-00-00 00:00:00', NULL),
+(390, 197, 0, 0, 'Unions vow strike as Greece finalizes deficit plan \n    (Reuters)', 'Reuters - Greek unions pledged on Monday to fight austerity measures with a public sector strike this week, the first test of the government''s commitment to cut deficits and a ballooning public debt which has shaken the euro.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100208/bs_nm/us_greece_taxes', '0000-00-00 00:00:00', NULL),
+(391, 197, 0, 0, 'World''s tallest tower lookout suddenly shuttered \n    (AP)', 'AP - The Burj Khalifa''s owner said Monday the observation deck of the world''s tallest tower has been unexpectedly shut down, disappointing visitors and marring the spire''s reputation just a month after it opened.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/ml_dubai_tallest_building', '0000-00-00 00:00:00', NULL),
+(392, 197, 0, 0, 'Greece readies tax change to fight crisis \n    (AP)', 'AP - Greek officials put the final touches Monday on an overhaul of the country''s ineffective tax system &mdash; part of their urgent effort to fix a debt crisis that has shaken the entire eurozone.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/eu_greece_financial_crisis', '0000-00-00 00:00:00', NULL),
+(393, 197, 0, 0, 'Oil above $72 amid US cold snap, Iran tensions \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/oil_prices"><img src="http://d.yimg.com/a/p/afp/20100205/capt.photo_1265407526359-1-0.jpg?x=130&amp;y=86&amp;q=85&amp;sig=H8IHwzXMGaMb_Czy8oWDjA--" align="left" height="86" width="130" alt="A map of northern Europe showing the route of the planned South Stream and Nabucco gas pipelines. Serbia''s state-run gas company and Russia''s Gazprom on Friday founded a joint venture to manage an underground gas storage as a part of future South Stream pipeline through the Balkan republic, Beta news agency reported.(AFP/Graphic)" border="0" /></a>AP - Oil prices jumped above $72 a barrel Monday in Asia after hitting a two-month low last week, boosted by tensions over Iran''s nuclear program and a cold snap in the U.S. northeast.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/oil_prices', '0000-00-00 00:00:00', NULL),
+(394, 197, 0, 0, 'India predicts growth at 7.2 percent in year to March \n    (AFP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100208/wl_sthasia_afp/indiaeconomygrowth"><img src="http://d.yimg.com/a/p/afp/20100208/capt.photo_1265620500734-1-0.jpg?x=130&amp;y=86&amp;q=85&amp;sig=xQ9ZPYeQKX7U7PsAJ_cHHQ--" align="left" height="86" width="130" alt="Indian farmers sell fruits and vegetables in Hyderabad on February 5. India''s economy should grow 7.2 percent in the fiscal year ending in March, an official forecast said Monday, as the economy''s recovery from the global financial crisis picks up speed.(AFP/Noah Seelam)" border="0" /></a>AFP - India''s economy should grow 7.2 percent in the fiscal year ending in March, an official forecast said Monday, as the economy''s recovery from the global financial crisis picks up speed.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100208/wl_sthasia_afp/indiaeconomygrowth', '0000-00-00 00:00:00', NULL),
+(395, 197, 0, 0, 'SMFG Q3 profit surges, keeps forecast \n    (Reuters)', 'Reuters - Sumitomo Mitsui Financial Group (8316.T), Japan''s third-biggest bank by assets, outshone it larger rivals and posted its biggest profit in seven quarters on Monday, helped by an improvement in its stock portfolio and a decline in bad loans.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100208/bs_nm/us_smfg', '0000-00-00 00:00:00', NULL),
+(396, 197, 0, 0, 'Kuwait to post 24 billion-dollar budget surplus: forecast \n    (AFP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100207/wl_mideast_afp/kuwaiteconomybudgetoil"><img src="http://d.yimg.com/a/p/afp/20100207/capt.photo_1265577843486-1-0.jpg?x=130&amp;y=86&amp;q=85&amp;sig=VdWgDg_gwjPBvSEF3y2BMw--" align="left" height="86" width="130" alt="Kuwait City''s banking complex is decorated with lights and the national flag in 2009. Kuwait is set to post a surplus of 24 billion dollars in the current fiscal year on the back of higher oil prices, despite projecting a shortfall, an economic report forecast on Sunday.(AFP/File/Yasser al-Zayyat)" border="0" /></a>AFP - Kuwait is set to post a surplus of 24 billion dollars in the current fiscal year on the back of higher oil prices, despite projecting a shortfall, an economic report forecast on Sunday.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100207/wl_mideast_afp/kuwaiteconomybudgetoil', '0000-00-00 00:00:00', NULL),
+(397, 197, 0, 0, 'Goldman''s payment demands on AIG probed: report \n    (Reuters)', 'Reuters - U.S. regulators are investigating whether the mortgage insurance market was improperly distressed in 2008 because of payment demands that Goldman Sachs Group Inc  and other banks made on American International Group Inc , The New York Times reported on Sunday.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100207/bs_nm/us_goldman_aig_bailout', '0000-00-00 00:00:00', NULL),
+(398, 197, 0, 0, 'Geithner says zeal for bank reform intact \n    (Reuters)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100206/bs_nm/us_g7_usa_official"><img src="http://d.yimg.com/a/p/rids/20100206/i/r2681466743.jpg?x=130&amp;y=96&amp;q=85&amp;sig=wwx4vMTzsJMP2qb69uvclw--" align="left" height="96" width="130" alt="Treasury Secretary Tim Geithner (L) and Federal Reserve Chairman Ben Bernanke take part in a meeting at the G7 finance ministers'' meeting in Iqaluit, Nunavut February 5, 2010. REUTERS/Chris Wattie" border="0" /></a>Reuters - Treasury Secretary Timothy Geithner insisted on Saturday that major economies were not easing up on their commitment to stiffen the rules for banks just because the global economy was recovering.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100206/bs_nm/us_g7_usa_official', '0000-00-00 00:00:00', NULL),
+(399, 197, 0, 0, 'Limited Brands sets dividend of 15 cents per share \n    (AP)', 'AP - Clothing retailer Limited Brands Inc. says it will pay a quarterly dividend of 15 cents per share.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100205/ap_on_bi_ge/us_limited_brands_dividend', '0000-00-00 00:00:00', NULL);
+INSERT INTO `feed_item` (`id`, `feed_id`, `location_id`, `incident_id`, `item_title`, `item_description`, `item_link`, `item_date`, `item_source`) VALUES
+(400, 197, 0, 0, 'Beazer Homes posts a $48 million profit for Q1 \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100205/ap_on_bi_ge/us_earns_beazer_homes"><img src="http://d.yimg.com/a/p/ap/20100205/capt.d57528677c754260a23489c2abef88fb.earns_beazer_homes__azmy206.jpg?x=130&amp;y=89&amp;q=85&amp;sig=fT4.1iteQ0SirPbd_LBhBQ--" align="left" height="89" width="130" alt="In thie Feb. 2, 2010 photo, new Beazer homes are under construction in Gilbert, Ariz.  Beazer Homes USA Inc. posted a $48 million profit in its fiscal first quarter Friday, Feb. 6, thanks to a $101 million tax gain.(AP Photo/Matt York)" border="0" /></a>AP - Homebuyers spurred by low interest rates and government incentives helped lift Beazer Homes USA Inc.''s sales in the last three months of 2009, but the builder only turned a profit because of a hefty tax gain.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100205/ap_on_bi_ge/us_earns_beazer_homes', '0000-00-00 00:00:00', NULL),
+(401, 197, 0, 0, 'FTSE slumps on debt fears \n    (AFP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100205/wl_uk_afp/britainstocksclose"><img src="http://d.yimg.com/a/p/afp/20100205/capt.photo_1265385931220-1-0.jpg?x=130&amp;y=81&amp;q=85&amp;sig=WtY9NOPaSyxgTZbhQkLR1Q--" align="left" height="81" width="130" alt="London stocks took a nosedive as the market reacted to increasing unease about the level of debt accrued by Eurozone countries including Spain and Greece.(AFP/File/Shaun Curry)" border="0" /></a>AFP - London stocks took a nosedive Friday as the market reacted to increasing unease about the level of debt accrued by Eurozone countries including Spain and Greece.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100205/wl_uk_afp/britainstocksclose', '0000-00-00 00:00:00', NULL),
+(402, 197, 0, 0, 'How Larry Kotlikoff Would Fix the Financial System \n    (BusinessWeek)', 'BusinessWeek - The publishing world is too slow for Laurence J. Kotlikoff. On a frigid January day, the 58-year-old Boston University economist is pecking away at his computer keyboard in his airy office overlooking the Charles River. Kotlikoff''s forthcoming book, Jimmy Stewart is Dead, calls for a radical -- and swift -- reorganization of the financial system. So rather than wait for the book''s Feb. 22 publication date, Kotlikoff is e-mailing PDF versions to dozens of economists, journalists, and policymakers. "We have miscreants running the financial system left, right, and center," says Kotlikoff. ...', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/bw/20100205/bs_bw/1007b4166042289206', '0000-00-00 00:00:00', NULL),
+(403, 198, 0, 0, 'Charlie and Brooke Sheen due in court \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_en_tv/us_charlie_sheen_arrested"><img src="http://d.yimg.com/a/p/ap/20100205/capt.f39588e5e58b46099929a9fbc545093c.people_charlie_sheen__nyet728.jpg?x=92&amp;y=130&amp;q=85&amp;sig=JoOkOYLZN.c_nzw3lrauyg--" align="left" height="130" width="92" alt="FILE - This Jan. 28, 2009 file photo shows Charlie Sheen in Los Angeles. . (AP Photo/Chris Pizzello, File)" border="0" /></a>AP - Charlie Sheen and his wife are due in court Monday amid domestic violence allegations. They''ll be arriving separately and only the judge can determine if they can leave together.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_en_tv/us_charlie_sheen_arrested', '0000-00-00 00:00:00', NULL),
+(404, 198, 0, 0, 'Charlie and Brooke Sheen due in court \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/us_charlie_sheen_arrested"><img src="http://d.yimg.com/a/p/ap/20100205/capt.f39588e5e58b46099929a9fbc545093c.people_charlie_sheen__nyet728.jpg?x=92&amp;y=130&amp;q=85&amp;sig=JoOkOYLZN.c_nzw3lrauyg--" align="left" height="130" width="92" alt="FILE - This Jan. 28, 2009 file photo shows Charlie Sheen in Los Angeles. . (AP Photo/Chris Pizzello, File)" border="0" /></a>AP - Charlie Sheen and his wife are due in court Monday amid domestic violence allegations. They''ll be arriving separately and only the judge can determine if they can leave together.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/us_charlie_sheen_arrested', '0000-00-00 00:00:00', NULL),
+(405, 198, 0, 0, 'Super Bowl ads: Betty White, Bud Light, big laughs \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ot/us_super_bowl_advertisers"><img src="http://d.yimg.com/a/p/ap/20100204/capt.69e4a9cd2d514f23ab92e29a6e4c70a1.super_bowl_advertising_snickers_nybz324.jpg?x=130&amp;y=73&amp;q=85&amp;sig=mw3CtNOhRj.A4ChodZvKEg--" align="left" height="73" width="130" alt="This image provided by Snickers shows part of a television ad featuring actress Betty White scheduled to air during the 2010 Super Bowl. (AP Photo/Snickers) NO SALES" border="0" /></a>AP - Betty White plays football, babies talk about "milkaholics" and a house made of Bud Light cans falls slowly apart.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ot/us_super_bowl_advertisers', '0000-00-00 00:00:00', NULL),
+(406, 198, 0, 0, 'Bridges hits a career high note in ''Crazy Heart'' \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/us_crazy_heart_the_music"><img src="http://d.yimg.com/a/p/ap/20100202/capt.659a8f61e06940569067cd7ff3325d4b.aptopix_oscar_reax_camw101.jpg?x=130&amp;y=84&amp;q=85&amp;sig=6m5HOShaS0j7d3JcsSwnGg--" align="left" height="84" width="130" alt="Actor Jeff Bridges poses for a portrait in Beverly Hills, Calif. on Tuesday, Feb. 2, 2010.  Bridges was nominated today for an Oscar for best actor for his role in ''Crazy Heart.'' (AP Photo/Matt Sayles)" border="0" /></a>AP - When director Scott Cooper approached him with the script for "Crazy Heart," Jeff Bridges turned down the part of a lifetime.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/us_crazy_heart_the_music', '0000-00-00 00:00:00', NULL),
+(407, 198, 0, 0, 'Bridges hits a career high note in ''Crazy Heart'' \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ot/us_crazy_heart_the_music"><img src="http://d.yimg.com/a/p/ap/20100202/capt.659a8f61e06940569067cd7ff3325d4b.aptopix_oscar_reax_camw101.jpg?x=130&amp;y=84&amp;q=85&amp;sig=6m5HOShaS0j7d3JcsSwnGg--" align="left" height="84" width="130" alt="Actor Jeff Bridges poses for a portrait in Beverly Hills, Calif. on Tuesday, Feb. 2, 2010.  Bridges was nominated today for an Oscar for best actor for his role in ''Crazy Heart.'' (AP Photo/Matt Sayles)" border="0" /></a>AP - When director Scott Cooper approached him with the script for "Crazy Heart," Jeff Bridges turned down the part of a lifetime.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ot/us_crazy_heart_the_music', '0000-00-00 00:00:00', NULL),
+(408, 198, 0, 0, 'Lionsgate keen to buy Miramax: NY Post \n    (Reuters)', 'Reuters - Hollywood studio Lionsgate, a unit of Lions Gate Entertainment Corp, is looking to buy Walt Disney''s Miramax film unit, the New York Post said, citing sources inside or close to Lionsgate.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/media_nm/us_miramax_lionsgate', '0000-00-00 00:00:00', NULL),
+(409, 198, 0, 0, 'Who Dat? Brad Pitt, Tom Cruise, and Demi, Dat Who \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ce/fbn_super_bowl_celebs"><img src="http://d.yimg.com/a/p/ap/20100207/capt.sb18202072309.super_bowl_football_sb182.jpg?x=130&amp;y=96&amp;q=85&amp;sig=PUZZxY7WbD67KoaHrvunJQ--" align="left" height="96" width="130" alt="Actor Ashton Kutcher and wife, actress Demi Moore are seen on the sidelines before the NFL Super Bowl XLIV football game between the Indianapolis Colts and New Orleans Saints in Miami, Sunday, Feb. 7, 2010. (AP Photo/Mike Groll)" border="0" /></a>AP - The cry of "Who Dat" wasn''t all about the New Orleans Saints at the Super Bowl &mdash; it was also said by onlookers as cameras flashed at the sight of A-list celebrities at the big game, including Brad Pitt and Tom Cruise with kids in tow.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ce/fbn_super_bowl_celebs', '0000-00-00 00:00:00', NULL),
+(410, 198, 0, 0, 'Pete Townshend: Nice to be part of spectacle \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/fbn_super_bowl_townshend"><img src="http://d.yimg.com/a/p/ap/20100208/capt.sb36402080201.super_bowl_football_sb364.jpg?x=130&amp;y=91&amp;q=85&amp;sig=i6tf7pYfREXbrpa4eSCIFA--" align="left" height="91" width="130" alt="The Who''s Roger Daltrey, left, and Pete Townshend perform during halftime of the NFL Super Bowl XLIV football game in Miami, Sunday, Feb. 7, 2010. (AP Photo/Mark J. Terrill)" border="0" /></a>AP - Pete Townshend is used to playing in front of stadiums filled with rabid fans who know every note of The Who''s songs. He didn''t get that at the band''s Super Bowl halftime performance, but he''s OK with that too.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/fbn_super_bowl_townshend', '0000-00-00 00:00:00', NULL),
+(411, 198, 0, 0, 'Amazon reshelves Macmillan titles but not e-books \n    (Reuters)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/stage_nm/us_books_macmillan"><img src="http://d.yimg.com/a/p/ap/20100201/capt.e49b9c24b5a44accbcba86f9da0e4b75.amazon_macmillan_nybz201.jpg?x=130&amp;y=84&amp;q=85&amp;sig=wBptUtLzNOBO9NubgK.80w--" align="left" height="84" width="130" alt="FILE - In this Feb. 9, 2009 file photo, the Kindle 2 electronic reader is shown at an Amazon.com news conference in New York. Amazon.com says it will give in to publishing giant Macmillan and agree to sell electronic versions of its books even at prices it considers too high.  (AP Photo/Mark Lennihan, file)" border="0" /></a>Reuters - Online retailer Amazon.com Inc resumed selling hardcover and paperback books from Macmillan Publishers late on Friday in a sign the two companies are getting closer to resolving a pricing dispute over Macmillan''s electronic books, which remain unavailable on Amazon.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/stage_nm/us_books_macmillan', '0000-00-00 00:00:00', NULL),
+(412, 198, 0, 0, 'Brit actress Lucy Punch cast in &quot;Bad Teacher&quot; \n    (Reuters)', 'Reuters - British actress Lucy Punch has been cast opposite Cameron Diaz in the black comedy "Bad Teacher," which Jake Kasdan will start shooting next month in Los Angeles.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/film_nm/us_punch', '0000-00-00 00:00:00', NULL),
+(413, 198, 0, 0, 'Super Bowl TV spot brings Leno, Letterman together \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/fbn_super_bowl_letterman_promo"><img src="http://d.yimg.com/a/p/ap/20100208/capt.bc556bfa184e4d3ba720f95453d019d8.super_bowl_ads_letterman_winfrey_leno_ny151.jpg?x=130&amp;y=73&amp;q=85&amp;sig=xx50umqcfHd15kY_ph23uA--" align="left" height="73" width="130" alt="In an image from video provided by CBS, David Letterman, Oprah Winfrey and Jay Leno, from right, record a promo for CBS'' ''Late Show'' that aired during the broadcast of the NFL football Super Bowl on Sunday, Feb. 7, 2010. The promo was recorded earlier in the week at the Ed Sullivan Theater in New York. The ad revisited Letterman and Winfrey''s Super Bowl spot from 2007, but with another person watching the game with them - late night talk show host Jay Leno. (AP Photo/CBS)" border="0" /></a>AP - Super Bowl viewers were rubbing their eyes at the sight of a TV spot pairing CBS late-night host David Letterman with longtime NBC archrival Jay Leno, plus media magnate Oprah Winfrey.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/fbn_super_bowl_letterman_promo', '0000-00-00 00:00:00', NULL),
+(414, 198, 0, 0, 'Parsons Launches New Fashion MFA with Support of Donna Karan \n    (Fashion Wire Daily)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/fwd/20100206/en_fashion_fwd/parsonslaunchesnewfashionmfawithsupportofdonnakaran"><img src="http://d.yimg.com/a/p/fwd/20100206/capt.fwd10120100206_fox_karan.jpg?x=76&y=130&q=85&sig=BVdmkoAJH5PmhQuetkpXRg--" align="left" height="130" width="76" alt="FWD101  Shelley Fox, left, the Donna Karan professor of fashion at Parsons School of Design, and designer Donna Karan attend "Parsons Presents an Evening with Donna Karan" at The New School in New York on Thursday, February 4, 2010.(Fashion Wire Daily/Renata Espinosa)" border="0" /></a>Fashion Wire Daily - Donna Karan may have dropped out of Parsons School of Design when she was a sophomore - Anne Klein herself offered the fledgling designer a job that she couldn''t refuse - but that doesn''t mean she doesn''t put a high premium on fashion education.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/fwd/20100206/en_fashion_fwd/parsonslaunchesnewfashionmfawithsupportofdonnakaran', '0000-00-00 00:00:00', NULL),
+(415, 198, 0, 0, 'Vanity Fair''s passel of pale starlets \n    (The Newsroom)', 'The Newsroom - NEW YORK -- Call it a lie of omission. One month after featuring shirtless, fresh-kill Tiger Woods, Vanity Fair presents their annual "Young Hollywood" issue with a decidedly more alabaster cover. Kristen Stewart, Abbie Cornish, and Carey Mulligan scored the front of the mag, and six more actresses grace the pull-out cover, none of them sporting so much as a tan.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ynews/20100205/en_ynews/ynews_en1106', '0000-00-00 00:00:00', NULL),
+(416, 212, 0, 0, 'Video premiere for Haiti single', 'The music video for Simon Cowell''s Haiti charity single, featuring Leona Lewis and Cheryl Cole, has been released.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503699.stm', '0000-00-00 00:00:00', NULL),
+(417, 212, 0, 0, 'Indian economy ''to grow by 7.2%''', 'India says its economy is set to grow by 7.2% this financial year, raising the chance that state support could be withdrawn.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503966.stm', '0000-00-00 00:00:00', NULL),
+(418, 212, 0, 0, 'Lost star ''set for Five-O remake''', 'Lost star Daniel Dae Kim is to star in the remake of 1960s US TV series Hawaii Five-O, according to reports.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503915.stm', '0000-00-00 00:00:00', NULL),
+(419, 212, 0, 0, 'University applications up 23%', 'University applications in the UK rise by over a fifth increasing pressure on places.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/education/8503921.stm', '0000-00-00 00:00:00', NULL),
+(420, 212, 0, 0, 'Iran confuses', 'What''s behind Tehran''s plans for further enrichment?', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8503751.stm', '0000-00-00 00:00:00', NULL),
+(421, 212, 0, 0, 'Two UK soldiers killed in Helmand', 'Two British soldiers have been killed in an explosion while on foot patrol in Afghanistan, the Ministry of Defence says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8503841.stm', '0000-00-00 00:00:00', NULL),
+(422, 212, 0, 0, 'Avalanche kills troops in Kashmir', 'India says at least 11 soldiers have been killed after an avalanche struck a high-altitude military training camp in Kashmir.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8504034.stm', '0000-00-00 00:00:00', NULL),
+(423, 212, 0, 0, 'Tories attack PM in expenses row', 'David Cameron accuses the PM of tolerating the "disgusting sight" of MPs trying to avoid prosecution over expenses.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8503267.stm', '0000-00-00 00:00:00', NULL),
+(424, 212, 0, 0, 'SAP chief Leo Apotheker resigns', 'The chief executive of SAP unexpectedly resigns after his contract is not renewed, the company says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503930.stm', '0000-00-00 00:00:00', NULL),
+(425, 212, 0, 0, 'Chavez orders buildings'' seizure', 'Venezuela President Hugo Chavez orders several historic buildings in Caracas to pass into state control.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503892.stm', '0000-00-00 00:00:00', NULL),
+(426, 212, 0, 0, 'Villagers exit before Afghan push', 'Hundreds of villagers leave a Taliban-controlled area of Afghanistan ahead of a major expected Nato-led offensive.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8503428.stm', '0000-00-00 00:00:00', NULL),
+(427, 212, 0, 0, 'INLA confirms disposal of weapons', 'The INLA, which killed Tory MP Airey Neave and more than 120 other people, confirms it has disposed of its weapons.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/northern_ireland/8503544.stm', '0000-00-00 00:00:00', NULL),
+(428, 212, 0, 0, 'How should the world react to Iran?', 'Iran has announced plans to step up its nuclear enrichment programme. What is your reaction?', 'http://newsforums.bbc.co.uk/nol/thread.jspa?forumID=7487', '0000-00-00 00:00:00', NULL),
+(429, 212, 0, 0, 'Bolton''s Cahill out with blood clot', 'England hopeful Gary Cahill is in danger of missing the rest of the season because of a blood clot in his arm.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/football/teams/b/bolton_wanderers/8503800.stm', '0000-00-00 00:00:00', NULL),
+(430, 212, 0, 0, 'Exercise ''can cut gallstone risk''', 'Doing lots of exercise drastically cuts the risk of developing painful gallstones, UK researchers have found.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8500827.stm', '0000-00-00 00:00:00', NULL),
+(431, 212, 0, 0, 'Nigeria election ''gravely flawed''', 'A state election in Nigeria is widely condemned amid reports of vote-buying, ballot-box theft and electoral roll anomalies.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8503738.stm', '0000-00-00 00:00:00', NULL),
+(432, 212, 0, 0, 'Iran ''to ratchet up enrichment''', 'Iran announces immediate plans to increase levels of uranium enrichment, further heightening tensions with the West.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8503555.stm', '0000-00-00 00:00:00', NULL),
+(433, 212, 0, 0, 'China searches for tainted milk', 'China searches for 100 tonnes of melamine-tainted milk products thought to be from a batch which killed six children in 2008.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503576.stm', '0000-00-00 00:00:00', NULL),
+(434, 212, 0, 0, 'Sword lord - swallower sets world record with 18 blades', 'An Australian performance artist sets a world record by swallowing 18 swords at the same time.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503748.stm', '0000-00-00 00:00:00', NULL),
+(435, 212, 0, 0, 'Egypt detains Brotherhood leaders', 'Several senior members of the Islamist opposition movement in Egypt, the Muslim Brotherhood, are detained.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8503695.stm', '0000-00-00 00:00:00', NULL),
+(436, 212, 0, 0, 'TV fine over jungle rat killing', 'ITV is fined 3,000 Australian dollars (£1,672) after contestants on  I''m A Celebrity... Get Me Out of Here! killed and ate a rat.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503772.stm', '0000-00-00 00:00:00', NULL),
+(437, 212, 0, 0, 'Chad leader in Sudan peace talks', 'Chad''s President Idriss Deby makes a surprise trip to Sudan - his first since 2004 - for talks on Darfur.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8503720.stm', '0000-00-00 00:00:00', NULL),
+(438, 212, 0, 0, 'Costa Rica elects female leader', 'Costa Ricans elect Laura Chinchilla as president, the first woman to occupy the  post in the Central American nation.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503425.stm', '0000-00-00 00:00:00', NULL),
+(439, 212, 0, 0, 'Yanukovych heading for Ukraine win', 'Ukraine''s pro-Moscow Viktor Yanukovych heads for poll victory with most votes counted, but PM Yulia Tymoshenko is defiant.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8503177.stm', '0000-00-00 00:00:00', NULL),
+(440, 212, 0, 0, 'Sikh judge criticises dagger bans', 'Britain''s first Asian judge says Sikhs should be allowed to wear their ceremonial daggers to school and other public venues.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8500712.stm', '0000-00-00 00:00:00', NULL),
+(441, 212, 0, 0, 'Xstrata resumes dividend payments', 'Mining group Xstrata is to resume dividend payments despite reporting a drop in full-year profits.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503669.stm', '0000-00-00 00:00:00', NULL),
+(442, 212, 0, 0, 'Avatar dethroned at US box office', 'Romantic drama Dear John knocks sci-fi blockbuster Avatar off the top spot in the North American box office in its opening weekend.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503545.stm', '0000-00-00 00:00:00', NULL),
+(443, 212, 0, 0, 'Snow chaos continues on US coast', 'Parts of the eastern US remain largely paralysed for a third day after some of the heaviest snow in decades.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503558.stm', '0000-00-00 00:00:00', NULL),
+(444, 212, 0, 0, 'Shuttle makes final night flight', 'The US space agency (Nasa) has launched its shuttle Endeavour on a mission to the International Space Station (ISS).', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8503690.stm', '0000-00-00 00:00:00', NULL),
+(445, 212, 0, 0, 'China shuts down hacking website', 'Three people are arrested as China''s largest training website for hackers is shut down, state media reports.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503637.stm', '0000-00-00 00:00:00', NULL),
+(446, 212, 0, 0, 'Asif barred from England matches', 'Pakistan will be without key fast bowler Mohammad Asif for the two Twenty20 internationals against England later this month.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/cricket/other_international/pakistan/8503557.stm', '0000-00-00 00:00:00', NULL),
+(447, 212, 0, 0, 'Port or paradise', 'Audio slideshow of project threat to Kenya beauty spot', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8500979.stm', '0000-00-00 00:00:00', NULL),
+(448, 212, 0, 0, 'Auditor arrested on porn charges', 'Police are investigating a public spending audit chief, who quit after a probe into pornographic material on a work computer.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/wales/north_west/8503497.stm', '0000-00-00 00:00:00', NULL),
+(449, 212, 0, 0, 'Japanese brewers call off merger', 'Japanese brewing and food groups Kirin and Suntory call off merger talks having failed to agree terms.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503468.stm', '0000-00-00 00:00:00', NULL),
+(450, 212, 0, 0, 'Straw ''wrong on Iraq'', says Blix', 'The former UK foreign secretary gave incorrect answers to the Iraq war inquiry, says ex-UN weapons inspector Hans Blix.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8503454.stm', '0000-00-00 00:00:00', NULL),
+(451, 212, 0, 0, 'Australia tightens migrant rules', 'Australia tries to attract more skilled migrants for its mining and health needs, amid concerns it has let in too many hairdressers.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503438.stm', '0000-00-00 00:00:00', NULL),
+(452, 212, 0, 0, 'Saints upset Colts in Super Bowl', 'The New Orleans Saints win their first Super Bowl with a surprise 31-17 victory over the Indianapolis Colts in Miami.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/other_sports/american_football/8491183.stm', '0000-00-00 00:00:00', NULL),
+(453, 212, 0, 0, 'Robo-soldiers', 'Can ''well-behaved'' robots make the battlefield safer?', 'http://news.bbc.co.uk/go/rss/-/2/hi/in_depth/8495946.stm', '0000-00-00 00:00:00', NULL),
+(454, 212, 0, 0, 'Anyone for tea?', 'Sarah Palin and the newest US political movement', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503348.stm', '0000-00-00 00:00:00', NULL),
+(455, 212, 0, 0, 'Genes reveal ''biological ageing''', 'Scientists say they have pinpointed gene variants that might show how fast people''s bodies are actually ageing.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8500761.stm', '0000-00-00 00:00:00', NULL),
+(456, 212, 0, 0, 'Cracking up', 'Piece by piece, Haiti''s capital is being demolished', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502960.stm', '0000-00-00 00:00:00', NULL),
+(457, 212, 0, 0, 'Spaceman', 'America ponders the options for a big rocket', 'http://www.bbc.co.uk/go/rss/-/blogs/thereporters/jonathanamos/2010/02/a-big-rocket-is-still-a-us-pri.shtml', '0000-00-00 00:00:00', NULL),
+(458, 212, 0, 0, 'France closes migrants'' shelter', 'French police close down a makeshift shelter for illegal migrants in the port of Calais, a day after it opened.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8502991.stm', '0000-00-00 00:00:00', NULL),
+(459, 212, 0, 0, 'Swiss man cleared by Libyan court', 'A court in Libya dismisses a case against a Swiss businessman who was accused of illegal business activities.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8502967.stm', '0000-00-00 00:00:00', NULL),
+(460, 212, 0, 0, 'Toyota ''planning recall of Prius''', 'Toyota is planning to recall the latest model of its flagship Prius cars because of braking problems, reports from Japan say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8502894.stm', '0000-00-00 00:00:00', NULL),
+(461, 216, 0, 0, 'Appfrica in 60 Seconds!', 'This short promotional video reveals what it&#8217;s like to work with us. But don&#8217;t take our word for it ask our staff!', 'http://appfricalabs.com/2009/07/appfrica-promotional-video/', '0000-00-00 00:00:00', NULL),
+(462, 216, 0, 0, 'Test', 'testing', 'http://appfricalabs.com/2009/07/test/', '0000-00-00 00:00:00', NULL),
+(463, 216, 0, 0, 'Hello world!', 'Welcome to WordPress. This is your first post. Edit or delete it, then start blogging!', 'http://appfricalabs.com/2009/07/hello-world/', '0000-00-00 00:00:00', NULL),
+(464, 212, 0, 0, 'Lost star ''set for Five-O remake''', 'Lost star Daniel Dae Kim is to star in the remake of 1960s US TV series Hawaii Five-O, according to reports.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503915.stm', '2010-02-08 14:51:00', NULL),
+(465, 212, 0, 0, 'University applications up 23%', 'University applications in the UK rise by a fifth on last year, new figures show.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/education/8503921.stm', '2010-02-08 14:49:00', NULL),
+(466, 212, 45, 0, 'Iran confuses', 'What''s behind Tehran''s plans for further enrichment?', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8503751.stm', '2010-02-08 14:40:00', NULL),
+(467, 212, 0, 0, 'Two UK soldiers killed in Helmand', 'Two British soldiers have been killed in an explosion while on foot patrol in Afghanistan, the Ministry of Defence says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8503841.stm', '2010-02-08 14:38:00', NULL),
+(468, 212, 0, 0, 'Avalanche kills troops in Kashmir', 'India says at least 11 soldiers have been killed after an avalanche struck a high-altitude military training camp in Kashmir.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8504034.stm', '2010-02-08 14:32:00', NULL),
+(469, 212, 0, 0, 'Tories attack PM in expenses row', 'David Cameron accuses the PM of tolerating the "disgusting sight" of MPs trying to avoid prosecution over expenses.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/politics/8503267.stm', '2010-02-08 14:26:00', NULL),
+(470, 212, 0, 0, 'SAP chief Leo Apotheker resigns', 'The chief executive of SAP resigns after his contract is not renewed, the company says.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503930.stm', '2010-02-08 14:25:00', NULL),
+(471, 212, 0, 0, 'Chavez orders buildings'' seizure', 'Venezuela President Hugo Chavez orders several historic buildings in Caracas to pass into state control.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503892.stm', '2010-02-08 14:24:00', NULL),
+(472, 212, 46, 0, 'Villagers exit before Afghan push', 'Hundreds of villagers leave a Taliban-controlled area of Afghanistan ahead of a major expected Nato-led offensive.', 'http://news.bbc.co.uk/go/rss/-/2/hi/south_asia/8503428.stm', '2010-02-08 14:19:00', NULL),
+(473, 212, 0, 0, 'INLA confirms disposal of weapons', 'The INLA, which killed Tory MP Airey Neave and more than 120 other people, confirms it has disposed of its weapons.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/northern_ireland/8503544.stm', '2010-02-08 14:17:00', NULL),
+(474, 212, 47, 0, 'How should the world react to Iran?', 'Iran has announced plans to step up its nuclear enrichment programme. What is your reaction?', 'http://newsforums.bbc.co.uk/nol/thread.jspa?forumID=7487', '2010-02-08 14:13:00', NULL),
+(475, 212, 48, 0, 'Bolton''s Cahill out with blood clot', 'England hopeful Gary Cahill is in danger of missing the rest of the season because of a blood clot in his arm.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/football/teams/b/bolton_wanderers/8503800.stm', '2010-02-08 13:50:00', NULL),
+(476, 212, 0, 0, 'Nigeria election ''gravely flawed''', 'A state election in Nigeria is widely condemned amid reports of vote-buying, ballot-box theft and electoral roll anomalies.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8503738.stm', '2010-02-08 13:45:00', NULL),
+(477, 212, 0, 0, 'Video premiere for Haiti single', 'The music video for Simon Cowell''s Haiti charity single, featuring Leona Lewis and Cheryl Cole, has been released.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503699.stm', '2010-02-08 13:34:00', NULL),
+(478, 212, 49, 0, 'Iran ''to ratchet up enrichment''', 'Iran announces immediate plans to increase levels of uranium enrichment, further heightening tensions with the West.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8503555.stm', '2010-02-08 13:22:00', NULL),
+(479, 212, 0, 0, 'China searches for tainted milk', 'China searches for 100 tonnes of melamine-tainted milk products thought to be from a batch which killed six children in 2008.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503576.stm', '2010-02-08 13:20:00', NULL),
+(480, 212, 0, 0, 'Sword lord - swallower sets world record with 18 blades', 'An Australian performance artist sets a world record by swallowing 18 swords at the same time.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503748.stm', '2010-02-08 13:18:00', NULL),
+(481, 212, 0, 0, 'Egypt detains Brotherhood leaders', 'Several senior members of the Islamist opposition movement in Egypt, the Muslim Brotherhood, are detained.', 'http://news.bbc.co.uk/go/rss/-/2/hi/middle_east/8503695.stm', '2010-02-08 13:17:00', NULL),
+(482, 212, 50, 0, 'TV fine over jungle rat killing', 'ITV is fined 3,000 Australian dollars (Â£1,672) after contestants on  I''m A Celebrity... Get Me Out of Here! killed and ate a rat.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503772.stm', '2010-02-08 13:17:00', NULL),
+(483, 212, 0, 0, 'Chad leader in Sudan peace talks', 'Chad''s President Idriss Deby makes a surprise trip to Sudan - his first since 2004 - for talks on Darfur.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8503720.stm', '2010-02-08 13:03:00', NULL),
+(484, 212, 0, 0, 'Costa Rica elects female leader', 'Costa Ricans elect Laura Chinchilla as president, the first woman to occupy the  post in the Central American nation.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503425.stm', '2010-02-08 13:02:00', NULL),
+(485, 212, 51, 0, 'Yanukovych heading for Ukraine win', 'Ukraine''s pro-Moscow Viktor Yanukovych heads for poll victory with most votes counted, but PM Yulia Tymoshenko is defiant.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8503177.stm', '2010-02-08 12:47:00', NULL),
+(486, 212, 0, 0, 'Sikh judge criticises dagger bans', 'Britain''s first Asian judge says Sikhs should be allowed to wear their ceremonial daggers to school and other public venues.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/8500712.stm', '2010-02-08 12:43:00', NULL),
+(487, 212, 0, 0, 'Xstrata resumes dividend payments', 'Mining group Xstrata is to resume dividend payments despite reporting a drop in full-year profits.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503669.stm', '2010-02-08 12:38:00', NULL),
+(488, 212, 52, 0, 'Avatar dethroned at US box office', 'Romantic drama Dear John knocks sci-fi blockbuster Avatar off the top spot in the North American box office in its opening weekend.', 'http://news.bbc.co.uk/go/rss/-/2/hi/entertainment/8503545.stm', '2010-02-08 12:26:00', NULL),
+(489, 212, 53, 0, 'Snow chaos continues on US coast', 'Parts of the eastern US remain largely paralysed for a third day after some of the heaviest snow in decades.', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503558.stm', '2010-02-08 12:24:00', NULL),
+(490, 212, 0, 0, 'Shuttle makes final night flight', 'The US space agency (Nasa) has launched its shuttle Endeavour on a mission to the International Space Station (ISS).', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8503690.stm', '2010-02-08 12:17:00', NULL),
+(491, 212, 0, 0, 'China shuts down hacking website', 'Three people are arrested as China''s largest training website for hackers is shut down, state media reports.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503637.stm', '2010-02-08 12:02:00', NULL),
+(492, 212, 0, 0, 'Asif barred from England matches', 'Pakistan will be without key fast bowler Mohammad Asif for the two Twenty20 internationals against England later this month.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/cricket/other_international/pakistan/8503557.stm', '2010-02-08 11:50:00', NULL),
+(493, 212, 54, 0, 'Port or paradise', 'Audio slideshow of project threat to Kenya beauty spot', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8500979.stm', '2010-02-08 11:09:00', NULL),
+(494, 212, 0, 0, 'Auditor arrested on porn charges', 'Police are investigating a public spending audit chief, who quit after a probe into pornographic material on a work computer.', 'http://news.bbc.co.uk/go/rss/-/2/hi/uk_news/wales/north_west/8503497.stm', '2010-02-08 10:25:00', NULL),
+(495, 212, 0, 0, 'Japanese brewers call off merger', 'Japanese brewing and food groups Kirin and Suntory call off merger talks having failed to agree terms.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8503468.stm', '2010-02-08 10:08:00', NULL),
+(496, 212, 0, 0, 'Straw ''wrong on Iraq'', says Blix', 'The former UK foreign secretary gave incorrect answers to the Iraq war inquiry, says ex-UN weapons inspector Hans Blix.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8503454.stm', '2010-02-08 09:49:00', NULL),
+(497, 212, 55, 0, 'Australia tightens migrant rules', 'Australia tries to attract more skilled migrants for its mining and health needs, amid concerns it has let in too many hairdressers.', 'http://news.bbc.co.uk/go/rss/-/2/hi/asia-pacific/8503438.stm', '2010-02-08 08:37:00', NULL),
+(498, 212, 56, 0, 'Saints upset Colts in Super Bowl', 'The New Orleans Saints win their first Super Bowl with a surprise 31-17 victory over the Indianapolis Colts in Miami.', 'http://news.bbc.co.uk/go/rss/-/sport2/hi/other_sports/american_football/8491183.stm', '2010-02-08 05:53:00', NULL),
+(499, 212, 0, 0, 'Robo-soldiers', 'Can ''well-behaved'' robots make the battlefield safer?', 'http://news.bbc.co.uk/go/rss/-/2/hi/in_depth/8495946.stm', '2010-02-08 04:36:00', NULL),
+(500, 212, 0, 0, 'Anyone for tea?', 'Sarah Palin and the newest US political movement', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8503348.stm', '2010-02-08 03:52:00', NULL),
+(501, 212, 0, 0, 'Genes reveal ''biological ageing''', 'Scientists say they have pinpointed gene variants that might show how fast people''s bodies are actually ageing.', 'http://news.bbc.co.uk/go/rss/-/2/hi/health/8500761.stm', '2010-02-08 03:23:00', NULL),
+(502, 212, 57, 0, 'Cracking up', 'Piece by piece, Haiti''s capital is being demolished', 'http://news.bbc.co.uk/go/rss/-/2/hi/americas/8502960.stm', '2010-02-08 03:01:00', NULL),
+(503, 212, 0, 0, 'Spaceman', 'America ponders the options for a big rocket', 'http://www.bbc.co.uk/go/rss/-/blogs/thereporters/jonathanamos/2010/02/a-big-rocket-is-still-a-us-pri.shtml', '2010-02-08 00:03:00', NULL),
+(504, 212, 0, 0, 'France closes migrants'' shelter', 'French police close down a makeshift shelter for illegal migrants in the port of Calais, a day after it opened.', 'http://news.bbc.co.uk/go/rss/-/2/hi/europe/8502991.stm', '2010-02-07 20:53:00', NULL),
+(505, 212, 0, 0, 'Swiss man cleared by Libyan court', 'A court in Libya dismisses a case against a Swiss businessman who was accused of illegal business activities.', 'http://news.bbc.co.uk/go/rss/-/2/hi/africa/8502967.stm', '2010-02-07 18:07:00', NULL),
+(506, 212, 58, 0, 'Toyota ''planning recall of Prius''', 'Toyota is planning to recall the latest model of its flagship Prius cars because of braking problems, reports from Japan say.', 'http://news.bbc.co.uk/go/rss/-/2/hi/business/8502894.stm', '2010-02-07 16:52:00', NULL),
+(507, 212, 0, 0, 'Climate scepticism ''on the rise''', 'The British public has become increasingly sceptical about climate change, a poll for BBC News suggests.', 'http://news.bbc.co.uk/go/rss/-/2/hi/science/nature/8500443.stm', '2010-02-07 15:02:00', NULL),
+(508, 214, 59, 0, 'Toyota to announce action soon for Prius hybrids \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/toyota_recall"><img src="http://d.yimg.com/a/p/ap/20100207/capt.59542dd052334d8298cd2727e8e1910c.japan_toyota_recall_tok101.jpg?x=130&amp;y=91&amp;q=85&amp;sig=x5oOHLHdurzNbVLvrXSvUw--" align="left" height="91" width="130" alt="Toyota Motor Corp.''s new Prius is displayed at the Toyota museum in Toyota, central Japan, Saturday, Feb. 6, 2010. (AP Photo/Itsuo Inouye)" border="0" /></a>AP - Toyota said Sunday that it will soon announce plans to deal with braking problems in its prized Prius hybrid amid reports it has decided to issue a recall for the vehicle in Japan, a possible new embarrassment for the world''s biggest automaker.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/toyota_recall', '2010-02-08 15:03:00', NULL),
+(509, 214, 60, 0, 'Toyota''s once-golden resale value gets dented \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_toyota_used_car_value"><img src="http://d.yimg.com/a/p/ap/20100207/capt.c81382b250df434088a5d397750f50ed.toyota_recall_used_car_value_nyrm201.jpg?x=130&amp;y=88&amp;q=85&amp;sig=83AC4yomcQcXLHPOA9pJAA--" align="left" height="88" width="130" alt="Laura Benin poses with her 2009 Toyota Corolla LE outside her home in the Queens borough of New York, Saturday, Feb. 6, 2010. (AP Photo/Robert Mecea)" border="0" /></a>AP - Toyota owners looking to trade in their cars have little reason to sing the carmaker''s old ad slogan, "I love what you do for me &mdash; Toyota!"</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_toyota_used_car_value', '2010-02-08 15:01:00', NULL),
+(510, 214, 61, 0, 'AP analysis: US economic stress hit a peak in Dec. \n    (AP)', 'AP - Weakness in Western energy-producing states helped raise the average U.S. county''s economic stress in December to its highest point since The Associated Press began analyzing conditions in more than 3,100 U.S. counties in October 2007.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_stress_map', '2010-02-08 14:56:00', NULL),
+(511, 214, 0, 0, 'Hasbro 4Q profit rises on sales of boys'' products \n    (AP)', 'AP - Hasbro says sales of action figures and other toys aimed at boys and strong entertainment and licensing revenue helped push its fourth-quarter profit sharply higher.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_earns_hasbro', '2010-02-08 14:52:00', NULL),
+(512, 214, 62, 0, 'Unions vow strike as Greece finalizes deficit plan \n    (Reuters)', 'Reuters - Greek unions pledged on Monday to fight austerity measures with a public sector strike this week, the first test of the government''s commitment to cut deficits and a ballooning public debt which has shaken the euro.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100208/bs_nm/us_greece_taxes', '2010-02-08 14:06:00', NULL),
+(513, 214, 63, 0, 'Greece readies tax change to fight crisis \n    (AP)', 'AP - Greek officials put the final touches Monday on an overhaul of the country''s ineffective tax system &mdash; part of their urgent effort to fix a debt crisis that has shaken the entire eurozone.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/eu_greece_financial_crisis', '2010-02-08 13:07:00', NULL),
+(514, 214, 64, 0, 'Oil above $72 amid US cold snap, Iran tensions \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/oil_prices"><img src="http://d.yimg.com/a/p/afp/20100205/capt.photo_1265407526359-1-0.jpg?x=130&amp;y=86&amp;q=85&amp;sig=H8IHwzXMGaMb_Czy8oWDjA--" align="left" height="86" width="130" alt="A map of northern Europe showing the route of the planned South Stream and Nabucco gas pipelines. Serbia''s state-run gas company and Russia''s Gazprom on Friday founded a joint venture to manage an underground gas storage as a part of future South Stream pipeline through the Balkan republic, Beta news agency reported.(AFP/Graphic)" border="0" /></a>AP - Oil prices jumped above $72 a barrel Monday in Asia after hitting a two-month low last week, boosted by tensions over Iran''s nuclear program and a cold snap in the U.S. northeast.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/oil_prices', '2010-02-08 12:46:00', NULL),
+(515, 214, 65, 0, 'India predicts growth at 7.2 percent in year to March \n    (AFP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100208/wl_sthasia_afp/indiaeconomygrowth"><img src="http://d.yimg.com/a/p/afp/20100208/capt.photo_1265620500734-1-0.jpg?x=130&amp;y=86&amp;q=85&amp;sig=xQ9ZPYeQKX7U7PsAJ_cHHQ--" align="left" height="86" width="130" alt="Indian farmers sell fruits and vegetables in Hyderabad on February 5. India''s economy should grow 7.2 percent in the fiscal year ending in March, an official forecast said Monday, as the economy''s recovery from the global financial crisis picks up speed.(AFP/Noah Seelam)" border="0" /></a>AFP - India''s economy should grow 7.2 percent in the fiscal year ending in March, an official forecast said Monday, as the economy''s recovery from the global financial crisis picks up speed.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100208/wl_sthasia_afp/indiaeconomygrowth', '2010-02-08 12:18:00', NULL),
+(516, 214, 66, 0, 'SMFG Q3 profit surges, keeps forecast \n    (Reuters)', 'Reuters - Sumitomo Mitsui Financial Group (8316.T), Japan''s third-biggest bank by assets, outshone it larger rivals and posted its biggest profit in seven quarters on Monday, helped by an improvement in its stock portfolio and a decline in bad loans.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100208/bs_nm/us_smfg', '2010-02-08 12:16:00', NULL),
+(517, 214, 0, 0, 'CIT names ex-Merrill CEO Thain as chairman, CEO \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_cit_group_thain"><img src="http://d.yimg.com/a/p/rids/20100208/i/r447186971.jpg?x=130&amp;y=95&amp;q=85&amp;sig=vAylBbOLlZJGzzMWjoFqqQ--" align="left" height="95" width="130" alt="Former chief executive of Merrill Lynch, John Thain speaks at the Reuters Global Finance Summit in New York November 17, 2009. REUTERS/Brendan McDermid" border="0" /></a>AP - Former Merrill Lynch CEO John Thain, who brokered the investment bank''s controversial sale to Bank of America, is taking over as chairman and CEO of CIT Group as the commercial lender continues to restructure its business following a brief stay in bankruptcy protection last year.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_bi_ge/us_cit_group_thain', '2010-02-08 08:30:00', NULL),
+(518, 214, 67, 0, 'Kuwait to post 24 billion-dollar budget surplus: forecast \n    (AFP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100207/wl_mideast_afp/kuwaiteconomybudgetoil"><img src="http://d.yimg.com/a/p/afp/20100207/capt.photo_1265577843486-1-0.jpg?x=130&amp;y=86&amp;q=85&amp;sig=VdWgDg_gwjPBvSEF3y2BMw--" align="left" height="86" width="130" alt="Kuwait City''s banking complex is decorated with lights and the national flag in 2009. Kuwait is set to post a surplus of 24 billion dollars in the current fiscal year on the back of higher oil prices, despite projecting a shortfall, an economic report forecast on Sunday.(AFP/File/Yasser al-Zayyat)" border="0" /></a>AFP - Kuwait is set to post a surplus of 24 billion dollars in the current fiscal year on the back of higher oil prices, despite projecting a shortfall, an economic report forecast on Sunday.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/afp/20100207/wl_mideast_afp/kuwaiteconomybudgetoil', '2010-02-08 00:24:00', NULL),
+(519, 214, 68, 0, 'Goldman''s payment demands on AIG probed: report \n    (Reuters)', 'Reuters - U.S. regulators are investigating whether the mortgage insurance market was improperly distressed in 2008 because of payment demands that Goldman Sachs Group Inc  and other banks made on American International Group Inc , The New York Times reported on Sunday.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100207/bs_nm/us_goldman_aig_bailout', '2010-02-07 23:12:00', NULL),
+(520, 214, 0, 0, 'Geithner says zeal for bank reform intact \n    (Reuters)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100206/bs_nm/us_g7_usa_official"><img src="http://d.yimg.com/a/p/rids/20100206/i/r2681466743.jpg?x=130&amp;y=96&amp;q=85&amp;sig=wwx4vMTzsJMP2qb69uvclw--" align="left" height="96" width="130" alt="Treasury Secretary Tim Geithner (L) and Federal Reserve Chairman Ben Bernanke take part in a meeting at the G7 finance ministers'' meeting in Iqaluit, Nunavut February 5, 2010. REUTERS/Chris Wattie" border="0" /></a>Reuters - Treasury Secretary Timothy Geithner insisted on Saturday that major economies were not easing up on their commitment to stiffen the rules for banks just because the global economy was recovering.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100206/bs_nm/us_g7_usa_official', '2010-02-07 01:07:00', NULL),
+(521, 214, 0, 0, 'Limited Brands sets dividend of 15 cents per share \n    (AP)', 'AP - Clothing retailer Limited Brands Inc. says it will pay a quarterly dividend of 15 cents per share.', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100205/ap_on_bi_ge/us_limited_brands_dividend', '2010-02-06 02:38:00', NULL),
+(522, 214, 69, 0, 'Colts Super Bowl win more bullish for stocks: study \n    (Reuters)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100205/lf_nm_life/us_superbowl_stocks"><img src="http://d.yimg.com/a/p/rids/20100205/i/r3431780321.jpg?x=130&amp;y=78&amp;q=85&amp;sig=igOe0rho.XyQiiRobYb8AA--" align="left" height="78" width="130" alt="Indianapolis Colts quarterback Peyton Manning (L) talks to teammate Tyjuan Hagler (C) and head coach Jim Caldwell (R) while stretching during workout at the Miami Dolphins training facility in Davie, Florida, February 4, 2010. REUTERS/Hans Deryk" border="0" /></a>Reuters - An Indianapolis Colts win in Sunday''s Super Bowl could imply higher stock market returns than a victory by the New Orleans Saints, according to a tongue-in-cheek analysis of the biggest football game of the year.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/nm/20100205/lf_nm_life/us_superbowl_stocks', '2010-02-05 22:11:00', NULL);
+INSERT INTO `feed_item` (`id`, `feed_id`, `location_id`, `incident_id`, `item_title`, `item_description`, `item_link`, `item_date`, `item_source`) VALUES
+(523, 214, 0, 0, 'Beazer Homes posts a $48 million profit for Q1 \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100205/ap_on_bi_ge/us_earns_beazer_homes"><img src="http://d.yimg.com/a/p/ap/20100205/capt.d57528677c754260a23489c2abef88fb.earns_beazer_homes__azmy206.jpg?x=130&amp;y=89&amp;q=85&amp;sig=fT4.1iteQ0SirPbd_LBhBQ--" align="left" height="89" width="130" alt="In thie Feb. 2, 2010 photo, new Beazer homes are under construction in Gilbert, Ariz.  Beazer Homes USA Inc. posted a $48 million profit in its fiscal first quarter Friday, Feb. 6, thanks to a $101 million tax gain.(AP Photo/Matt York)" border="0" /></a>AP - Homebuyers spurred by low interest rates and government incentives helped lift Beazer Homes USA Inc.''s sales in the last three months of 2009, but the builder only turned a profit because of a hefty tax gain.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/ap/20100205/ap_on_bi_ge/us_earns_beazer_homes', '2010-02-05 21:50:00', NULL),
+(524, 214, 70, 0, 'How Larry Kotlikoff Would Fix the Financial System \n    (BusinessWeek)', 'BusinessWeek - The publishing world is too slow for Laurence J. Kotlikoff. On a frigid January day, the 58-year-old Boston University economist is pecking away at his computer keyboard in his airy office overlooking the Charles River. Kotlikoff''s forthcoming book, Jimmy Stewart is Dead, calls for a radical -- and swift -- reorganization of the financial system. So rather than wait for the book''s Feb. 22 publication date, Kotlikoff is e-mailing PDF versions to dozens of economists, journalists, and policymakers. "We have miscreants running the financial system left, right, and center," says Kotlikoff. ...', 'http://us.rd.yahoo.com/dailynews/rss/business/*http%3A//news.yahoo.com/s/bw/20100205/bs_bw/1007b4166042289206', '2010-02-05 16:08:00', NULL),
+(525, 215, 71, 0, 'Hollywood stars vie for London theater awards \n    (AP)', 'AP - Hollywood heavyweights feature strongly in the race for Britain''s 2010 Laurence Olivier theater awards, with Rachel Weisz, Jude Law, James Earl Jones and Keira Knightley among the nominees announced Monday.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_on_en_ot/eu_britain_theater_awards', '2010-02-08 15:05:00', NULL),
+(526, 215, 0, 0, 'Charlie and Brooke Sheen due in court \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/us_charlie_sheen_arrested"><img src="http://d.yimg.com/a/p/ap/20100205/capt.f39588e5e58b46099929a9fbc545093c.people_charlie_sheen__nyet728.jpg?x=92&amp;y=130&amp;q=85&amp;sig=JoOkOYLZN.c_nzw3lrauyg--" align="left" height="130" width="92" alt="FILE - This Jan. 28, 2009 file photo shows Charlie Sheen in Los Angeles. . (AP Photo/Chris Pizzello, File)" border="0" /></a>AP - Charlie Sheen and his wife are due in court Monday amid domestic violence allegations. They''ll be arriving separately and only the judge can determine if they can leave together.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/us_charlie_sheen_arrested', '2010-02-08 14:50:00', NULL),
+(527, 215, 0, 0, 'ABC''s `Modern Family'' a freshman hit \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ot/us_tv_modern_family"><img src="http://d.yimg.com/a/p/ap/20100205/capt.1125d2f18b6a4c89b99e6a3acdf52f18.tv_modern_family_nyet729.jpg?x=91&amp;y=130&amp;q=85&amp;sig=QHZa4EVpLgkt0O63IzlfTA--" align="left" height="130" width="91" alt="FILE - In this Aug. 8, 2009 file photo, actor Ty Burrell discusses his new television series ''Modern Family'' at the ABC Disney Summer press tour in Pasadena, Calif. (AP Photo/Dan Steinberg, file)" border="0" /></a>AP - A young man arrived at Ty Burrell''s hotel room to stock the minibar and immediately recognized the co-star of the ABC comedy "Modern Family."</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_ot/us_tv_modern_family', '2010-02-08 14:15:00', NULL),
+(528, 215, 0, 0, 'Bridges hits a career high note in ''Crazy Heart'' \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/us_crazy_heart_the_music"><img src="http://d.yimg.com/a/p/ap/20100202/capt.659a8f61e06940569067cd7ff3325d4b.aptopix_oscar_reax_camw101.jpg?x=130&amp;y=84&amp;q=85&amp;sig=6m5HOShaS0j7d3JcsSwnGg--" align="left" height="84" width="130" alt="Actor Jeff Bridges poses for a portrait in Beverly Hills, Calif. on Tuesday, Feb. 2, 2010.  Bridges was nominated today for an Oscar for best actor for his role in ''Crazy Heart.'' (AP Photo/Matt Sayles)" border="0" /></a>AP - When director Scott Cooper approached him with the script for "Crazy Heart," Jeff Bridges turned down the part of a lifetime.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/us_crazy_heart_the_music', '2010-02-08 14:13:00', NULL),
+(529, 215, 72, 0, 'Lionsgate keen to buy Miramax: NY Post \n    (Reuters)', 'Reuters - Hollywood studio Lionsgate, a unit of Lions Gate Entertainment Corp, is looking to buy Walt Disney''s Miramax film unit, the New York Post said, citing sources inside or close to Lionsgate.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/media_nm/us_miramax_lionsgate', '2010-02-08 13:16:00', NULL),
+(530, 215, 0, 0, 'Doctor finally looks at charge in Jackson death \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/us_michael_jackson_doctor"><img src="http://d.yimg.com/a/p/ap/20100202/capt.fb62b4fad11a40cc8869e86f5371cda5.michael_jackson_doctor_la106.jpg?x=90&amp;y=130&amp;q=85&amp;sig=Mx2O6mXp4aPoOfnP09syng--" align="left" height="130" width="90" alt="FILE - In this Nov. 23, 2009 file picture, Dr. Conrad Murray arrives at his clinic in Houston. Michael Jackson''s physician has arrived in Los Angeles in anticipation of a decision from the district attorney''s office on whether to charge him for the singer''s death, a spokeswoman said Tuesday Feb. 2, 2010. (AP Photo/Pat Sullivan, File)" border="0" /></a>AP - Dr. Conrad Murray, who has been trying to surrender to authorities for a week, will likely get his chance with prosecutors saying they will file a charge Monday in the death of Michael Jackson.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/us_michael_jackson_doctor', '2010-02-08 11:47:00', NULL),
+(531, 215, 0, 0, 'Pete Townshend: Nice to be part of spectacle \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/fbn_super_bowl_townshend"><img src="http://d.yimg.com/a/p/ap/20100208/capt.sb36402080201.super_bowl_football_sb364.jpg?x=130&amp;y=91&amp;q=85&amp;sig=i6tf7pYfREXbrpa4eSCIFA--" align="left" height="91" width="130" alt="The Who''s Roger Daltrey, left, and Pete Townshend perform during halftime of the NFL Super Bowl XLIV football game in Miami, Sunday, Feb. 7, 2010. (AP Photo/Mark J. Terrill)" border="0" /></a>AP - Pete Townshend is used to playing in front of stadiums filled with rabid fans who know every note of The Who''s songs. He didn''t get that at the band''s Super Bowl halftime performance, but he''s OK with that too.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_mu/fbn_super_bowl_townshend', '2010-02-08 09:58:00', NULL),
+(532, 215, 73, 0, 'Amazon reshelves Macmillan titles but not e-books \n    (Reuters)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/stage_nm/us_books_macmillan"><img src="http://d.yimg.com/a/p/ap/20100201/capt.e49b9c24b5a44accbcba86f9da0e4b75.amazon_macmillan_nybz201.jpg?x=130&amp;y=84&amp;q=85&amp;sig=wBptUtLzNOBO9NubgK.80w--" align="left" height="84" width="130" alt="FILE - In this Feb. 9, 2009 file photo, the Kindle 2 electronic reader is shown at an Amazon.com news conference in New York. Amazon.com says it will give in to publishing giant Macmillan and agree to sell electronic versions of its books even at prices it considers too high.  (AP Photo/Mark Lennihan, file)" border="0" /></a>Reuters - Online retailer Amazon.com Inc resumed selling hardcover and paperback books from Macmillan Publishers late on Friday in a sign the two companies are getting closer to resolving a pricing dispute over Macmillan''s electronic books, which remain unavailable on Amazon.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/stage_nm/us_books_macmillan', '2010-02-08 09:30:00', NULL),
+(533, 215, 74, 0, 'Brit actress Lucy Punch cast in &quot;Bad Teacher&quot; \n    (Reuters)', 'Reuters - British actress Lucy Punch has been cast opposite Cameron Diaz in the black comedy "Bad Teacher," which Jake Kasdan will start shooting next month in Los Angeles.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/nm/20100208/film_nm/us_punch', '2010-02-08 07:52:00', NULL),
+(534, 215, 75, 0, 'Super Bowl TV spot brings Leno, Letterman together \n    (AP)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/fbn_super_bowl_letterman_promo"><img src="http://d.yimg.com/a/p/ap/20100208/capt.bc556bfa184e4d3ba720f95453d019d8.super_bowl_ads_letterman_winfrey_leno_ny151.jpg?x=130&amp;y=73&amp;q=85&amp;sig=xx50umqcfHd15kY_ph23uA--" align="left" height="73" width="130" alt="In an image from video provided by CBS, David Letterman, Oprah Winfrey and Jay Leno, from right, record a promo for CBS'' ''Late Show'' that aired during the broadcast of the NFL football Super Bowl on Sunday, Feb. 7, 2010. The promo was recorded earlier in the week at the Ed Sullivan Theater in New York. The ad revisited Letterman and Winfrey''s Super Bowl spot from 2007, but with another person watching the game with them - late night talk show host Jay Leno. (AP Photo/CBS)" border="0" /></a>AP - Super Bowl viewers were rubbing their eyes at the sight of a TV spot pairing CBS late-night host David Letterman with longtime NBC archrival Jay Leno, plus media magnate Oprah Winfrey.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ap/20100208/ap_en_tv/fbn_super_bowl_letterman_promo', '2010-02-08 06:55:00', NULL),
+(535, 215, 0, 0, 'Parsons Launches New Fashion MFA with Support of Donna Karan \n    (Fashion Wire Daily)', '<p><a href="http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/fwd/20100206/en_fashion_fwd/parsonslaunchesnewfashionmfawithsupportofdonnakaran"><img src="http://d.yimg.com/a/p/fwd/20100206/capt.fwd10120100206_fox_karan.jpg?x=76&y=130&q=85&sig=BVdmkoAJH5PmhQuetkpXRg--" align="left" height="130" width="76" alt="FWD101  Shelley Fox, left, the Donna Karan professor of fashion at Parsons School of Design, and designer Donna Karan attend "Parsons Presents an Evening with Donna Karan" at The New School in New York on Thursday, February 4, 2010.(Fashion Wire Daily/Renata Espinosa)" border="0" /></a>Fashion Wire Daily - Donna Karan may have dropped out of Parsons School of Design when she was a sophomore - Anne Klein herself offered the fledgling designer a job that she couldn''t refuse - but that doesn''t mean she doesn''t put a high premium on fashion education.</p><br clear="all"/>', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/fwd/20100206/en_fashion_fwd/parsonslaunchesnewfashionmfawithsupportofdonnakaran', '2010-02-07 01:09:00', NULL),
+(536, 215, 76, 0, 'Vanity Fair''s passel of pale starlets \n    (The Newsroom)', 'The Newsroom - NEW YORK -- Call it a lie of omission. One month after featuring shirtless, fresh-kill Tiger Woods, Vanity Fair presents their annual "Young Hollywood" issue with a decidedly more alabaster cover. Kristen Stewart, Abbie Cornish, and Carey Mulligan scored the front of the mag, and six more actresses grace the pull-out cover, none of them sporting so much as a tan.', 'http://us.rd.yahoo.com/dailynews/rss/entertainment/*http%3A//news.yahoo.com/s/ynews/20100205/en_ynews/ynews_en1106', '2010-02-05 22:41:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `form`
+--
+
+CREATE TABLE IF NOT EXISTS `form` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `form_title` varchar(200) NOT NULL,
+  `form_description` text,
+  `form_active` tinyint(4) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `form`
+--
+
+INSERT INTO `form` (`id`, `form_title`, `form_description`, `form_active`) VALUES
+(1, 'Default Form', 'Default form, for report entry', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `form_field`
+--
+
+CREATE TABLE IF NOT EXISTS `form_field` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `form_id` int(11) NOT NULL DEFAULT '0',
+  `field_name` varchar(200) DEFAULT NULL,
+  `field_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 - TEXTFIELD, 2 - TEXTAREA (FREETEXT), 3 - DATE, 4 - PASSWORD, 5 - RADIO, 6 - CHECKBOX',
+  `field_required` tinyint(4) DEFAULT '0',
+  `field_options` text,
+  `field_position` tinyint(4) NOT NULL DEFAULT '0',
+  `field_default` varchar(200) DEFAULT NULL,
+  `field_maxlength` int(11) NOT NULL DEFAULT '0',
+  `field_width` smallint(6) NOT NULL DEFAULT '0',
+  `field_height` tinyint(4) DEFAULT '5',
+  `field_isdate` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_form_id` (`form_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `form_field`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `form_response`
+--
+
+CREATE TABLE IF NOT EXISTS `form_response` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `form_field_id` int(11) NOT NULL,
+  `incident_id` bigint(20) NOT NULL,
+  `form_response` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_form_field_id` (`form_field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `form_response`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `idp`
+--
+
+CREATE TABLE IF NOT EXISTS `idp` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) NOT NULL,
+  `verified_id` bigint(20) DEFAULT NULL,
+  `idp_idnumber` varchar(100) DEFAULT NULL,
+  `idp_orig_idnumber` varchar(100) DEFAULT NULL,
+  `idp_fname` varchar(50) DEFAULT NULL,
+  `idp_lname` varchar(50) DEFAULT NULL,
+  `idp_email` varchar(100) DEFAULT NULL,
+  `idp_phone` varchar(50) DEFAULT NULL,
+  `current_location_id` bigint(20) DEFAULT NULL,
+  `displacedfrom_location_id` bigint(20) DEFAULT NULL,
+  `movedto_location_id` bigint(20) DEFAULT NULL,
+  `idp_move_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `idp`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incident`
+--
+
+CREATE TABLE IF NOT EXISTS `incident` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `location_id` bigint(20) NOT NULL,
+  `form_id` int(11) NOT NULL DEFAULT '1',
+  `locale` varchar(10) NOT NULL DEFAULT 'en_US',
+  `user_id` bigint(20) DEFAULT NULL,
+  `incident_title` varchar(255) DEFAULT NULL,
+  `incident_description` longtext,
+  `incident_date` datetime DEFAULT NULL,
+  `incident_mode` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 - WEB, 2 - SMS, 3 - EMAIL, 4 - TWITTER',
+  `incident_active` tinyint(4) NOT NULL DEFAULT '0',
+  `incident_verified` tinyint(4) NOT NULL DEFAULT '0',
+  `incident_source` varchar(5) DEFAULT NULL,
+  `incident_information` varchar(5) DEFAULT NULL,
+  `incident_rating` varchar(15) NOT NULL DEFAULT '0',
+  `incident_dateadd` datetime DEFAULT NULL,
+  `incident_dateadd_gmt` datetime DEFAULT NULL,
+  `incident_datemodify` datetime DEFAULT NULL,
+  `incident_alert_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 - Not Tagged for Sending, 1 - Tagged for Sending, 2 - Alerts Have Been Sent',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `location_id` (`location_id`),
+  KEY `incident_active` (`incident_active`),
+  KEY `incident_date` (`incident_date`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `incident`
+--
+
+INSERT INTO `incident` (`id`, `location_id`, `form_id`, `locale`, `user_id`, `incident_title`, `incident_description`, `incident_date`, `incident_mode`, `incident_active`, `incident_verified`, `incident_source`, `incident_information`, `incident_rating`, `incident_dateadd`, `incident_dateadd_gmt`, `incident_datemodify`, `incident_alert_status`) VALUES
+(1, 1, 1, 'en_US', 1, 'Hello Ushahidi!', 'Welcome to Ushahidi. Please replace this report with a valid incident', '2009-06-30 12:00:00', 1, 1, 1, '0', '2009-', '0', NULL, NULL, NULL, 0),
+(2, 2, 1, 'en_US', 0, 'Test Report', 'Test Report', '2010-02-04 10:13:00', 1, 0, 0, NULL, NULL, '0', '2010-02-04 10:19:09', NULL, NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incident_category`
+--
+
+CREATE TABLE IF NOT EXISTS `incident_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) NOT NULL DEFAULT '0',
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `incident_category_ids` (`incident_id`,`category_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `incident_category`
+--
+
+INSERT INTO `incident_category` (`id`, `incident_id`, `category_id`) VALUES
+(1, 2, 2),
+(2, 2, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incident_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `incident_lang` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) NOT NULL,
+  `locale` varchar(10) DEFAULT NULL,
+  `incident_title` varchar(255) DEFAULT NULL,
+  `incident_description` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `incident_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incident_person`
+--
+
+CREATE TABLE IF NOT EXISTS `incident_person` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) DEFAULT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `person_first` varchar(200) DEFAULT NULL,
+  `person_last` varchar(200) DEFAULT NULL,
+  `person_email` varchar(120) DEFAULT NULL,
+  `person_phone` varchar(60) DEFAULT NULL,
+  `person_ip` varchar(50) DEFAULT NULL,
+  `person_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `incident_person`
+--
+
+INSERT INTO `incident_person` (`id`, `incident_id`, `location_id`, `person_first`, `person_last`, `person_email`, `person_phone`, `person_ip`, `person_date`) VALUES
+(1, 2, 2, 'Ivan', 'kavuma', 'ivan.kavuma@appfrica.org', NULL, NULL, '2010-02-04 10:19:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `laconica`
+--
+
+CREATE TABLE IF NOT EXISTS `laconica` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` int(11) DEFAULT '0',
+  `laconica_mesg_from` varchar(100) DEFAULT NULL,
+  `laconica_mesg_to` varchar(100) DEFAULT NULL,
+  `laconica_mesg_link` varchar(100) DEFAULT NULL,
+  `laconica_mesg` varchar(255) DEFAULT NULL,
+  `laconica_mesg_type` tinyint(4) DEFAULT '1' COMMENT '1 - INBOX, 2 - OUTBOX (From Admin)',
+  `laconica_mesg_date` datetime DEFAULT NULL,
+  `hide` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `laconica`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `layer`
+--
+
+CREATE TABLE IF NOT EXISTS `layer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `layer_name` varchar(255) DEFAULT NULL,
+  `layer_url` varchar(255) DEFAULT NULL,
+  `layer_file` varchar(100) DEFAULT NULL,
+  `layer_color` varchar(20) DEFAULT NULL,
+  `layer_visible` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `layer`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `level`
+--
+
+CREATE TABLE IF NOT EXISTS `level` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `level_title` varchar(200) DEFAULT NULL,
+  `level_description` varchar(200) DEFAULT NULL,
+  `level_weight` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `level`
+--
+
+INSERT INTO `level` (`id`, `level_title`, `level_description`, `level_weight`) VALUES
+(1, 'SPAM + Delete', 'SPAM + Delete', -2),
+(2, 'SPAM', 'SPAM', -1),
+(3, 'Untrusted', 'Untrusted', 0),
+(4, 'Trusted', 'Trusted', 1),
+(5, 'Trusted + Verifiy', 'Trusted + Verify', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `location`
+--
+
+CREATE TABLE IF NOT EXISTS `location` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `location_name` varchar(255) DEFAULT NULL,
+  `country_id` int(11) DEFAULT NULL,
+  `latitude` double NOT NULL DEFAULT '0',
+  `longitude` double NOT NULL DEFAULT '0',
+  `location_visible` tinyint(4) NOT NULL DEFAULT '1',
+  `location_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
+
+--
+-- Dumping data for table `location`
+--
+
+INSERT INTO `location` (`id`, `location_name`, `country_id`, `latitude`, `longitude`, `location_visible`, `location_date`) VALUES
+(1, 'Nairobi', NULL, -1.28730007070501, 36.8214511820082, 1, '2009-06-30 00:00:00'),
+(2, 'Kampala, Uganda', NULL, 0.370528, 32.625275, 1, '2010-02-04 10:19:09'),
+(3, 'Unknown', NULL, 55.076944, 98.853889, 1, '2010-02-04 15:18:46'),
+(4, 'Unknown', NULL, -25, 135, 1, '2010-02-04 15:18:46'),
+(5, 'Unknown', NULL, 55.076944, 98.853889, 1, '2010-02-04 15:18:46'),
+(6, 'Unknown', NULL, 28, 66, 1, '2010-02-04 15:18:46'),
+(7, 'Unknown', NULL, 40, 127, 1, '2010-02-04 15:18:46'),
+(8, 'Unknown', NULL, 40.080111, 116.584556, 1, '2010-02-04 15:18:46'),
+(9, 'Unknown', NULL, 50.809081, -1.071424, 1, '2010-02-04 15:18:46'),
+(10, 'Unknown', NULL, 39, 22, 1, '2010-02-04 15:18:46'),
+(11, 'Unknown', NULL, 35, 105, 1, '2010-02-04 15:18:46'),
+(12, 'Unknown', NULL, 28, 84, 1, '2010-02-04 15:18:46'),
+(13, 'Unknown', NULL, -19, 29, 1, '2010-02-04 15:18:46'),
+(14, 'Unknown', NULL, 39.76, -98.5, 1, '2010-02-04 15:18:46'),
+(15, 'Unknown', NULL, 35.685357, 139.753089, 1, '2010-02-04 15:18:46'),
+(16, 'Unknown', NULL, 51.508415, -0.125533, 1, '2010-02-04 15:18:46'),
+(17, 'Unknown', NULL, 6, 48, 1, '2010-02-05 16:55:25'),
+(18, 'Unknown', NULL, 24.866667, 67.05, 1, '2010-02-05 16:55:25'),
+(19, 'Unknown', NULL, 54, -4, 1, '2010-02-05 16:55:25'),
+(20, 'Unknown', NULL, 54.5, -6.5, 1, '2010-02-05 16:55:25'),
+(21, 'Unknown', NULL, 32.707846, -110.682323, 1, '2010-02-05 16:55:25'),
+(22, 'Unknown', NULL, 20, 77, 1, '2010-02-05 16:55:25'),
+(23, 'Unknown', NULL, 32.597778, 44.016111, 1, '2010-02-05 16:55:25'),
+(24, 'Unknown', NULL, 54, -4, 1, '2010-02-05 16:55:25'),
+(25, 'Unknown', NULL, -25, 135, 1, '2010-02-05 16:55:25'),
+(26, 'Unknown', NULL, 52, 20, 1, '2010-02-05 16:55:25'),
+(27, 'Unknown', NULL, 29.954648, -90.075072, 1, '2010-02-05 16:55:25'),
+(28, 'Unknown', NULL, 33, 65, 1, '2010-02-05 16:55:25'),
+(29, 'Unknown', NULL, 35, 105, 1, '2010-02-05 16:55:25'),
+(30, 'Unknown', NULL, 33.833333, 35.833333, 1, '2010-02-07 13:22:56'),
+(31, 'Unknown', NULL, 28.665828, -80.702828, 1, '2010-02-07 13:22:56'),
+(32, 'Unknown', NULL, 38.895112, -77.036366, 1, '2010-02-07 13:22:56'),
+(33, 'Unknown', NULL, 55.076944, 98.853889, 1, '2010-02-07 13:22:56'),
+(34, 'Unknown', NULL, 49, 32, 1, '2010-02-07 13:22:56'),
+(35, 'Unknown', NULL, 33.13906, 35.858688, 1, '2010-02-07 13:22:56'),
+(36, 'Unknown', NULL, 20.590648, -100.392466, 1, '2010-02-07 13:22:57'),
+(37, 'Unknown', NULL, 40.714269, -74.005973, 1, '2010-02-07 13:22:57'),
+(38, 'Unknown', NULL, 32, 53, 1, '2010-02-07 13:22:57'),
+(39, 'Unknown', NULL, 19, -72.416667, 1, '2010-02-07 13:22:57'),
+(40, 'Unknown', NULL, -10, -55, 1, '2010-02-07 13:22:57'),
+(41, 'Unknown', NULL, 54, -4, 1, '2010-02-07 13:22:57'),
+(42, 'Unknown', NULL, 53, -8, 1, '2010-02-07 13:22:57'),
+(43, 'Unknown', NULL, 23, -102, 1, '2010-02-07 13:22:57'),
+(44, 'Unknown', NULL, 21.15, 79.1, 1, '2010-02-07 13:22:57'),
+(45, 'Unknown', NULL, 33.13906, 35.858688, 1, '2010-02-08 15:15:21'),
+(46, 'Unknown', NULL, 33, 65, 1, '2010-02-08 15:15:21'),
+(47, 'Unknown', NULL, 32, 53, 1, '2010-02-08 15:15:21'),
+(48, 'Unknown', NULL, 53.583333, -2.433333, 1, '2010-02-08 15:15:21'),
+(49, 'Unknown', NULL, 33.13906, 35.858688, 1, '2010-02-08 15:15:21'),
+(50, 'Unknown', NULL, -25, 135, 1, '2010-02-08 15:15:21'),
+(51, 'Unknown', NULL, 49, 32, 1, '2010-02-08 15:15:21'),
+(52, 'Unknown', NULL, 39.76, -98.5, 1, '2010-02-08 15:15:21'),
+(53, 'Unknown', NULL, 39.76, -98.5, 1, '2010-02-08 15:15:21'),
+(54, 'Unknown', NULL, -0.166667, 37.333333, 1, '2010-02-08 15:15:21'),
+(55, 'Unknown', NULL, -25, 135, 1, '2010-02-08 15:15:21'),
+(56, 'Unknown', NULL, 25.774266, -80.193659, 1, '2010-02-08 15:15:21'),
+(57, 'Unknown', NULL, 19, -72.416667, 1, '2010-02-08 15:15:21'),
+(58, 'Unknown', NULL, 35.685357, 139.753089, 1, '2010-02-08 15:15:21'),
+(59, 'Unknown', NULL, 35.685357, 139.753089, 1, '2010-02-08 15:15:32'),
+(60, 'Unknown', NULL, 35.083333, 137.15, 1, '2010-02-08 15:15:32'),
+(61, 'Unknown', NULL, 39.76, -98.5, 1, '2010-02-08 15:15:32'),
+(62, 'Unknown', NULL, 39, 22, 1, '2010-02-08 15:15:32'),
+(63, 'Unknown', NULL, 39, 22, 1, '2010-02-08 15:15:32'),
+(64, 'Unknown', NULL, 32, 53, 1, '2010-02-08 15:15:32'),
+(65, 'Unknown', NULL, 20, 77, 1, '2010-02-08 15:15:32'),
+(66, 'Unknown', NULL, 43.85, 144.683333, 1, '2010-02-08 15:15:32'),
+(67, 'Unknown', NULL, 29.5, 47.75, 1, '2010-02-08 15:15:32'),
+(68, 'Unknown', NULL, 40.714269, -74.005973, 1, '2010-02-08 15:15:32'),
+(69, 'Unknown', NULL, 29.954648, -90.075072, 1, '2010-02-08 15:15:32'),
+(70, 'Unknown', NULL, 42.333987, -71.104774, 1, '2010-02-08 15:15:32'),
+(71, 'Unknown', NULL, 26.011201, -80.14949, 1, '2010-02-08 15:15:38'),
+(72, 'Unknown', NULL, 40.714269, -74.005973, 1, '2010-02-08 15:15:38'),
+(73, 'Unknown', NULL, 7.883333, 1.85, 1, '2010-02-08 15:15:38'),
+(74, 'Unknown', NULL, 34.052234, -118.243685, 1, '2010-02-08 15:15:38'),
+(75, 'Unknown', NULL, 45.372478, 10.216572, 1, '2010-02-08 15:15:38'),
+(76, 'Unknown', NULL, 18.15, -77.033333, 1, '2010-02-08 15:15:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `media`
+--
+
+CREATE TABLE IF NOT EXISTS `media` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `location_id` bigint(20) DEFAULT NULL,
+  `incident_id` bigint(20) DEFAULT NULL,
+  `media_type` tinyint(4) DEFAULT NULL COMMENT '1 - IMAGES, 2 - VIDEO, 3 - AUDIO, 4 - NEWS, 5 - PODCAST',
+  `media_title` varchar(255) DEFAULT NULL,
+  `media_description` longtext,
+  `media_link` varchar(255) DEFAULT NULL,
+  `media_thumb` varchar(255) DEFAULT NULL,
+  `media_date` datetime DEFAULT NULL,
+  `media_active` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `media`
+--
+
+INSERT INTO `media` (`id`, `location_id`, `incident_id`, `media_type`, `media_title`, `media_description`, `media_link`, `media_thumb`, `media_date`, `media_active`) VALUES
+(1, 2, 2, 4, NULL, NULL, 'http://www.newvision.co.ug', NULL, '2010-02-04 10:19:09', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message`
+--
+
+CREATE TABLE IF NOT EXISTS `message` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` bigint(20) DEFAULT '0',
+  `incident_id` int(11) DEFAULT '0',
+  `user_id` int(11) DEFAULT '0',
+  `reporter_id` bigint(20) DEFAULT NULL,
+  `service_messageid` varchar(100) DEFAULT NULL,
+  `message_from` varchar(100) DEFAULT NULL,
+  `message_to` varchar(100) DEFAULT NULL,
+  `message` text,
+  `message_detail` text,
+  `message_type` tinyint(4) DEFAULT '1' COMMENT '1 - INBOX, 2 - OUTBOX (From Admin)',
+  `message_date` datetime DEFAULT NULL,
+  `message_level` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `message`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `organization`
+--
+
+CREATE TABLE IF NOT EXISTS `organization` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `organization_name` varchar(255) DEFAULT NULL,
+  `organization_description` longtext,
+  `organization_website` varchar(255) DEFAULT NULL,
+  `organization_email` varchar(120) DEFAULT NULL,
+  `organization_phone1` varchar(50) DEFAULT NULL,
+  `organization_phone2` varchar(50) DEFAULT NULL,
+  `organization_address` varchar(255) DEFAULT NULL,
+  `organization_country` varchar(100) DEFAULT NULL,
+  `organization_active` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `organization`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `organization_incident`
+--
+
+CREATE TABLE IF NOT EXISTS `organization_incident` (
+  `organization_id` bigint(20) DEFAULT NULL,
+  `incident_id` bigint(20) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `organization_incident`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `page`
+--
+
+CREATE TABLE IF NOT EXISTS `page` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `page_title` varchar(255) NOT NULL,
+  `page_description` longtext,
+  `page_tab` varchar(100) NOT NULL,
+  `page_active` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `page`
+--
+
+INSERT INTO `page` (`id`, `page_title`, `page_description`, `page_tab`, `page_active`) VALUES
+(1, 'About Us', '<p>This is the default about us page.</p>', 'About Us', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pending_users`
+--
+
+CREATE TABLE IF NOT EXISTS `pending_users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(32) NOT NULL,
+  `email` varchar(127) NOT NULL,
+  `username` varchar(31) NOT NULL DEFAULT '',
+  `password` char(50) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_username` (`username`),
+  UNIQUE KEY `uniq_email` (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `pending_users`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rating`
+--
+
+CREATE TABLE IF NOT EXISTS `rating` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) DEFAULT NULL,
+  `comment_id` bigint(20) DEFAULT NULL,
+  `rating` tinyint(4) DEFAULT '0',
+  `rating_ip` varchar(100) DEFAULT NULL,
+  `rating_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `rating`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reporter`
+--
+
+CREATE TABLE IF NOT EXISTS `reporter` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) DEFAULT NULL,
+  `location_id` bigint(20) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `service_id` int(11) DEFAULT NULL,
+  `level_id` int(11) DEFAULT NULL,
+  `service_userid` varchar(255) DEFAULT NULL,
+  `service_account` varchar(255) DEFAULT NULL,
+  `reporter_first` varchar(200) DEFAULT NULL,
+  `reporter_last` varchar(200) DEFAULT NULL,
+  `reporter_email` varchar(120) DEFAULT NULL,
+  `reporter_phone` varchar(60) DEFAULT NULL,
+  `reporter_ip` varchar(50) DEFAULT NULL,
+  `reporter_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `reporter`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `description`) VALUES
+(1, 'login', 'Login privileges, granted after account confirmation'),
+(2, 'admin', 'Administrative user, has access to almost everything.'),
+(3, 'superadmin', 'Super administrative user, has access to everything.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles_users`
+--
+
+CREATE TABLE IF NOT EXISTS `roles_users` (
+  `user_id` int(11) unsigned NOT NULL,
+  `role_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `fk_role_id` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `roles_users`
+--
+
+INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `scheduler`
+--
+
+CREATE TABLE IF NOT EXISTS `scheduler` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `scheduler_name` varchar(100) NOT NULL,
+  `scheduler_last` int(10) unsigned NOT NULL DEFAULT '0',
+  `scheduler_weekday` smallint(6) NOT NULL DEFAULT '-1',
+  `scheduler_day` smallint(6) NOT NULL DEFAULT '-1',
+  `scheduler_hour` smallint(6) NOT NULL DEFAULT '-1',
+  `scheduler_minute` smallint(6) NOT NULL,
+  `scheduler_controller` varchar(100) NOT NULL,
+  `scheduler_active` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `scheduler`
+--
+
+INSERT INTO `scheduler` (`id`, `scheduler_name`, `scheduler_last`, `scheduler_weekday`, `scheduler_day`, `scheduler_hour`, `scheduler_minute`, `scheduler_controller`, `scheduler_active`) VALUES
+(1, 'Feeds', 1265631343, -1, -1, -1, 0, 'feeds', 1),
+(2, 'Alerts', 1265633927, -1, -1, -1, -1, 'alerts', 1),
+(3, 'Email', 1265631343, -1, -1, -1, 0, 'email', 1),
+(4, 'Twitter', 1265631344, -1, -1, -1, 0, 'twitter', 1),
+(5, 'Sharing', 1265631344, -1, -1, -1, 0, 'sharing', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `scheduler_log`
+--
+
+CREATE TABLE IF NOT EXISTS `scheduler_log` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `scheduler_id` int(11) NOT NULL,
+  `scheduler_name` varchar(100) NOT NULL,
+  `scheduler_status` varchar(20) DEFAULT NULL,
+  `scheduler_date` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
+
+--
+-- Dumping data for table `scheduler_log`
+--
+
+INSERT INTO `scheduler_log` (`id`, `scheduler_id`, `scheduler_name`, `scheduler_status`, `scheduler_date`) VALUES
+(1, 1, 'Feeds', '200', 1265201002),
+(2, 2, 'Alerts', '200', 1265201002),
+(3, 3, 'Email', '200', 1265201003),
+(4, 4, 'Twitter', '200', 1265201003),
+(5, 5, 'Sharing', '200', 1265201003),
+(6, 2, 'Alerts', '200', 1265201242),
+(7, 2, 'Alerts', '200', 1265201404),
+(8, 1, 'Feeds', '200', 1265267608),
+(9, 2, 'Alerts', '200', 1265267608),
+(10, 3, 'Email', '200', 1265267608),
+(11, 4, 'Twitter', '200', 1265267609),
+(12, 5, 'Sharing', '200', 1265267609),
+(13, 1, 'Feeds', '200', 1265267609),
+(14, 2, 'Alerts', '200', 1265267611),
+(15, 3, 'Email', '200', 1265267611),
+(16, 4, 'Twitter', '200', 1265267614),
+(17, 5, 'Sharing', '200', 1265267614),
+(18, 2, 'Alerts', '200', 1265267950),
+(19, 1, 'Feeds', '200', 1265270920),
+(20, 2, 'Alerts', '200', 1265270920),
+(21, 3, 'Email', '200', 1265270936),
+(22, 4, 'Twitter', '200', 1265270936),
+(23, 5, 'Sharing', '200', 1265270936),
+(24, 2, 'Alerts', '200', 1265271067),
+(25, 2, 'Alerts', '200', 1265271199),
+(26, 2, 'Alerts', '200', 1265271485),
+(27, 2, 'Alerts', '200', 1265271693),
+(28, 2, 'Alerts', '200', 1265272976),
+(29, 1, 'Feeds', '200', 1265277457),
+(30, 2, 'Alerts', '200', 1265277458),
+(31, 3, 'Email', '200', 1265277470),
+(32, 4, 'Twitter', '200', 1265277470),
+(33, 5, 'Sharing', '200', 1265277470),
+(34, 1, 'Feeds', '200', 1265277951),
+(35, 2, 'Alerts', '200', 1265277951),
+(36, 3, 'Email', '200', 1265277951),
+(37, 4, 'Twitter', '200', 1265277952),
+(38, 5, 'Sharing', '200', 1265277952),
+(39, 2, 'Alerts', '200', 1265278115),
+(40, 2, 'Alerts', '200', 1265278410),
+(41, 2, 'Alerts', '200', 1265278653),
+(42, 2, 'Alerts', '200', 1265278847),
+(43, 2, 'Alerts', '200', 1265279127),
+(44, 2, 'Alerts', '200', 1265279625),
+(45, 1, 'Feeds', '200', 1265285926),
+(46, 2, 'Alerts', '200', 1265285926),
+(47, 3, 'Email', '200', 1265285926),
+(48, 4, 'Twitter', '200', 1265285926),
+(49, 5, 'Sharing', '200', 1265285926),
+(50, 2, 'Alerts', '200', 1265286153),
+(51, 2, 'Alerts', '200', 1265286405),
+(52, 2, 'Alerts', '200', 1265286591),
+(53, 2, 'Alerts', '200', 1265286762),
+(54, 2, 'Alerts', '200', 1265286969),
+(55, 2, 'Alerts', '200', 1265287437),
+(56, 2, 'Alerts', '200', 1265288005),
+(57, 1, 'Feeds', '200', 1265288906),
+(58, 2, 'Alerts', '200', 1265288906),
+(59, 3, 'Email', '200', 1265288906),
+(60, 4, 'Twitter', '200', 1265288906),
+(61, 5, 'Sharing', '200', 1265288906),
+(62, 2, 'Alerts', '200', 1265289084),
+(63, 2, 'Alerts', '200', 1265289664),
+(64, 2, 'Alerts', '200', 1265289864),
+(65, 2, 'Alerts', '200', 1265290738),
+(66, 1, 'Feeds', '200', 1265292881),
+(67, 2, 'Alerts', '200', 1265292881),
+(68, 3, 'Email', '200', 1265292881),
+(69, 4, 'Twitter', '200', 1265292881),
+(70, 5, 'Sharing', '200', 1265292881),
+(71, 1, 'Feeds', '200', 1265302813),
+(72, 2, 'Alerts', '200', 1265302813),
+(73, 3, 'Email', '200', 1265302848),
+(74, 4, 'Twitter', '200', 1265302848),
+(75, 5, 'Sharing', '200', 1265302848),
+(76, 1, 'Feeds', '200', 1265354436),
+(77, 2, 'Alerts', '200', 1265354436),
+(78, 3, 'Email', '200', 1265354437),
+(79, 4, 'Twitter', '200', 1265354437),
+(80, 5, 'Sharing', '200', 1265354437),
+(81, 1, 'Feeds', '200', 1265357011),
+(82, 2, 'Alerts', '200', 1265357011),
+(83, 3, 'Email', '200', 1265357011),
+(84, 4, 'Twitter', '200', 1265357011),
+(85, 5, 'Sharing', '200', 1265357011),
+(86, 2, 'Alerts', '200', 1265357588),
+(87, 2, 'Alerts', '200', 1265358081),
+(88, 2, 'Alerts', '200', 1265359112),
+(89, 1, 'Feeds', '200', 1265360544),
+(90, 2, 'Alerts', '200', 1265360544),
+(91, 2, 'Alerts', '200', 1265360794),
+(92, 3, 'Email', '200', 1265360794),
+(93, 4, 'Twitter', '200', 1265360794),
+(94, 5, 'Sharing', '200', 1265360795),
+(95, 2, 'Alerts', '200', 1265361197),
+(96, 2, 'Alerts', '200', 1265363121),
+(97, 2, 'Alerts', '200', 1265364007),
+(98, 1, 'Feeds', '200', 1265364193),
+(99, 2, 'Alerts', '200', 1265364193),
+(100, 3, 'Email', '200', 1265364208),
+(101, 4, 'Twitter', '200', 1265364208),
+(102, 5, 'Sharing', '200', 1265364208),
+(103, 2, 'Alerts', '200', 1265364331),
+(104, 2, 'Alerts', '200', 1265364538),
+(105, 2, 'Alerts', '200', 1265364683),
+(106, 2, 'Alerts', '200', 1265365090),
+(107, 2, 'Alerts', '200', 1265365204),
+(108, 2, 'Alerts', '200', 1265365333),
+(109, 1, 'Feeds', '200', 1265368442),
+(110, 2, 'Alerts', '200', 1265368442),
+(111, 3, 'Email', '200', 1265368442),
+(112, 4, 'Twitter', '200', 1265368442),
+(113, 5, 'Sharing', '200', 1265368442),
+(114, 2, 'Alerts', '200', 1265368619),
+(115, 2, 'Alerts', '200', 1265369176),
+(116, 2, 'Alerts', '200', 1265369815),
+(117, 2, 'Alerts', '200', 1265370244),
+(118, 2, 'Alerts', '200', 1265371252),
+(119, 1, 'Feeds', '200', 1265371266),
+(120, 3, 'Email', '200', 1265371266),
+(121, 4, 'Twitter', '200', 1265371267),
+(122, 5, 'Sharing', '200', 1265371267),
+(123, 2, 'Alerts', '200', 1265371559),
+(124, 2, 'Alerts', '200', 1265371828),
+(125, 2, 'Alerts', '200', 1265372070),
+(126, 1, 'Feeds', '200', 1265378125),
+(127, 2, 'Alerts', '200', 1265378125),
+(128, 3, 'Email', '200', 1265378125),
+(129, 4, 'Twitter', '200', 1265378125),
+(130, 5, 'Sharing', '200', 1265378125),
+(131, 2, 'Alerts', '200', 1265378411),
+(132, 1, 'Feeds', '200', 1265538177),
+(133, 2, 'Alerts', '200', 1265538177),
+(134, 3, 'Email', '200', 1265538177),
+(135, 4, 'Twitter', '200', 1265538177),
+(136, 5, 'Sharing', '200', 1265538177),
+(137, 1, 'Feeds', '200', 1265541266),
+(138, 2, 'Alerts', '200', 1265541266),
+(139, 3, 'Email', '200', 1265541266),
+(140, 4, 'Twitter', '200', 1265541266),
+(141, 5, 'Sharing', '200', 1265541266),
+(142, 2, 'Alerts', '200', 1265543209),
+(143, 2, 'Alerts', '200', 1265543735),
+(144, 1, 'Feeds', '200', 1265631343),
+(145, 2, 'Alerts', '200', 1265631343),
+(146, 3, 'Email', '200', 1265631343),
+(147, 4, 'Twitter', '200', 1265631344),
+(148, 5, 'Sharing', '200', 1265631344),
+(149, 2, 'Alerts', '200', 1265631678),
+(150, 2, 'Alerts', '200', 1265632333),
+(151, 2, 'Alerts', '200', 1265633114),
+(152, 2, 'Alerts', '200', 1265633442),
+(153, 2, 'Alerts', '200', 1265633927);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service`
+--
+
+CREATE TABLE IF NOT EXISTS `service` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `service_name` varchar(100) DEFAULT NULL,
+  `service_description` varchar(255) DEFAULT NULL,
+  `service_url` varchar(255) DEFAULT NULL,
+  `service_api` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `service`
+--
+
+INSERT INTO `service` (`id`, `service_name`, `service_description`, `service_url`, `service_api`) VALUES
+(1, 'SMS', 'Text messages from phones', NULL, NULL),
+(2, 'Email', 'Text messages from phones', NULL, NULL),
+(3, 'Twitter', 'Tweets tweets tweets', 'http://twitter.com', NULL),
+(4, 'Laconica', 'Tweets tweets tweets', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `session_id` varchar(40) NOT NULL,
+  `last_activity` int(10) unsigned NOT NULL,
+  `data` text NOT NULL,
+  PRIMARY KEY (`session_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `sessions`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `site_name` varchar(255) DEFAULT NULL,
+  `site_tagline` varchar(255) DEFAULT NULL,
+  `site_email` varchar(120) DEFAULT NULL,
+  `site_key` varchar(100) DEFAULT NULL,
+  `site_language` varchar(10) NOT NULL DEFAULT 'en_US',
+  `site_style` varchar(50) NOT NULL DEFAULT 'default',
+  `site_timezone` varchar(80) DEFAULT NULL,
+  `site_contact_page` tinyint(4) NOT NULL DEFAULT '1',
+  `site_help_page` tinyint(4) NOT NULL DEFAULT '1',
+  `allow_reports` tinyint(4) NOT NULL DEFAULT '1',
+  `allow_comments` tinyint(4) NOT NULL DEFAULT '1',
+  `allow_feed` tinyint(4) NOT NULL DEFAULT '1',
+  `allow_stat_sharing` tinyint(4) NOT NULL DEFAULT '1',
+  `allow_clustering` tinyint(4) NOT NULL DEFAULT '1',
+  `default_map` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 - GOOGLE MAPS, 2 - LIVE MAPS, 3 - YAHOO MAPS, 4 - OPEN STREET MAPS',
+  `default_map_all` varchar(20) NOT NULL DEFAULT 'CC0000',
+  `api_google` varchar(200) DEFAULT NULL,
+  `api_yahoo` varchar(200) DEFAULT NULL,
+  `api_live` varchar(200) DEFAULT NULL,
+  `api_akismet` varchar(200) DEFAULT NULL,
+  `default_country` int(11) DEFAULT NULL,
+  `multi_country` tinyint(4) NOT NULL DEFAULT '0',
+  `default_city` varchar(150) DEFAULT NULL,
+  `default_lat` varchar(100) DEFAULT NULL,
+  `default_lon` varchar(100) DEFAULT NULL,
+  `default_zoom` tinyint(4) NOT NULL DEFAULT '10',
+  `items_per_page` smallint(6) NOT NULL DEFAULT '20',
+  `items_per_page_admin` smallint(6) NOT NULL DEFAULT '20',
+  `sms_no1` varchar(100) DEFAULT NULL,
+  `sms_no2` varchar(100) DEFAULT NULL,
+  `sms_no3` varchar(100) DEFAULT NULL,
+  `frontlinesms_key` varchar(30) DEFAULT NULL,
+  `clickatell_api` varchar(30) DEFAULT NULL,
+  `clickatell_username` varchar(100) DEFAULT NULL,
+  `clickatell_password` varchar(100) DEFAULT NULL,
+  `google_analytics` text,
+  `twitter_hashtags` text,
+  `twitter_username` varchar(50) DEFAULT NULL,
+  `twitter_password` varchar(50) DEFAULT NULL,
+  `laconica_username` varchar(50) DEFAULT NULL,
+  `laconica_password` varchar(50) DEFAULT NULL,
+  `laconica_site` varchar(30) DEFAULT NULL COMMENT 'a laconica site',
+  `date_modify` datetime DEFAULT NULL,
+  `stat_id` bigint(20) DEFAULT NULL COMMENT 'comes from centralized stats',
+  `stat_key` varchar(30) NOT NULL,
+  `email_username` varchar(100) NOT NULL,
+  `email_password` varchar(100) NOT NULL,
+  `email_port` int(11) NOT NULL,
+  `email_host` varchar(100) NOT NULL,
+  `email_servertype` varchar(100) NOT NULL,
+  `email_ssl` int(5) NOT NULL,
+  `alerts_email` varchar(120) NOT NULL,
+  `db_version` varchar(20) DEFAULT NULL,
+  `ushahidi_version` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`id`, `site_name`, `site_tagline`, `site_email`, `site_key`, `site_language`, `site_style`, `site_timezone`, `site_contact_page`, `site_help_page`, `allow_reports`, `allow_comments`, `allow_feed`, `allow_stat_sharing`, `allow_clustering`, `default_map`, `default_map_all`, `api_google`, `api_yahoo`, `api_live`, `api_akismet`, `default_country`, `multi_country`, `default_city`, `default_lat`, `default_lon`, `default_zoom`, `items_per_page`, `items_per_page_admin`, `sms_no1`, `sms_no2`, `sms_no3`, `frontlinesms_key`, `clickatell_api`, `clickatell_username`, `clickatell_password`, `google_analytics`, `twitter_hashtags`, `twitter_username`, `twitter_password`, `laconica_username`, `laconica_password`, `laconica_site`, `date_modify`, `stat_id`, `stat_key`, `email_username`, `email_password`, `email_port`, `email_host`, `email_servertype`, `email_ssl`, `alerts_email`, `db_version`, `ushahidi_version`) VALUES
+(1, 'Ushahidi Beta', NULL, NULL, NULL, 'en_US', 'default', NULL, 1, 1, 1, 1, 1, 1, 1, 1, 'CC0000', 'ABQIAAAAjsEM5UsvCPCIHp80spK1kBQKW7L4j6gYznY0oMkScAbKwifzxxRhJ3SP_ijydkmJpN3jX8kn5r5fEQ', '5CYeWbfV34E21JOW1a4.54Mf6e9jLNkD0HVzaKoQmJZi2qzmSZd5mD8X49x7', NULL, NULL, 115, 0, 'nairobi', '-1.2873000707050097', '36.821451182008204', 13, 20, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2008-08-25 10:25:18', 598, '08af6ce92fc8cdc58b1efa9cd8119f', '', '', 0, '', '', 0, '', '21', '1.0.1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sharing`
+--
+
+CREATE TABLE IF NOT EXISTS `sharing` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sharing_type` tinyint(4) DEFAULT '1' COMMENT '1 - PULLing Data, 2 - PUSHing Data, 3 - TWO way',
+  `sharing_limits` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 - Once Per Hour, 2 - Once Every 6 Hours, 3 - Once Every 12 Hours, 4 - Once Daily',
+  `sharing_color` varchar(20) DEFAULT NULL,
+  `sharing_site_name` varchar(255) DEFAULT NULL,
+  `sharing_email` varchar(255) DEFAULT NULL,
+  `sharing_url` varchar(255) DEFAULT NULL,
+  `sharing_key` varchar(50) DEFAULT NULL,
+  `sharing_ushahidi` tinyint(4) NOT NULL DEFAULT '1',
+  `sharing_report` tinyint(4) NOT NULL DEFAULT '1',
+  `sharing_media` tinyint(4) NOT NULL DEFAULT '1',
+  `sharing_category` tinyint(4) NOT NULL DEFAULT '1',
+  `sharing_personaldata` tinyint(4) NOT NULL DEFAULT '0',
+  `sharing_active` tinyint(4) NOT NULL DEFAULT '0',
+  `sharing_date` datetime NOT NULL,
+  `sharing_dateaccess` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `sharing_key` (`sharing_key`),
+  KEY `sharing_url` (`sharing_url`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `sharing`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sharing_log`
+--
+
+CREATE TABLE IF NOT EXISTS `sharing_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sharing_id` int(11) NOT NULL,
+  `sharing_log_date` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `sharing_log`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `twitter`
+--
+
+CREATE TABLE IF NOT EXISTS `twitter` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` int(11) DEFAULT '0',
+  `tweet_from` varchar(100) DEFAULT NULL,
+  `tweet_to` varchar(100) DEFAULT NULL,
+  `tweet_hashtag` varchar(50) DEFAULT NULL,
+  `tweet_link` varchar(100) DEFAULT NULL,
+  `tweet` varchar(255) DEFAULT NULL,
+  `tweet_type` tinyint(4) DEFAULT '1' COMMENT '1 - INBOX, 2 - OUTBOX (From Admin)',
+  `tweet_date` datetime DEFAULT NULL,
+  `hide` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `twitter`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `email` varchar(127) NOT NULL,
+  `username` varchar(31) NOT NULL DEFAULT '',
+  `password` char(50) NOT NULL,
+  `logins` int(10) unsigned NOT NULL DEFAULT '0',
+  `last_login` int(10) unsigned DEFAULT NULL,
+  `notify` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Flag incase admin opts in for email notifications',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_username` (`username`),
+  UNIQUE KEY `uniq_email` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `username`, `password`, `logins`, `last_login`, `notify`, `updated`) VALUES
+(1, 'Administrator', 'ivan.kavuma@appfrica.org', 'admin', 'f8d4091411e4b65b4184048e564282dc33a37b5342fe436e94', 559, 1265631097, 0, '2010-02-08 15:11:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_tokens`
+--
+
+CREATE TABLE IF NOT EXISTS `user_tokens` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `user_agent` varchar(40) NOT NULL,
+  `token` varchar(32) NOT NULL,
+  `created` int(10) unsigned NOT NULL,
+  `expires` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_token` (`token`),
+  KEY `fk_user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `user_tokens`
+--
+
+INSERT INTO `user_tokens` (`id`, `user_id`, `user_agent`, `token`, `created`, `expires`) VALUES
+(1, 1, 'c6768caf6727bffe344be743d34ef49b670b33aa', '6rRDFEzzt8sdOUzCXcFi6Qe85LB7u4Nj', 1265376302, 1266585902),
+(2, 1, 'c6768caf6727bffe344be743d34ef49b670b33aa', 'pLxFk6SRxOX2zaTPC8PjJBvNTMrUvOGM', 1265538149, 1266747749),
+(3, 1, 'c6768caf6727bffe344be743d34ef49b670b33aa', '9uokAuK8ZSC3KfIBqkb91A8q8rgiIVM7', 1265565955, 1266775555);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `verified`
+--
+
+CREATE TABLE IF NOT EXISTS `verified` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `incident_id` bigint(20) DEFAULT NULL,
+  `idp_id` bigint(20) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `verified_comment` longtext,
+  `verified_date` datetime DEFAULT NULL,
+  `verified_status` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `verified`
+--
+
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `roles_users`
+--
+ALTER TABLE `roles_users`
+  ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_tokens`
+--
+ALTER TABLE `user_tokens`
+  ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;

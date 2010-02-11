@@ -29,7 +29,7 @@
 				<div class="tabs">
 					<!-- tabset -->
 					<ul class="tabset">
-						<li><a href="<?php echo url::base() . 'admin/manage/feeds' ?>" class="active">Feeds</a></li>
+						<li><a href="<?php echo url::base() . 'admin/feeds' ?>" class="active">Feeds</a></li>
 						<li><a href="<?php echo url::base() . 'admin/manage/feeds_items' ?>">Feed Items</a></li>
 					</ul>
 					
@@ -53,7 +53,11 @@
 							// print "<li>" . $error_description . "</li>";
 							print (!$error_description) ? '' : "<li>" . $error_description . "</li>";
 						}
-						?>
+						
+						
+						?>						
+						
+						
 						</ul>
 					</div>
 				<?php
@@ -63,111 +67,103 @@
 				?>
 					<!-- green-box -->
 					<div class="green-box">
-						<h3>The Feed Has Been <?php echo $form_action; ?>!</h3>
+						<h3>The Feeds Have Been <?php echo $form_action; ?>!</h3>
 					</div>
 				<?php
 				}
 				?>
 				<!-- report-table -->
 				<div class="report-form">
-					<?php print form::open(NULL,array('id' => 'feedListing',
-					 	'name' => 'feedListing')); ?>
+				 		<?php print form::open(NULL, array('enctype' => 'multipart/form-data', 'id' => 'feedForm', 'name' => 'feedForm', 'class' => 'gen_forms')); ?>
 						<input type="hidden" name="action" id="action" value="">
 						<input type="hidden" name="feed_id" id="feed_id_action" value="">
 						<div class="table-holder">
-							<table class="table">
+							<table class="tables" border=0>
 								<thead>
 									<tr>
-										<th class="col-1">&nbsp;</th>
-										<th class="col-2">Feed</th>
-										<th class="col-3">Items</th>
-										<th class="col-4">Actions</th>
+										<th width="30%" ></th>
+										<th width="30%" ></th>
+										<th width="30%" ></th>
 									</tr>
 								</thead>
-								<tfoot>
-									<tr class="foot">
-										<td colspan="4">
-											<?php echo $pagination; ?>
-										</td>
-									</tr>
-								</tfoot>
 								<tbody>
+									<tr>
+										<td width="30%" ><h4>ADD TWITER NAMES<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div></h4></th>
+										<td width="30%" ><h4>ADD BLOG FEEDS<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div></h4></th>
+										<td width="30%" ><h4>SET EMAIL ADDRESS</h4></th>
+									</tr>
 									<?php
-									if ($total_items == 0)
-									{
-									?>
-										<tr>
-											<td colspan="4" class="col">
-												<h3>No Results To Display!</h3>
-											</td>
-										</tr>
-									<?php	
-									}
-									foreach ($feeds as $feed)
-									{
-										$feed_id = $feed->id;
-										$feed_name = $feed->feed_name;
-										$feed_url = $feed->feed_url;
-										$feed_active = $feed->feed_active;
-										$feed_count = ORM::factory('feed_item')->where('feed_id',$feed->id)->count_all();
+											
+											for( $i = 1 ; $i < 7 ;$i++)
+											{
 										?>
 										<tr>
-											<td class="col-1">&nbsp;</td>
-											<td class="col-2">
-												<div class="post">
-													<h4><?php echo $feed_name; ?>&nbsp;&nbsp;&nbsp;[<a href="<?php echo url::base() . 'admin/manage/feeds_items/'.$feed_id ?>">View Items</a>]</h4>
-													<p><?php echo $feed_url; ?></p>
-												</div>
+											<td width="30%" >
+												<?php $cat = "TWITTER";
+															print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '  class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>											
+											</td>	
+											<td  width="30%" >
+												<?php $cat = "BLOGS";
+														print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>			
 											</td>
-											<td><?php echo $feed_count; ?></td>
-											<td class="col-4">
-												<ul>
-													<li class="none-separator"><a href="#add" onClick="fillFields('<?php echo(rawurlencode($feed_id)); ?>','<?php echo(rawurlencode($feed_name)); ?>','<?php echo(rawurlencode($feed_url)); ?>')">Edit</a></li>
-													<li class="none-separator"><a href="javascript:feedAction('v','SHOW/HIDE','<?php echo(rawurlencode($feed_id)); ?>')"<?php if ($feed_active) echo " class=\"status_yes\"" ?>>Visible</a></li>
-													<li><a href="javascript:feedAction('d','DELETE','<?php echo(rawurlencode($feed_id)); ?>')" class="del">Delete</a></li>
-												</ul>
-											</td>
+											<td>
+														<?php  
+																	
+																	if ($i == 1 || $i == 5)
+																	{
+																		$cat = $i == 1?"EMAILS":"SMS";
+																		
+																		//Note the first value of phone number was assigned to id 1 from the start.
+																		print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url1'] , '   class="text long3" ');	
+																	}
+																	if ($i == 4 )
+																	{
+																		echo "<H4>SET PHONE NUMBER</H4>";
+																	}
+														?>									
+											
+											 </td>
+										</tr>
+											<?php } ?>	
+										<tr>
+										<td width="30%" ><br/><h4>ADD NEWS FEEDS<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div></h4></th>
+										<td width="30%" ><br/><h4>OTHER FEED SOURCES<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div></h4></th>
+										<td width="30%" ><br/><h4>ADD TWITER SEARCH<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div><!--SMS --></h4></th>
+									</tr>
+									<?php 
+											for( $i = 1 ; $i < 7 ;$i++)
+											{ ?>
+									
+										<tr>
+											<td  width="30%" >
+												<?php $cat = "NEWS"; 
+															print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>	
+											<td  width="30%" >
+												<?php $cat = "OTHERS";
+														print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>
+											<td  width="30%" >
+												<?php $cat = "TWITTERSEARCH";
+														print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+													<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>
 										</tr>
 										<?php
 									}
 									?>
+									<tr><td></td><td></td><td>
+									<div class="tab_form_item">
+							&nbsp;<br />
+							<input type="image" src="<?php echo url::base() ?>media/img/admin/btn-save.gif" class="save-rep-btn" />
+						</div>
+						<?php print form::close(); ?>	
+						</td></tr>
 								</tbody>
 							</table>
 						</div>
 					<?php print form::close(); ?>
 				</div>
 				
-				<!-- tabs -->
-				<div class="tabs">
-					<!-- tabset -->
-					<a name="add"></a>
-					<ul class="tabset">
-						<li><a href="#" class="active">Add/Edit</a></li>
-					</ul>
-					<!-- tab -->
-					<div class="tab">
-						<?php print form::open(NULL,array('id' => 'feedMain',
-						 	'name' => 'feedMain')); ?>
-						<input type="hidden" id="feed_id" 
-							name="feed_id" value="" />
-						<input type="hidden" id="feed_active" 
-							name="feed_active" vaule="" />
-						<input type="hidden" name="action" 
-							id="action" value=""/>
-						<div class="tab_form_item">
-							<strong>Feed Name:</strong><br />
-							<?php print form::input('feed_name', '', 
-							' class="text"'); ?>
-						</div>
-						<div class="tab_form_item">
-							<strong>Feed URL:</strong><br />
-							<?php print form::input('feed_url', '', ' class="text long"'); ?>
-						</div>						
-						<div class="tab_form_item">
-							&nbsp;<br />
-							<input type="image" src="<?php echo url::base() ?>media/img/admin/btn-save.gif" class="save-rep-btn" />
-						</div>
-						<?php print form::close(); ?>			
-					</div>
-				</div>
 			</div>

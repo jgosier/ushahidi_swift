@@ -28,7 +28,7 @@
 				<div class="tabs">
 					<!-- tabset -->
 					<ul class="tabset">
-						<li><a href="<?php echo url::base() . 'admin/manage/feeds' ?>">Feeds</a></li>
+						<li><a href="<?php echo url::base() . 'admin/feeds' ?>">Feeds</a></li>
 						<li><a href="<?php echo url::base() . 'admin/manage/feeds_items' ?>" class="active">Feed Items</a></li>
 					</ul>
 				

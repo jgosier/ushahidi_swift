@@ -28,13 +28,15 @@
 							</div>
 						
 							<ul class="category-filters">
-								<li><a class="active" id="cat_0" href="#"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">All Categories</div></a></li>
+								
+								<li><a  <?php	if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="/main/index/page/1/category/0"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">All Categories</div></a></li>
 								<?php
 									foreach ($categories as $category => $category_info)
 									{
+										$setactive = $selected_category == $category? " class='active' " :"" ;
 										$category_title = $category_info[0];
 										$category_color = $category_info[1];
-										echo '<li><a href="#" id="cat_'. $category .'"><div class="swatch" style="background-color:#'.$category_color.'"></div><div class="category-title">'.$category_title.'</div></a></li>';
+										echo '<li><a '.$setactive.' href="/main/index/page/1/category/'.$category.'" id="cat_'. $category .'"><div class="swatch" style="background-color:#'.$category_color.'"></div><div class="category-title">'.$category_title.'</div></a></li>';
 										// Get Children
 										echo '<div class="hide" id="child_'. $category .'">';
 										foreach ($category_info[2] as $child => $child_info)
@@ -135,11 +137,54 @@
 </div>
 								</div>
 								<!-- / filters -->
-						
+								<div>
+									<table class="table-list">
+										<!--<thead>
+											<tr>
+												<th scope="col"><?php echo Kohana::lang('ui_main.title'); ?></th>
+												<th scope="col"><?php echo Kohana::lang('ui_main.source'); ?></th>
+												<th scope="col"><?php echo Kohana::lang('ui_main.date'); ?></th>
+											</tr>
+										</thead> -->
+										<tbody>
+											<?php
+											foreach ($feeds as $feed)
+											{
+												$feed_id = $feed->id;
+												$feed_title = text::limit_chars($feed->item_title, 40, '...', True);
+												$feed_link = $feed->item_link;
+												$feed_date = date('M j Y h:m', strtotime($feed->item_date));
+												//$feed_source = text::limit_chars($feed->feed->item_name, 15, "...");
+											?>
+											<tr>
+												<td><div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
+												  <a href="<?php echo $feed_link; ?>" target="_blank">
+														<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+													</a><br/> <span style="font-weight:bold;color:#660033">100%</span>
+													 </div>
+												</td>
+												<td style="border-bottom:2px solid #AAAAAA;"> <?php echo $feed->item_description ;?>  ...
+															<br/>
+													Delivered By: <?php echo $feed->item_date ; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp;  Source:<?php echo $feed->item_source; ?>   <br>
+													 <img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+													 
+													</td>
+											</tr>
+											<?php
+											}
+											?>
+										</tbody>
+									</table>
+									<div style="align:bottom;">
+									<?php echo $pagination; ?>
+									</div>
+									<!--<a class="more" href="<?php echo url::base() . 'feeds' ?>">View More...</a> -->
+							</div>
 								<!-- map -->
+								<!--
 								<?php
 									// My apologies for the inline CSS. Seems a little wonky when styles added to stylesheet, not sure why.
-								?>
+									?>
 								<div class="<?php echo $map_container; ?>" id="<?php echo $map_container; ?>" <?php if($map_container === 'map3d') { echo 'style="width:573px; height:573px;"'; } ?>></div> 
 								<?php if($map_container === 'map') { ?>
 								<div class="slider-holder">
@@ -153,7 +198,7 @@
 										</fieldset>
 									</form>
 								</div>
-								<?php } ?>
+								<?php } ?> -->
 								<!-- / map -->
 								<div id="graph" class="graph-holder"></div>
 							</div>
@@ -209,42 +254,13 @@
 
 								</tbody>
 							</table>
-							<a class="more" href="<?php echo url::base() . 'reports/' ?>">View More...</a>
+							 <a class="more" href="<?php echo url::base() . 'reports/' ?>">View More...</a> 
 						</div>
 						<!-- / left content block -->
 				
 						<!-- right content block -->
 						<div class="content-block-right">
-							<h5><?php echo Kohana::lang('ui_main.official_news'); ?></h5>
-							<table class="table-list">
-								<thead>
-									<tr>
-										<th scope="col"><?php echo Kohana::lang('ui_main.title'); ?></th>
-										<th scope="col"><?php echo Kohana::lang('ui_main.source'); ?></th>
-										<th scope="col"><?php echo Kohana::lang('ui_main.date'); ?></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php
-									foreach ($feeds as $feed)
-									{
-										$feed_id = $feed->id;
-										$feed_title = text::limit_chars($feed->item_title, 40, '...', True);
-										$feed_link = $feed->item_link;
-										$feed_date = date('M j Y', strtotime($feed->item_date));
-										$feed_source = text::limit_chars($feed->feed->feed_name, 15, "...");
-									?>
-									<tr>
-										<td><a href="<?php echo $feed_link; ?>" target="_blank"><?php echo $feed_title ?></a></td>
-										<td><?php echo $feed_source; ?></td>
-										<td><?php echo $feed_date; ?></td>
-									</tr>
-									<?php
-									}
-									?>
-								</tbody>
-							</table>
-							<a class="more" href="<?php echo url::base() . 'feeds' ?>">View More...</a>
+						
 						</div>
 						<!-- / right content block -->
 				

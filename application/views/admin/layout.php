@@ -153,6 +153,9 @@
 					<li><a href="<?php echo url::base() ?>admin/comments" <?php if($this_page=="comments") echo "class=\"active\"" ;?>>
 						<?php echo Kohana::lang('ui_admin.comments');?>
 						</a></li>
+					<li><a href="<?php echo url::base() ?>admin/feeds" <?php if($this_page=="feeds") echo "class=\"active\"" ;?>>
+						<?php //echo Kohana::lang('ui_admin.feeds');?>Feeds
+						</a></li>
 					<li><a href="<?php echo url::base() ?>admin/messages" <?php if($this_page=="messages") echo "class=\"active\"" ;?>>
 						<?php echo Kohana::lang('ui_admin.messages');?>
 						</a></li>
