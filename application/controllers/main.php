@@ -131,13 +131,42 @@ class Main_Controller extends Template_Controller {
         // Get tracking javascript for stats
         $this->template->footer->ushahidi_stats = $this->_ushahidi_stats();
     }
+    
 
-
-		private function get_new_feeds()
+		/**
+		*		This function help the tagging feeds
+		*/
+		public function tagging($feed,$object_id)
 		{
+					if($_POST)
+					{
+						if(ORM::factory('tags')->where('tagged_id',$object_id)->where('tablename','feed_item')->count_all() == 0)
+						{	$tags = new Tags_Model();
+							$tags->tagged_id = $object_id;
+							$tags->tablename = 'feed_item';
+							$tags->tags = $_POST["tag_$object_id"];
+							$tags->save();
+						}
+						else
+						{
+								$tags = ORM::factory('tags')->where('tagged_id',$object_id)->where('tablename','feed_item')->find(1);
+								$tagnew_tags = $tags->tags." ".$_POST["tag_$object_id"];
+																
+								$db = new Database();
+								$db->query("UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags->id);
+											
+						}	
+					}				
+					url::redirect("/main/");	
+		}
 
-					
-				//get all the admin feeds in database.
+		
+	/**
+	*
+	*   //get all the admin feeds in database.
+	*/
+		private function get_new_feeds()
+		{  //get all the admin feeds in database.
 				foreach (ORM::factory('feed')->select('id','feed_url','category_id')->find_all() as $dbfeed )
 				{				
 						//Don't do anything about twitter categories.
@@ -248,17 +277,6 @@ This is the index function called by default.
 		}
 		$this->template->content->shares = $shares;
 		
-        // Get Reports
-        // XXX: Might need to replace magic no. 8 with a constant
-        $this->template->content->total_items = ORM::factory('incident')
-            ->where('incident_active', '1')
-            ->limit('8')->count_all();
-        $this->template->content->incidents = ORM::factory('incident')
-            ->where('incident_active', '1')
-			->limit('10')
-            ->orderby('incident_date', 'desc')
-			->with('location')
-            ->find_all();
 		
 		// Get Default Color
 		$this->template->content->default_map_all = Kohana::config('settings.default_map_all');
@@ -306,9 +324,11 @@ This is the index function called by default.
 										item_description,
 										item_link, 
 										item_date, 
+										 t.tags AS tags,
 										item_source 
-												FROM feed_item f WHERE ".$category_filter;
-		
+												FROM feed_item f LEFT OUTER JOIN tags t  ON t.tagged_id = f.id AND t.tablename = 'feed_item'
+												WHERE ".$category_filter;
+								
 		if($category_id == 1)
 		{ 	
 			$sql .=		"UNION 					SELECT 
@@ -318,14 +338,15 @@ This is the index function called by default.
 											//ISNULL(m.message,'') + ' ' + ISNULL (message_detail,'') as item_description,
 			 $sql .=	  		"m.service_messageid as item_link,
 											m.message_date as item_date,
+											 t.tags AS tags,
 											m.message_from as item_source
-											FROM message m WHERE m.message <> '' or m.message_detail <> ''
+											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
 											ORDER BY item_date desc 
 											";
 			}							
 
 		 $db=new Database;
-			$res1 = $db->query($sql );
+			$Feedcounts = $db->query($sql );
 			
 		
 		$pagination = new Pagination(array(
@@ -333,16 +354,22 @@ This is the index function called by default.
 				'uri_segment' => 'page',
 				'items_per_page' => (int) $numItems_per_page,
 				'style' => 'digg',
-				'total_items' => $res1->count()
+				'total_items' => $Feedcounts->count()
 				));
 				
-		//	echo	$sql." Limit ".$numItems_per_page." , ".$numItems_per_page*$page_no ;
+			//echo	$sql." Limit ".$numItems_per_page." , ".$numItems_per_page*$page_no ;
 		
 		//	exit(0);
-	
-	    $result = $db->query($sql." Limit ".$numItems_per_page*$page_no ." , ".$numItems_per_page);
+	  $Feedlist = $db->query($sql." Limit ".$numItems_per_page*$page_no ." , ".$numItems_per_page);
 		// Get RSS News Feeds
-		$this->template->content->feeds = $result;
+		$this->template->content->feeds = $Feedlist;
+					
+			  // Get Summary
+        // XXX: Might need to replace magic no. 8 with a constant
+        $this->template->content->feedcounts = $Feedcounts->count();        
+        
+        $this->template->content->feedsummary = $db->query(" SELECT f.feed_name,f.feed_url,count(fi.id) as total FROM `feed` f ,feed_item fi WHERE fi.feed_id = f.id GROUP BY f.feed_name ");
+		
 		
 		$this->template->content->pagination = $pagination;
 		$this->template->content->selected_category = $category_id;

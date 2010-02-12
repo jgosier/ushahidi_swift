@@ -201,16 +201,18 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 												<td style="border-bottom:2px solid #AAAAAA;"> <?php echo $feed->item_description ;?>  ...
 															<br/>
 													Delivered on: <?php echo $feed->item_date ; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp;  Source:<?php echo $feed->item_source; ?>   <br>
-													 <form id="formtag<?php echo $feed_id ;?>" method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>" >
-													 <a href="#" onclick="javascript:submitTag('<?php echo $feed_id ;?>')" >
+																										
+													 <form id="formtag<?php echo $feed_id ;?>" name="formtag<?php echo $feed_id ;?>"  method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>" >
+													 <a href="javascript:submitform('formtag<?php echo $feed_id ;?>')" >
 													 <img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-													 <input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />
+													 <input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;<?php echo $feed->tags; ?>
+													 <div style="float:right">
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 <img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													 
+													 </div>
 													 
 													 </form>
 													</td>
@@ -265,42 +267,34 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 							<h5><?php echo Kohana::lang('ui_main.incidents_listed'); ?></h5>
 							<table class="table-list">
 								<thead>
-									<tr>
+								<!--	<tr>
 										<th scope="col" class="title"><?php echo Kohana::lang('ui_main.title'); ?></th>
 										<th scope="col" class="location"><?php echo Kohana::lang('ui_main.location'); ?></th>
 										<th scope="col" class="date"><?php echo Kohana::lang('ui_main.date'); ?></th>
-									</tr>
+									</tr> -->
 								</thead>
 								<tbody>
 									<?php
-	 								if ($total_items == 0)
+	 								if ($feedcounts == 0)
 									{
 									?>
 									<tr><td colspan="3">No Reports In The System</td></tr>
 
 									<?php
 									}
-									foreach ($incidents as $incident)
+									foreach ($feedsummary as $feedsum)
 									{
-										$incident_id = $incident->id;
-										$incident_title = text::limit_chars($incident->incident_title, 40, '...', True);
-										$incident_date = $incident->incident_date;
-										$incident_date = date('M j Y', strtotime($incident->incident_date));
-										$incident_location = $incident->location->location_name;
-									?>
+											?>
 									<tr>
-										<td><a href="<?php echo url::base() . 'reports/view/' . $incident_id; ?>"> <?php echo $incident_title ?></a></td>
-										<td><?php echo $incident_location ?></td>
-										<td><?php echo $incident_date; ?></td>
+										<td><a href="<?php echo $feedsum->feed_url; ?>"> <?php echo $feedsum->feed_name; ?></a></td>
+										<td><?php echo $feedsum->total;  ?></td>
 									</tr>
 									<?php
 									}
 									?>
-
 								</tbody>
 							</table>
-							 <a class="more" href="<?php echo url::base() . 'reports/' ?>">View More...</a> 
-						</div>
+							</div>
 						<!-- / left content block -->
 				
 						<!-- right content block -->
