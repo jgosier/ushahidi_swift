@@ -72,6 +72,8 @@ final class Kohana {
 	{
 		static $run;
 
+
+
 		// This function can only be run once
 		if ($run === TRUE)
 			return;

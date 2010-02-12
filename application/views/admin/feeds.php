@@ -1,6 +1,6 @@
 <?php 
 /**
- * Feeds view page.
+ * Feeds $form page.
  *
  * PHP version 5
  * LICENSE: This source file is subject to LGPL license 
@@ -19,7 +19,7 @@
 					<a href="<?php echo url::base() . 'admin/manage/forms' ?>">Forms</a>
 					<a href="<?php echo url::base() . 'admin/manage/organizations' ?>">Organizations</a>
 					<a href="<?php echo url::base() . 'admin/manage/pages' ?>">Pages</a>
-					<a href="<?php echo url::base() . 'admin/manage/feeds' ?>" class="active">News Feeds</a>
+					<a href="<?php echo url::base() . 'admin/feeds' ?>" class="active">News Feeds</a>
 					<span>(<a href="#add">Add New</a>)</span>
 					<a href="<?php echo url::base() . 'admin/manage/layers' ?>">Layers</a>
 					<a href="<?php echo url::base() . 'admin/manage/reporters' ?>">Reporters</a>
@@ -100,23 +100,23 @@
 										<tr>
 											<td width="30%" >
 												<?php $cat = "TWITTER";
-															print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '  class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>											
+															print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '  class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>											
 											</td>	
 											<td  width="30%" >
 												<?php $cat = "BLOGS";
-														print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>			
+														print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>			
 											</td>
 											<td>
 														<?php  
 																	
 																	if ($i == 1 || $i == 5)
 																	{
-																		$cat = $i == 1?"EMAILS":"SMS";
+																		$cat = $i == 1?"EMAIL":"SMS";
 																		
 																		//Note the first value of phone number was assigned to id 1 from the start.
-																		print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url1'] , '   class="text long3" ');	
+																		print form::input($cat,$form[$cat] , '   class="text long3" ');	
 																	}
 																	if ($i == 4 )
 																	{
@@ -130,7 +130,7 @@
 										<tr>
 										<td width="30%" ><br/><h4>ADD NEWS FEEDS<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div></h4></th>
 										<td width="30%" ><br/><h4>OTHER FEED SOURCES<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div></h4></th>
-										<td width="30%" ><br/><h4>ADD TWITER SEARCH<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div><!--SMS --></h4></th>
+										<td width="30%" ><br/><h4>ADD TWITER SEARCH<!--<div style="float:right">T&nbsp;&nbsp;&nbsp;&nbsp; </div>--><!--SMS --></h4></th>
 									</tr>
 									<?php 
 											for( $i = 1 ; $i < 7 ;$i++)
@@ -139,16 +139,16 @@
 										<tr>
 											<td  width="30%" >
 												<?php $cat = "NEWS"; 
-															print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>	
+															print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>	
 											<td  width="30%" >
 												<?php $cat = "OTHERS";
-														print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>
+														print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>
 											<td  width="30%" >
-												<?php $cat = "TWITTERSEARCH";
-														print form::input($cat.'feed_url'.$i,$formfields[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-													<?php print form::checkbox($cat.'weight'.$i,$formfields[$cat.'weight'.$i], $formfields[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>
+												<?php $cat = "hashtag";
+														print form::input($cat.$i,$form[$cat.$i] , '   class="text long3" '); ?>
+												<!--	<?php //print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>	-->	</td>
 										</tr>
 										<?php
 									}

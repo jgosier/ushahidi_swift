@@ -12,6 +12,9 @@
  * @copyright  Ushahidi - http://www.ushahidi.com
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
  */
+ 
+ require(APPPATH.'controllers/admin/messages.php');
+ 
 class Main_Controller extends Template_Controller {
 
     public $auto_render = TRUE;
@@ -135,29 +138,46 @@ class Main_Controller extends Template_Controller {
 
 					
 				//get all the admin feeds in database.
-				foreach (ORM::factory('feed')->select('id','feed_url')->find_all() as $dbfeed )
+				foreach (ORM::factory('feed')->select('id','feed_url','category_id')->find_all() as $dbfeed )
 				{				
-							
-						$feed = new SimplePie();				
-						$feed->enable_order_by_date(true);
-						$feed->set_feed_url($dbfeed->feed_url);
-						$feed->set_cache_location(APPPATH.'cache');
-						$feed->init();						
-																									
-						foreach($feed->get_items() as $item)
-						{
-							$itemobj = new Feed_Item_Model();		
-							$itemobj->feed_id = $dbfeed->id;
-							$itemobj->item_title = $item->get_title();
-							$itemobj->item_description = $item->get_description();
-							$itemobj->item_link = $item->get_permalink();
-							$itemobj->item_description = $item->get_description();
-							$itemobj->item_date = date($item->get_date('Y m d h:m:s'));
-						//	$itemobj->item_source = $item->get_author(); //temporary not working.
-							if(count(ORM::factory('feed_item')->where('item_link',$item->get_permalink())->find_all()) == 0)	
-							 {
-							 		$itemobj->save();
-							 }
+						//Don't do anything about twitter categories.
+						if($dbfeed->category_id != 1 && $dbfeed->category_id != 11 )
+						{	
+								$feed = new SimplePie();				
+								$feed->enable_order_by_date(true);
+								$feed->set_feed_url($dbfeed->feed_url);
+								$feed->set_cache_location(APPPATH.'cache');
+								$feed->set_timeout(20);
+								$feed->init();							
+								$max_items =	$feed->get_item_quantity();								
+								$required_items = 20;
+								$start = 0	;
+																											
+								for($i = $start ;$i < $max_items && $i < $required_items ;$i++)
+								{
+											$item = $feed->get_item($i);
+											$itemobj = new Feed_Item_Model();		
+											$itemobj->feed_id = $dbfeed->id;
+											$itemobj->item_title = $item->get_title();
+											$itemobj->item_description = $item->get_description();
+											$itemobj->item_link = $item->get_permalink();
+											$itemobj->item_description = $item->get_description();
+											$itemobj->item_date = $item->get_date('Y-m-d h:m:s');
+											if ($author = $item->get_author())
+											{
+													$itemobj->item_source = $item->get_author()->get_name(); //temporary not working.
+											}
+											
+											//echo "in Main Controller itemobj->item_date => ".$itemobj->item_date."<br/>";
+									
+										//		 echo "in Main Controller $dbfeed->feed_url =>  latitude =".$feed->get_latitude().", longitude =".$feed->get_longitude()."<br/>";
+										//echo "in Main Controller $dbfeed->feed_url =>   get_author() => ".$feed->get_author()."<br/>";
+											if(count(ORM::factory('feed_item')->where('item_link',$item->get_permalink())->find_all()) == 0)	
+											 {
+											 		$itemobj->save();
+											 }
+											 
+								}
 						}
 				}
 				
@@ -167,15 +187,19 @@ This is the index function called by default.
 
 
 */
-    public function index($page,$page_no,$catholder="",$category_id = 0)
+    public function index($categoryname="",$category_id = 0,$page,$page_no)
     {		
         $this->template->header->this_page = 'home';
         $this->template->content = new View('main');
 		
-			//try getting new feeds
-		  $this->get_new_feeds();
-		
-		
+			//try getting new feeds and cache them to the database.
+			  $this->get_new_feeds();
+				$message = new Messages_Controller();
+				if($category_id == 1)
+				{
+					$message->load_tweets();
+				}
+			
         // Get all active top level categories
         $parent_categories = array();
         foreach (ORM::factory('category')
@@ -268,28 +292,57 @@ This is the index function called by default.
 		
 
 	// Filter By Category
-		$category_filter = ( isset($category_id) && !empty($category_id) && !$category_id == 0 )
-			? " feed_id in ( SELECT id FROM feed  WHERE category_id = ".$category_id." ) " : " 1=1 ";
+			$categoryYes = ( isset($category_id) && !empty($category_id) && !$category_id == 0 );
+		
+		$category_filter = $categoryYes	? " f.feed_id in ( SELECT id FROM feed  WHERE category_id = ".$category_id." ) " : " 1=1 ";
 	
 //	echo " location /Application/main/index  Category_filter query = ".$category_filter."<br/>";
 
-		$numItems_per_page = 6;
+		$numItems_per_page =  Kohana::config('settings.items_per_page');
 
-	//Set up pagination for the rss feeds.
+		$sql = "	SELECT 
+										f.id as id,
+										item_title,
+										item_description,
+										item_link, 
+										item_date, 
+										item_source 
+												FROM feed_item f WHERE ".$category_filter;
+		
+		if($category_id == 1)
+		{ 	
+			$sql .=		"UNION 					SELECT 
+											m.id as id
+											,m.message as item_title,
+											m.message as item_description,";
+											//ISNULL(m.message,'') + ' ' + ISNULL (message_detail,'') as item_description,
+			 $sql .=	  		"m.service_messageid as item_link,
+											m.message_date as item_date,
+											m.message_from as item_source
+											FROM message m WHERE m.message <> '' or m.message_detail <> ''
+											ORDER BY item_date desc 
+											";
+			}							
+
+		 $db=new Database;
+			$res1 = $db->query($sql );
+			
+		
 		$pagination = new Pagination(array(
-				'base_url' => '/main/index/',
+				'base_url' => '/main/index/category/'.$category_id ,
 				'uri_segment' => 'page',
 				'items_per_page' => (int) $numItems_per_page,
 				'style' => 'digg',
-				'total_items' => ORM::factory('feed_item')->where($category_filter)->count_all()
+				'total_items' => $res1->count()
 				));
+				
+		//	echo	$sql." Limit ".$numItems_per_page." , ".$numItems_per_page*$page_no ;
+		
+		//	exit(0);
 	
-	
+	    $result = $db->query($sql." Limit ".$numItems_per_page*$page_no ." , ".$numItems_per_page);
 		// Get RSS News Feeds
-		$this->template->content->feeds = ORM::factory('feed_item')
-						->where($category_filter)
-            ->orderby('item_date', 'desc')
-            ->find_all( $numItems_per_page ,$numItems_per_page*$page_no);
+		$this->template->content->feeds = $result;
 		
 		$this->template->content->pagination = $pagination;
 		$this->template->content->selected_category = $category_id;
