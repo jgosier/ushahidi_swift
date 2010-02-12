@@ -40,15 +40,42 @@ class Feeds_Controller extends Admin_Controller
 
 		*/
 		$form = array();
-		$categories = ORM::factory('category')->where('category_visible', '1')->orderby('id')->find_all();
+		$num_of_fields_persection = 6;
 		
-		$prev_feeds = ORM::factory('feed')->orderby('category_id')->find_all();
-		$cat_counter = 0;
-		$cat_max = count($prev_feeds);
+		$settings = ORM::factory('settings', 1);
+				
+		$form["EMAIL"] = $settings->site_email;
+		$form["SMS"] = $settings->sms_no1;		
+		$hashtags = explode(',',$settings->twitter_hashtags);
+
+				
+		 	$cat_counter = 0;
+			$cat_max = count($hashtags);
+				
+			for($i=1;$i <= $num_of_fields_persection; $i++)
+			{ 
+				if( $cat_counter < $cat_max ) 
+				{
+						$form["hashtag".$i] = $hashtags[$cat_counter];								
+						$cat_counter++;
+				}
+				else
+				{
+						$form["hashtag".$i] = "";
+				}
+			}
+						
+				
 		
+		
+		$categories = ORM::factory('category')->where('category_visible = 1')->orderby('id')->find_all();								
 		foreach($categories as $cat)
 		{
-				for($i=1;$i<7;$i++)
+				$prev_feeds = ORM::factory('feed')->where('category_id',$cat->id)->find_all();
+				
+				$cat_counter = 0;
+				$cat_max = count($prev_feeds);				
+				for($i=1; $i<= $num_of_fields_persection;$i++)
 				{ 
 					//this section gets the information from the database and sign it to the right fields.
 					if( $cat_counter < $cat_max &&  $prev_feeds[$cat_counter]->category_id == $cat->id) 
@@ -66,10 +93,7 @@ class Feeds_Controller extends Admin_Controller
 							$form[$cat->category_title."weight".$i] = 0 ;
 							$form[$cat->category_title."feed_category".$i] = $cat->id;
 					}
-					
-				//	echo "cat->category_title.feed_url.i => ".$cat->category_title."feed_url".$i."<br/>";
-				}
-							
+				}							
 		}
 		
 				//copy the form as errors, so the errors will be stored with keys corresponding to the form field names
@@ -87,31 +111,47 @@ class Feeds_Controller extends Admin_Controller
 
 					if ($post->validate())
 					{
-					
+							//Delete existing urls and replace them with the ones in the inputbox.
 							  $deleted = ORM::factory('feed')->delete_all();
 							
 							foreach($categories as $cat)
 							{
-									for($i=1;$i<7;$i++)
+									for($i=1; $i<=$num_of_fields_persection ; $i++)
 									{
-										if( isset($_POST[$cat->category_title."feed_url".$i]) )
-										{
-												$this->_save_feed($_POST[$cat->category_title."feed_url".$i],
-																			$cat->id,
-																			$_POST[$cat->category_title."feed_url".$i],
-																			isset($_POST[$cat->category_title."weight".$i])?1:0
-																			);
-											
-										}									
-									
-
+											if( isset($_POST[$cat->category_title."feed_url".$i]) )
+											{
+														$feed_url = $_POST[$cat->category_title."feed_url".$i];
+																							
+														$this->_save_feed($feed_url,
+																						$cat->id,
+																						$feed_url,
+																						isset($_POST[$cat->category_title."weight".$i])?1:0
+																						);																	
+																					
+											}
 									}												
-							}
-									
-										$this->template->content->form_saved = true;
-										$this->template->content->form_action = "Added / Updated"	;	
+							}			
+							
+								
+								$hashtags = isset($_POST["hashtag1"])	&& !empty($_POST["hashtag1"])? $_POST["hashtag1"] : '' ;
+								for($i=2;$i<$num_of_fields_persection  ;$i++)
+							  {					
+										if (isset($_POST["hashtag".$i])	&& !empty($_POST["hashtag".$i]))
+										{	
+											$hashtags .=	",".$_POST["hashtag".$i]	;	
+										}		
+								}
+								//save the hashtags in the settings table.		
+								$settings = new Settings_Model(1);
+								$settings->twitter_hashtags = 	$hashtags;
+								$settings->site_email = $_POST["EMAIL"];
+	 							$settings->sms_no1 =	$_POST["SMS"];
+								$settings->save();
+							
+								$this->template->content->form_saved = true;
+								$this->template->content->form_action = "Added / Updated"	;	
 										
-										url::redirect("/admin/feeds");
+							  url::redirect("/admin/feeds");
 						}
 						else
 						{				
@@ -125,7 +165,7 @@ class Feeds_Controller extends Admin_Controller
 				$this->template->content->errors = $errors;
 			 	$this->template->content->form_error = $form_error;
 				$this->template->content->form_saved = false;
-				$this->template->content->formfields = $form;
+				$this->template->content->form = $form;
 				// Count categories to determine column length
 			
 					
@@ -143,8 +183,7 @@ class Feeds_Controller extends Admin_Controller
 						{					
 								$dbfeed = ORM::factory('feed')->where('feed_url',$feed_url)->find_all();
 								$feed	= $dbfeed[0];
-						}	
-												
+						}													
 						
 						$feed->feed_name = $feed_name == "none" ? $feed_url :$feed_name ;
 						$feed->feed_url = $feed_url;

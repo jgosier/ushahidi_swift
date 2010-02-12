@@ -6,8 +6,8 @@
  */
 
 
-$config['_default'] = 'main/index/page/1/category/0';	
-$config['main'] = 'main/index/page/1/category/0'
+$config['_default'] = 'main/index/category/0/page/1/';	
+$config['main'] = 'main/index/category/0/page/1/'
 
 
 ?>
