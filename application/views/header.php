@@ -115,30 +115,36 @@ function submitform(formname)
 
 		<!-- header -->
 		<div id="header">
-	
+		<?php if (0==1){ // (isset($_SESSION['auth_user'])){ ?>
+			<div class="top">
+				<ul style="color:#fff;">
+					<li class="none-separator"> <?php echo Kohana::lang('ui_admin.welcome');echo $_SESSION['auth_user']->name; ?>!</li>
+					<li><a href="<?php echo url::base() ;?>admin/log_out"><?php echo Kohana::lang('ui_admin.logout');?></a></li>
+				</ul>
+      </div>
+		<?php } ?>
 			<!-- searchbox -->
 			<div id="searchbox">
 				<a class="share addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp;pub=xa-4aee423643f8276e">Share</a>
-
+					<form id="login" name="login" method="POST" action="<?php echo url::base() . "login" ?>">
 				<!-- languages -->
 				<div class="language-box">
-					<form>
-						<?php print form::dropdown('l', $locales_array, $l, ' onChange="this.form.submit()" '); ?>
-					</form>
+				
+						<input type="text" name="username" id="username" class="login_text" value="Username" />
+					
 				</div>
 				<!-- / languages -->
 			
 				<!-- searchform -->
 				<div class="search-form">
-					<form method="get" id="search" action="<?php echo url::base() . 'search/'; ?>">
+					
 						<ul>
-							<li><input type="text" name="k" value="" class="text" /></li>
+							<li><input name="password" type="password" class="login_text" id="password" size="20" value="password" /></li>
 							<li><input type="submit" name="b" class="searchbtn" value="search" /></li>
-						</ul>
-					</form>
+						</ul>					
 				</div>
 				<!-- / searchform -->
-		
+				</form>
 			</div>
 			<!-- / searchbox -->
 		

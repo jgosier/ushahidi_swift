@@ -169,8 +169,12 @@
 														echo Kohana::lang('ui_admin.admin_role');
 													else if ($role == "login")
 														echo Kohana::lang('ui_admin.login_role');
-													else 
-														echo Kohana::lang('ui_admin.superadmin_role');
+													else if ($role == "sweeper")
+														  echo Kohana::lang('ui_admin.sweeper_role');
+													else	
+															echo Kohana::lang('ui_admin.superadmin_role');
+															
+														
 												?>
 											</td>
 											<td class="col-4">

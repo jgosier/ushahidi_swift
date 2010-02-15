@@ -41,7 +41,7 @@ class Main_Controller extends Template_Controller {
 		
         // Load Header & Footer
         $this->template->header  = new View('header');
-        $this->template->footer  = new View('footer');
+        $this->template->footer  = new View('footer');        
 		
 		//call the feedback form
 		$this->_get_feedback_form();
@@ -136,7 +136,7 @@ class Main_Controller extends Template_Controller {
 		/**
 		*		This function help the tagging feeds
 		*/
-		public function tagging($feed,$object_id)
+		public function tagging($feed,$object_id,$cat,$category_id,$page_val,$page_no)
 		{
 					if($_POST)
 					{
@@ -156,8 +156,10 @@ class Main_Controller extends Template_Controller {
 								$db->query("UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags->id);
 											
 						}	
-					}				
-					url::redirect("/main/");	
+					}			
+				//	 echo " _POST['tag_$object_id']=> ".$_POST["tag_$object_id"]."<br/>";
+					url::redirect("/main/index/category/$category_id/page/".$page_no );	
+	
 		}
 
 		
@@ -220,7 +222,12 @@ This is the index function called by default.
     {		
         $this->template->header->this_page = 'home';
         $this->template->content = new View('main');
-		
+        
+        $this->template->content->auth = null;
+       if(isset( $_SESSION['auth_user']))
+       {
+         $this->template->content->auth = $_SESSION['auth_user'] ;
+			 }
 			//try getting new feeds and cache them to the database.
 			  $this->get_new_feeds();
 				$message = new Messages_Controller();
@@ -340,10 +347,11 @@ This is the index function called by default.
 											m.message_date as item_date,
 											 t.tags AS tags,
 											m.message_from as item_source
-											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
-											ORDER BY item_date desc 
-											";
-			}							
+											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  ";
+											
+			}					
+			
+			$sql .= "ORDER BY item_date desc ";		
 
 		 $db=new Database;
 			$Feedcounts = $db->query($sql );
@@ -363,6 +371,7 @@ This is the index function called by default.
 	  $Feedlist = $db->query($sql." Limit ".$numItems_per_page*$page_no ." , ".$numItems_per_page);
 		// Get RSS News Feeds
 		$this->template->content->feeds = $Feedlist;
+		$this->template->content->current_page = $page_no;
 					
 			  // Get Summary
         // XXX: Might need to replace magic no. 8 with a constant

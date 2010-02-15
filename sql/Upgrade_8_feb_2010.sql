@@ -113,3 +113,10 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `tags` varchar(500)DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
+
+
+
+
+
+
+

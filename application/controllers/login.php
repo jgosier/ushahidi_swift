@@ -83,10 +83,23 @@ class Login_Controller extends Template_Controller {
             {
                 $remember = (isset($_POST['remember']))? TRUE : FALSE;
 
-                // Attempt a login
-                if ($auth->login($user, $postdata_array['password'], $remember))
+                // Attempt a login  
+                if ($auth->login($user, $postdata_array['password'], $remember)) 
                 {
+                	foreach ($user->roles as $user_role) {
+											$role = $user_role->name;
+										}
+										
+									if ($role == "sweeper") 
+									{
+									   Session::instance()->set('sweeper',$user);
+									   url::redirect('main');
+									
+									}else
+									{
                     url::redirect('admin/dashboard');
+                  }
+                    
                 }
                 else
                 {

@@ -33,6 +33,7 @@ $lang = array
 	'login_role' => 'Moderator',
 	'admin_role' => 'Admin',
 	'superadmin_role' => 'Super Admin',
+	'sweeper_role' => 'Sweeper',
 	'title' => 'Manage Users',
 	'header_user' => 'User',
 	'header_email' => 'Email',

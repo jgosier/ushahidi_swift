@@ -93,7 +93,7 @@ a:visited{
 	color:#666;
 	font-weight:bold;
 	padding: 2px 2px;
-	background:url(../img/btn_bkg_g.gif) repeat-x left top;
+	background:url(../img/right_arrow.jpg) repeat-x left top;
 	float:left;
 	margin-left:5px;
 }
@@ -114,6 +114,41 @@ a:visited{
 #languages img{
 	border:none;
 }
+
+
+/*-- top --*/
+.top {
+	width:100%;
+	overflow:hidden;
+	clear:both;
+	height:37px;
+}
+.top strong{
+	padding:13px 0 0;
+	font-size:12px;
+	color:#fff;
+	float:left;
+}
+.top ul{
+	margin:0;
+	padding:9px 7px 0 0;
+	float:right;
+}
+.top ul li {
+	font-size:12px;
+	color:#fff;
+	padding:0 3px 0 10px;
+	background:url(../../img/admin/top-separator.gif) no-repeat 0 8px;
+	display:inline;
+	list-style:none;
+}
+.top ul li.none-separator { padding-left:0;}
+.top ul li a{
+	color:#ffa9a9;
+}
+
+
+
 
 /*-----content-----*/
 #content {

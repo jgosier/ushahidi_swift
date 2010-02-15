@@ -48,7 +48,10 @@ class Admin_Controller extends Template_Controller
 		$this->auth->auto_login();
 		
 		if (!$this->auth->logged_in('admin') && !$this->auth->logged_in('login')) {
-			url::redirect('login');
+//			url::redirect('login');
+//		else
+			url::redirect('main');	
+			
 		}
 
 		//fetch latest version of ushahidi
@@ -91,10 +94,16 @@ class Admin_Controller extends Template_Controller
 
 	public function log_out()
 	{
+	
+	//	$redirect_url = ($this->auth->logged_in('sweeper'))? "main" : "login";
+		
+		
 		$auth = new Auth;
 		$auth->logout(TRUE);
 		
-		url::redirect('login');
-	}
+			url::redirect("main");	
+		
+		}
+	
 	
 } // End Admin

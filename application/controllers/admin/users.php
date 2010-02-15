@@ -75,7 +75,7 @@ class Users_Controller extends Admin_Controller
 					
 				// Validate for roles
 				if ($post->role != 'admin' && $post->role != 'login' && 
-					$post->role !='superadmin') {
+					$post->role !='superadmin' && $post->role != 'sweeper') {
 					$post->add_error('role', 'values');
 				}
 				
@@ -133,6 +133,10 @@ class Users_Controller extends Admin_Controller
 							$user->add(ORM::factory('role', 'login'));
 							$user->add(ORM::factory('role', 'admin'));
 							$user->add(ORM::factory('role','superadmin'));
+						}else
+						{
+								$user->add(ORM::factory('role', 'login'));
+								$user->add(ORM::factory('role', $post->role));								
 						}
 						
 						$user->save();
@@ -158,10 +162,15 @@ class Users_Controller extends Admin_Controller
 						else if($post->role == 'login') 
 						{
 							$user->add(ORM::factory('role', 'login'));
+							
 						} else if($post->role == 'superadmin') {
 							$user->add(ORM::factory('role', 'login'));
 							$user->add(ORM::factory('role', 'admin'));
 							$user->add(ORM::factory('role','superadmin'));
+						}else
+						{
+								$user->add(ORM::factory('role', 'login'));
+								$user->add(ORM::factory('role', $post->role));								
 						}
 						
 						$user->save();
@@ -209,15 +218,15 @@ class Users_Controller extends Admin_Controller
                     ->find_all((int) Kohana::config('settings.items_per_page_admin'), 
                         $pagination->sql_offset);
 
-        $this->template->content->form = $form;
-	    $this->template->content->errors = $errors;
+    $this->template->content->form = $form;
+	  $this->template->content->errors = $errors;
 		$this->template->content->form_error = $form_error;
 		$this->template->content->form_saved = $form_saved;
 		$this->template->content->form_action = $form_action;
 		$this->template->content->pagination = $pagination;
 		$this->template->content->total_items = $pagination->total_items;
 		$this->template->content->users = $users;
-		$this->template->content->roles = array("login"=>"Moderator","admin"=>"Admin","superadmin"=>"Super Admin");
+		$this->template->content->roles = array("login"=>"Moderator","admin"=>"Admin","superadmin"=>"Super Admin","sweeper"=>"Sweeper");
 		
 		// Javascript Header
 		$this->template->colorpicker_enabled = TRUE;
