@@ -88,14 +88,17 @@
 
 <!-- this is temporary to the tagging working.-->
 <script type="text/javascript">
-function submitform(formname)
+function submitform(id)
 {  
-    document.forms[formname].submit();
+    var theAction = document.forms['formtag'+id].submit();
+	 /* var tag = document.getElementById('tag_'+id);
+		var url	= 'main/tagging/'+id+'/'+tag.value; 
+  	data = $.get(url);
+	   alert(data.tags);
+     document.getElementById('lbltags_'+id).innerHTML = $.get(url)['tags'];
+   	*/
 }
 </script>
-
-	
-
 
 	<!--[if IE 6]>
 	<script type="text/javascript" src="js/ie6pngfix.js"></script>
@@ -115,34 +118,32 @@ function submitform(formname)
 
 		<!-- header -->
 		<div id="header">
-		<?php if (0==1){ // (isset($_SESSION['auth_user'])){ ?>
-			<div class="top">
-				<ul style="color:#fff;">
-					<li class="none-separator"> <?php echo Kohana::lang('ui_admin.welcome');echo $_SESSION['auth_user']->name; ?>!</li>
-					<li><a href="<?php echo url::base() ;?>admin/log_out"><?php echo Kohana::lang('ui_admin.logout');?></a></li>
-				</ul>
-      </div>
-		<?php } ?>
 			<!-- searchbox -->
 			<div id="searchbox">
 				<a class="share addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp;pub=xa-4aee423643f8276e">Share</a>
 					<form id="login" name="login" method="POST" action="<?php echo url::base() . "login" ?>">
 				<!-- languages -->
-				<div class="language-box">
-				
-						<input type="text" name="username" id="username" class="login_text" value="Username" />
-					
+						<?php if(isset($_SESSION['auth_user'])){ ?>
+							
+							<div class="language-box">
+								<strong>		<?php echo Kohana::lang('ui_admin.welcome');echo $_SESSION['auth_user']->name; ?>! &nbsp;&nbsp;</strong>
+							 </div>
+							<div class="search-form">
+				      			<a href="<?php echo url::base() ;?>admin/log_out"><?php echo Kohana::lang('ui_admin.logout');?></a>
+				      </div>
+						<?php }else{ ?>
+						
+				<!-- / login -->
+				<div class="language-box">				
+						<input type="text" name="username" id="username" class="login_text" value="Username" />					
 				</div>
-				<!-- / languages -->
-			
-				<!-- searchform -->
 				<div class="search-form">
-					
 						<ul>
 							<li><input name="password" type="password" class="login_text" id="password" size="20" value="password" /></li>
-							<li><input type="submit" name="b" class="searchbtn" value="search" /></li>
+							<li><input type="submit" name="b"  value=" Login " style="background:url(../img/right_arrow.JPG) repeat-x left top;" /></li>
 						</ul>					
 				</div>
+					<?php } ?>
 				<!-- / searchform -->
 				</form>
 			</div>

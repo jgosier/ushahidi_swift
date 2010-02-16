@@ -46,12 +46,13 @@ class Admin_Controller extends Template_Controller
 		$this->auth = new Auth();
 		$this->session = Session::instance();
 		$this->auth->auto_login();
+				
+		if ($this->auth->logged_in('login')) {
+		//	url::redirect('main');				
+			// Get Session Information
+				$this->user = new User_Model($_SESSION['auth_user']->id);
 		
-		if (!$this->auth->logged_in('admin') && !$this->auth->logged_in('login')) {
-//			url::redirect('login');
-//		else
-			url::redirect('main');	
-			
+				$this->template->admin_name = $this->user->name;
 		}
 
 		//fetch latest version of ushahidi
@@ -59,10 +60,7 @@ class Admin_Controller extends Template_Controller
 		
 		$this->template->version = $version_number;
 		
-		// Get Session Information
-		$user = new User_Model($_SESSION['auth_user']->id);
-		
-		$this->template->admin_name = $user->name;
+	
 		
 		// Retrieve Default Settings
 		$this->template->site_name = Kohana::config('settings.site_name');
@@ -85,25 +83,42 @@ class Admin_Controller extends Template_Controller
 		// $profiler = new Profiler;		
 		
     }
+    
+  	private function redirect_correctly($user)
+		{
+			if(isset($user)){
+				foreach ($user->roles as $user_role) {
+									$role = $user_role->name;
+								}
+								
+				if ($role == "sweeper") 
+				{
+				   Session::instance()->set('sweeper',$user);
+				   url::redirect('main');
+				
+				}else
+				{
+          url::redirect('admin/dashboard');
+        }
+      }else
+      		url::redirect('main');
+	
+		}  
+    
 
 	public function index()
 	{
 		// Send them to the right page
-		url::redirect('admin/dashboard');
+		$this->redirect_correctly($this->user);
 	}
 
 	public function log_out()
 	{
-	
-	//	$redirect_url = ($this->auth->logged_in('sweeper'))? "main" : "login";
-		
 		
 		$auth = new Auth;
 		$auth->logout(TRUE);
-		
-			url::redirect("main");	
-		
-		}
+			url::redirect("main");			
+	}
 	
 	
 } // End Admin

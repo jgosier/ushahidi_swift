@@ -154,8 +154,8 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 											<?php
 										/*	
 
-											$username = 'kavumaivan';
-											$password = 'Evelyn1';
+											$username = '';
+											$password = '';
 											
 											$twitter  = new Arc90_Service_Twitter($username, $password);
 											$params = array();
@@ -178,9 +178,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 												// Print the exception message (invalid parameter, etc)   
 												print $e->getMessage();   
 										}  
-											
-											
-											echo "</td></tr>";
+													echo "</td></tr>";
 											*/
 															
 											foreach ($feeds as $feed)
@@ -193,9 +191,9 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 											?>
 											<tr>
 												<td><div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
-												  <a href="<?php echo $feed_link; ?>" target="_blank">
+												  <a href="" >
 														<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													</a><br/> <span style="font-weight:bold;color:#660033">100%</span>
+													</a><br/> <span style="font-weight:bold;color:#660033"><?php echo round($feed->weight,0 ); ?>%</span>
 													 </div>
 												</td>
 												<td style="border-bottom:2px solid #AAAAAA;"> <?php echo $feed->item_description ;?>  ...
@@ -203,18 +201,25 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 													Delivered on: <?php echo $feed->item_date ; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp;  Source:<?php echo $feed->item_source; ?>   <br>
 																										
 													 <form id="formtag<?php echo $feed_id ;?>" name="formtag<?php echo $feed_id ;?>"  method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>/category/<?php echo $selected_category ;?>/page/<?php echo $current_page ; ?>" >
-													 <a href="javascript:submitform('formtag<?php echo $feed_id ;?>')" >
+													 <a href="javascript:submitform('<?php echo $feed_id ;?>')" >
 													 <img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-													 <input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;<?php echo $feed->tags; ?>
+													 <input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;
+													 	<label id="lbltags_<?php echo $feed_id; ?>" name="lbltags_<?php echo $feed_id; ?>" >
+														  <?php echo $feed->tags; ?>	
+														</label>												 
+													 </form>
+													 <?php if(isset($_SESSION['auth_user'])){ ?>
 													 <div style="float:right">
+													 <a href="<?php echo $feed_link; ?>" target="_blank">
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+													 </a>
 													 <img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </div>
+													 <?php } ?>
 													 
-													 </form>
 													</td>
 											</tr>
 											<?php

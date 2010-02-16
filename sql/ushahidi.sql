@@ -1488,3 +1488,17 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `tags` varchar(500)DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8  ;
+
+
+
+INSERT INTO `ushahidi`.`roles` (
+`id` ,
+`name` ,
+`description` 
+)
+VALUES (
+'4', 'sweeper', 'Sweeper look throught the feeds and rate the sources of the feeds'
+);
+
+
+ALTER TABLE `reporter` ADD `weight` DECIMAL(10,2) NOT NULL AFTER `reporter_ip` ;
