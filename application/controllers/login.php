@@ -34,6 +34,24 @@ class Login_Controller extends Template_Controller {
 		// $profiler = new Profiler;
     }
 	
+		private function redirect_correctly($user)
+		{
+				foreach ($user->roles as $user_role) {
+									$role = $user_role->name;
+								}
+								
+				if ($role == "sweeper") 
+				{
+				   Session::instance()->set('sweeper',$user);
+				   url::redirect('main');
+				
+				}else
+				{
+          url::redirect('admin/dashboard');
+        }
+	
+		}
+	
     public function index()
     {
         $auth = Auth::instance();
@@ -45,7 +63,7 @@ class Login_Controller extends Template_Controller {
         {
             if ($user = Session::instance()->get('auth_user',FALSE))
             {
-                url::redirect('admin/dashboard');
+                $this->redirect_correctly($user);
             }
         }
 				
@@ -86,20 +104,7 @@ class Login_Controller extends Template_Controller {
                 // Attempt a login  
                 if ($auth->login($user, $postdata_array['password'], $remember)) 
                 {
-                	foreach ($user->roles as $user_role) {
-											$role = $user_role->name;
-										}
-										
-									if ($role == "sweeper") 
-									{
-									   Session::instance()->set('sweeper',$user);
-									   url::redirect('main');
-									
-									}else
-									{
-                    url::redirect('admin/dashboard');
-                  }
-                    
+                		$this->redirect_correctly($user);                    
                 }
                 else
                 {
@@ -135,7 +140,7 @@ class Login_Controller extends Template_Controller {
         {
             if ($user = Session::instance()->get('auth_user',FALSE))
             {
-                url::redirect('admin/dashboard');
+                $this->redirect_correctly($user);    
             }
         }
     	
@@ -222,7 +227,7 @@ class Login_Controller extends Template_Controller {
         {
             if ($user = Session::instance()->get('auth_user',FALSE))
             {
-                url::redirect('admin/dashboard');
+                $this->redirect_correctly($user);    
             }
         }
     	

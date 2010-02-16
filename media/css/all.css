@@ -85,7 +85,7 @@ a:visited{
 #header .search_box{
 	float:left;
 }
-#header input.searchbtn
+#header input.search_btn
 {
 	cursor:pointer;
 	border:outset 1px #ccc;
@@ -93,7 +93,7 @@ a:visited{
 	color:#666;
 	font-weight:bold;
 	padding: 2px 2px;
-	background:url(../img/right_arrow.jpg) repeat-x left top;
+	background:url(../img/right_arrow.JPG) repeat-x left top;
 	float:left;
 	margin-left:5px;
 }
