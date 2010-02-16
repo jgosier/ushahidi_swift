@@ -33,7 +33,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 						
 							<ul class="category-filters">
 								
-								<li><a  <?php	if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="/main/index/category/0/page/1"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">All Categories</div></a></li>
+								<li><a  <?php	if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="/main/index/category/0/page/1"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">ALL SOURCES</div></a></li>
 								<?php
 									foreach ($categories as $category => $category_info)
 									{
@@ -202,7 +202,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 															<br/>
 													Delivered on: <?php echo $feed->item_date ; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp;  Source:<?php echo $feed->item_source; ?>   <br>
 																										
-													 <form id="formtag<?php echo $feed_id ;?>" name="formtag<?php echo $feed_id ;?>"  method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>" >
+													 <form id="formtag<?php echo $feed_id ;?>" name="formtag<?php echo $feed_id ;?>"  method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>/category/<?php echo $selected_category ;?>/page/<?php echo $current_page ; ?>" >
 													 <a href="javascript:submitform('formtag<?php echo $feed_id ;?>')" >
 													 <img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>

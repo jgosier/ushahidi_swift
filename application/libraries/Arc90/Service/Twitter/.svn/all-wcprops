@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/58/trunk/lib/Arc90/Service/Twitter
+END
+Exception.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/28/trunk/lib/Arc90/Service/Twitter/Exception.php
+END
+Response.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/47/trunk/lib/Arc90/Service/Twitter/Response.php
+END
+Search.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/58/trunk/lib/Arc90/Service/Twitter/Search.php
+END
