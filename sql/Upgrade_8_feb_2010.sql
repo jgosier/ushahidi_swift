@@ -103,7 +103,7 @@ INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_
 (7, 0, 'en_US', 5, 'CIVILIANS', 'CIVILIANS', '66CC00', NULL, NULL, 0),
 (8, 0, 'en_US', 5, 'LOOTING', 'LOOTING', 'FFCC00', NULL, NULL, 0),
 (9, 0, 'en_US', 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', NULL, NULL, 0),
-(11, 0, 'en_US', 5, 'TWITTERSEARCH', 'TWTTERSEARCH', 'FFFFFF', NULL, NULL, 0);
+(11, 0, 'en_US', 5, 'TWITTER SEARCH', 'TWTTER SEARCH', 'FFFFFF', NULL, NULL, 1);
 
 
 CREATE TABLE IF NOT EXISTS `tags` (

@@ -81,6 +81,7 @@ class Feeds_Controller extends Admin_Controller
 					if( $cat_counter < $cat_max &&  $prev_feeds[$cat_counter]->category_id == $cat->id) 
 					{
 							$pre_feed	=	$prev_feeds[$cat_counter];
+							$form[$cat->category_title."ID".$i] = $pre_feed->id;
 							$form[$cat->category_title."feed_url".$i] = $pre_feed->feed_url;
 							$form[$cat->category_title."weight".$i] = $pre_feed->weight == 100 ?1:0 ;
 							$form[$cat->category_title."feed_category".$i] = $pre_feed->category_id;
@@ -89,6 +90,7 @@ class Feeds_Controller extends Admin_Controller
 					}
 					else
 					{
+							$form[$cat->category_title."ID".$i] = 0;
 							$form[$cat->category_title."feed_url".$i] = '';
 							$form[$cat->category_title."weight".$i] = 0 ;
 							$form[$cat->category_title."feed_category".$i] = $cat->id;
@@ -111,9 +113,6 @@ class Feeds_Controller extends Admin_Controller
 
 					if ($post->validate())
 					{
-							//Delete existing urls and replace them with the ones in the inputbox.
-							  $deleted = ORM::factory('feed')->delete_all();
-							
 							foreach($categories as $cat)
 							{
 									for($i=1; $i<=$num_of_fields_persection ; $i++)
@@ -122,7 +121,8 @@ class Feeds_Controller extends Admin_Controller
 											{
 														$feed_url = $_POST[$cat->category_title."feed_url".$i];
 																							
-														$this->_save_feed($feed_url,
+														$this->_save_feed($_POST[$cat->category_title."ID".$i],
+																						$feed_url,
 																						$cat->id,
 																						$feed_url,
 																						isset($_POST[$cat->category_title."weight".$i])?1:0
@@ -151,6 +151,7 @@ class Feeds_Controller extends Admin_Controller
 								$this->template->content->form_saved = true;
 								$this->template->content->form_action = "Added / Updated"	;	
 										
+					//	exit(0);
 							  url::redirect("/admin/feeds");
 						}
 						else
@@ -172,26 +173,31 @@ class Feeds_Controller extends Admin_Controller
 	}
 	
 	// STEP 2: SAVE Feed
-	private function _save_feed($feed_url,$feed_category,$feed_name="none",$weight=0)
+	private function _save_feed($feed_id,$feed_url,$feed_category,$feed_name="none",$weight=0)
 	{
-				if(isset($feed_url) && $feed_url != '' && $feed_category > 0 )
+	
+				$feedname = $feed_name == "none" ? $feed_url :$feed_name ;
+				
+				if(isset($feed_url) &&  !empty($feed_url) && $feed_url != '' && $feed_category > 0 )
 				{
 						$feed = new Feed_Model();
 							//if unique url then create new else update old.
 						$numItems = ORM::factory('feed')->where('feed_url',$feed_url)->count_all();
-						if ($numItems > 0)	
-						{					
-								$dbfeed = ORM::factory('feed')->where('feed_url',$feed_url)->find_all();
-								$feed	= $dbfeed[0];
-						}													
-						
-						$feed->feed_name = $feed_name == "none" ? $feed_url :$feed_name ;
-						$feed->feed_url = $feed_url;
-						$feed->weight = (isset($weight) && $weight != 0 )? 100:0;
-						$feed->category_id = $feed_category;	
-						
-									
-						$feed->save();
+						if ($numItems == 0 && $feed_id == 0 )	
+						{		
+								$feed->feed_name = $feedname ;
+								$feed->feed_url = $feed_url;
+								$feed->weight = (isset($weight) && $weight != 0 )? 100:0;
+								$feed->category_id = $feed_category;	
+								$feed->save();
+								
+						}else if($feed_id != 0 )
+						{
+								$db = new Database();
+								$sql = " UPDATE feed SET feed_url = '".$feed_url."' , feed_name = '".$feedname."' 	WHERE id = ".$feed_id ;
+							//				echo $sql."<br/>";						
+								$Result = $db->query($sql);
+						}
 						$send = notifications::notify_admins(
 													"[".Kohana::config('settings.site_name')."] ".
 														Kohana::lang('notifications.admin_new_report.subject'),
