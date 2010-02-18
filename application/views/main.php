@@ -91,16 +91,22 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 							<!-- additional content -->
 							<div class="additional-content">
 								<h5><?php echo Kohana::lang('ui_main.how_to_report'); ?></h5>
+									Help Ushahidi to seperate signal from noice.<br/><br/>
 								<ol>
 									<?php if (!empty($phone_array)) 
-									{ ?><li>By sending a message to <?php foreach ($phone_array as $phone) {
+									{ ?><li>Add or Click on tags to report accuracy<!-- <?php foreach ($phone_array as $phone) {
 										echo "<strong>". $phone ."</strong>";
 										if ($phone != end($phone_array)) {
 											echo " or ";
 										}
-									} ?></li><?php } ?>
+									} ?>-->
+									</li><?php } ?>
+									<li>Dispute Inaccuracies</li>
+									<li>Mark irrelevant content as 'chatter'</li>
 									<?php if (!empty($report_email)) 
-									{ ?><li>By sending an email to <a href="mailto:<?php echo $report_email?>"><?php echo $report_email?></a></li><?php } ?>
+									{ ?><li>Email reports to <a href="mailto:<?php echo $report_email?>"><?php echo $report_email?></a></li><?php } ?>
+									<li>What to do more? <strong>Register</strong></li> to become a sweeper.
+								<!--
 									<?php if (!empty($twitter_hashtag_array)) 
 												{ ?><li>By sending a tweet with the hashtag/s <?php foreach ($twitter_hashtag_array as $twitter_hashtag) {
 									echo "<strong>". $twitter_hashtag ."</strong>";
@@ -109,6 +115,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 									}
 									} ?></li><?php } ?>
 									<li>By <a href="<?php echo url::base() . 'reports/submit/'; ?>">filling a form</a> at the website</li>
+										-->
 								</ol>					
 		
 							</div>
@@ -122,7 +129,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 							<div class="floatbox">
 							
 								<!-- filters -->
-								<div class="filters clearingfix">
+							<!--	<div class="filters clearingfix">
 								<div style="float:left; width: 65%">
 									<strong><?php echo Kohana::lang('ui_main.filters'); ?></strong>
 									<ul>
@@ -140,7 +147,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 										<li><a id="view_1" <?php if($map_enabled === '3dmap') { echo 'class="active" '; } ?>href="#"><span><?php echo Kohana::lang('ui_main.time'); ?></span></a></li>
 </div>
 								</div>
-								<!-- / filters -->
+								< !-- / filters -->
 								<div>
 									<table class="table-list">
 										<!--<thead>
@@ -152,10 +159,11 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 										</thead> -->
 										<tbody>
 											<?php
-										/*	
+									/*		
+											$settings = ORM::factory('settings')->find(1);
 
-											$username = '';
-											$password = '';
+											$username = $settings->twitter_username;
+											$password = $settings->twitter_password;
 											
 											$twitter  = new Arc90_Service_Twitter($username, $password);
 											$params = array();
@@ -178,9 +186,8 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 												// Print the exception message (invalid parameter, etc)   
 												print $e->getMessage();   
 										}  
-													echo "</td></tr>";
-											*/
-															
+												echo "</td></tr>";
+												*/			
 											foreach ($feeds as $feed)
 											{
 												$feed_id = $feed->id;
@@ -252,7 +259,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 								</div>
 								<?php } ?> -->
 								<!-- / map -->
-								<div id="graph" class="graph-holder"></div>
+							<!--	<div id="graph" class="graph-holder"></div> -->
 							</div>
 						</div>
 						<!-- / content column -->

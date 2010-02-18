@@ -147,23 +147,28 @@ class Main_Controller extends Template_Controller {
 						}
 						else
 						{
-								$tags = ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->find(1);
-								$tagnew_tags = $tags->tags." ".$tag;
-																
 								$db = new Database();
-								$db->query("UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags->id);
+							  $sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
+								$tags = $db->query($sql1);
+								$tagnew_tags = $tag." ".$tags[0]->tags ;																
+								$sql2 = "UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags[0]->id;								
+								$db->query($sql2);
 											
 						}	
 		}
 		
 		public function Ajax_tagging($id,$tag)
 		{
-					if(request::is_ajax())
-					{   $this->auto_render=false;
-							$this->update_tags($id,$tag);
-							$tags = ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->find(1);
-							echo json_encode(array('tags' => $tags->tags));		
-					}
+				//	if(request::is_ajax())
+				//	{	
+						$db = new Database();
+					  $this->auto_render=false;
+						$this->update_tags($id,$tag);
+						$sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
+						$tags = $db->query($sql1);
+						$tagnew_tags = $tags[0]->tags ;							
+						echo json_encode(array('tags' => $tagnew_tags));		
+				//	}
 		}
 		
 		/**
@@ -177,9 +182,7 @@ class Main_Controller extends Template_Controller {
 							$this->update_tags($object_id,$_POST["tag_$object_id"]);
 							url::redirect("/main/index/category/$category_id/page/".$page_no );	
 					}			
-				//	 echo " _POST['tag_$object_id']=> ".$_POST["tag_$object_id"]."<br/>";
-				
-	
+
 		}
 
 		
@@ -192,11 +195,22 @@ class Main_Controller extends Template_Controller {
 				foreach (ORM::factory('feed')->select('id','feed_url','category_id')->find_all() as $dbfeed )
 				{				
 						//Don't do anything about twitter categories.
-						if($dbfeed->category_id != 1 && $dbfeed->category_id != 11 )
+						if($dbfeed->category_id != 11 )
 						{	
+								$url = "";
 								$feed = new SimplePie();				
 								$feed->enable_order_by_date(true);
-								$feed->set_feed_url($dbfeed->feed_url);
+								if ($dbfeed->category_id == 1)
+								{
+									$url	= "http://twitter.com/statuses/user_timeline/".$dbfeed->feed_url.".rss";
+									$feed->set_feed_url($url);
+															//	exit(0);
+								}else
+								{
+									$url = $dbfeed->feed_url;
+									$feed->set_feed_url($dbfeed->feed_url);
+								}								
+
 								$feed->set_cache_location(APPPATH.'cache');
 								$feed->set_timeout(10);
 								$feed->init();							
@@ -217,10 +231,8 @@ class Main_Controller extends Template_Controller {
 											if ($author = $item->get_author())
 											{
 													$itemobj->item_source = $item->get_author()->get_name(); //temporary not working.
-											}
-											
-											//echo "in Main Controller itemobj->item_date => ".$itemobj->item_date."<br/>";
-									
+											}											
+										
 										//		 echo "in Main Controller $dbfeed->feed_url =>  latitude =".$feed->get_latitude().", longitude =".$feed->get_longitude()."<br/>";
 										//echo "in Main Controller $dbfeed->feed_url =>   get_author() => ".$feed->get_author()."<br/>";
 											if(count(ORM::factory('feed_item')->where('item_link',$item->get_permalink())->find_all()) == 0)	
@@ -252,7 +264,7 @@ This is the index function called by default.
 			//try getting new feeds and cache them to the database.
 			  $this->get_new_feeds();
 				$message = new Messages_Controller();
-				if($category_id == 1)
+				if($category_id == 11)
 				{
 					$message->load_tweets();
 				}
@@ -359,7 +371,7 @@ This is the index function called by default.
 														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
 												WHERE ".$category_filter;
 								
-		if($category_id == 1)
+		if($category_id == 11)
 		{ 	
 			$sql .=		"UNION 					SELECT 
 											m.id as id

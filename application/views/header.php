@@ -90,14 +90,21 @@
 <script type="text/javascript">
 function submitform(id)
 {  
-    var theAction = document.forms['formtag'+id].submit();
-	 /* var tag = document.getElementById('tag_'+id);
-		var url	= 'main/tagging/'+id+'/'+tag.value; 
-  	data = $.get(url);
-	   alert(data.tags);
-     document.getElementById('lbltags_'+id).innerHTML = $.get(url)['tags'];
-   	*/
-}
+	  var tag = document.getElementById('tag_'+id);
+	  var theurl	= '/main/Ajax_tagging/'+id+'/'+tag.value; 
+		tag.value = "";
+			   $.ajax( //ajax request starting
+				 	{
+		       url: theurl, //send the ajax request to student/delete/$id
+           type:"POST",//request is a POSt request
+		       dataType: "json",//expect json as 
+		       success: function(data) //trigger this on success
+			   	 {
+				   		document.getElementById('lbltags_'+id).innerHTML = data['tags'];
+				   }			   
+		    });		    
+	}
+
 </script>
 
 	<!--[if IE 6]>
