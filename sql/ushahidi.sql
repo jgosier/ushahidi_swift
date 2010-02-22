@@ -1410,23 +1410,22 @@ CREATE TABLE IF NOT EXISTS `feed` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=217 ;
 
----
---- Dumping data for table `feed`
----
+--
+-- Dumping data for table `feed`
+--
 
 INSERT INTO `feed` (`id`, `feed_name`, `feed_url`, `category_id`, `weight`, `feed_cache`, `feed_active`, `feed_update`) VALUES
 (212, 'http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml', 'http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml', 3, '100.00', NULL, 1, 1265631321),
 (213, 'http://www.cnn.com/?eref=rss_topstories', 'http://www.cnn.com/?eref=rss_topstories', 4, '100.00', NULL, 1, 1265631324),
-(214, 'http://rss.news.yahoo.com/rss/business', 'http://rss.news.yahoo.com/rss/business', 5, '100.00', NULL, 1, 1265631332),
-(215, 'http://rss.news.yahoo.com/rss/entertainment', 'http://rss.news.yahoo.com/rss/entertainment', 5, '100.00', NULL, 1, 1265631338),
+(214, 'http://rss.news.yahoo.com/rss/business', 'http://rss.news.yahoo.com/rss/business', 5, '100.00', NULL, 1, 1265631332);
 
 
 
---- --------------------------------------------------------
+-- --------------------------------------------------------
 
----
---- Table structure for table `feed_item`
----
+--
+-- Table structure for table `feed_item`
+--
 DROP TABLE IF EXISTS `feed_item`;
 
 CREATE TABLE IF NOT EXISTS `feed_item` (
@@ -1442,9 +1441,9 @@ CREATE TABLE IF NOT EXISTS `feed_item` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=537 ;
 
----
---- Dumping data for table `feed_item`
----
+--
+-- Dumping data for table `feed_item`
+--
 
 
 DROP TABLE IF EXISTS `category`;
@@ -1463,9 +1462,9 @@ CREATE TABLE IF NOT EXISTS `category` (
   KEY `category_visible` (`category_visible`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
----
---- Dumping data for table `category`
----
+--
+-- Dumping data for table `category`
+--
 
 INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_title`, `category_description`, `category_color`, `category_image`, `category_image_shadow`, `category_visible`) VALUES
 (1, 0, 'en_US', 5, 'TWITTER', 'TWITTER', 'FFFFFF', NULL, NULL, 1),

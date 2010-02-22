@@ -3,23 +3,23 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
---- Generation Time: Feb 08, 2010 at 04:04 PM
---- Server version: 5.1.37
---- PHP Version: 5.3.0
+-- Generation Time: Feb 08, 2010 at 04:04 PM
+-- Server version: 5.1.37
+-- PHP Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
----
---- Database: `ushahidi`
----
+--
+-- Database: `ushahidi`
+--
 
---update as of 15-feb-2010
+-- update as of 15-feb-2010
 
---- --------------------------------------------------------
+-- --------------------------------------------------------
 
----
---- Table structure for table `feed`
----
+--
+-- Table structure for table `feed`
+--
 
 
 

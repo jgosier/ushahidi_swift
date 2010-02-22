@@ -137,30 +137,29 @@ class Main_Controller extends Template_Controller {
 
 		private function update_tags($id,$tag)
 		{
-						if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->count_all() == 0)
-						{	
-							$tags = new Tags_Model();
-							$tags->tagged_id = $id;
-							$tags->tablename = 'feed_item';
-							$tags->tags = $tag;
-							$tags->save();
-						}
-						else
-						{
-								$db = new Database();
-							  $sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
-								$tags = $db->query($sql1);
-								$tagnew_tags = $tag." ".$tags[0]->tags ;																
-								$sql2 = "UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags[0]->id;								
-								$db->query($sql2);
-											
-						}	
+					if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->count_all() == 0)
+					{	
+						$tags = new Tags_Model();
+						$tags->tagged_id = $id;
+						$tags->tablename = 'feed_item';
+						$tags->tags = $tag;
+						$tags->save();
+					}
+					else
+					{
+							$db = new Database();
+						  $sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
+							$tags = $db->query($sql1);
+							$tagnew_tags = $tag." ".$tags[0]->tags ;																
+							$sql2 = "UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags[0]->id;								
+							$db->query($sql2);											
+					}	
 		}
 		
 		public function Ajax_tagging($id,$tag)
 		{
-				//	if(request::is_ajax())
-				//	{	
+					if(request::is_ajax())
+					{	
 						$db = new Database();
 					  $this->auto_render=false;
 						$this->update_tags($id,$tag);
@@ -168,21 +167,19 @@ class Main_Controller extends Template_Controller {
 						$tags = $db->query($sql1);
 						$tagnew_tags = $tags[0]->tags ;							
 						echo json_encode(array('tags' => $tagnew_tags));		
-				//	}
+					}
 		}
 		
 		/**
 		*		This function help the tagging feeds
 		*/
 		public function tagging($feed,$object_id,$cat,$category_id,$page_val,$page_no)
-		{
-			
+		{			
 					if($_POST)
 					{
 							$this->update_tags($object_id,$_POST["tag_$object_id"]);
 							url::redirect("/main/index/category/$category_id/page/".$page_no );	
 					}			
-
 		}
 
 		
