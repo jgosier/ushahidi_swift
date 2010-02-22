@@ -34,3 +34,7 @@ VALUES (
 
 
 ALTER TABLE `reporter` ADD `weight` DECIMAL(10,2) NOT NULL AFTER `reporter_ip` ;
+
+
+
+

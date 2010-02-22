@@ -212,10 +212,11 @@ class Main_Controller extends Template_Controller {
 								$feed->set_timeout(10);
 								$feed->init();							
 								$max_items =	$feed->get_item_quantity();								
-								$required_items = 10;
+								$require_new_items = 20;
+								$new_item_counter = 0;
 								$start = 0	;
 																											
-								for($i = $start ;$i < $max_items && $i < $required_items ;$i++)
+								for($i = $start ;$i < $max_items && $new_item_counter < $require_new_items;$i++)
 								{
 											$item = $feed->get_item($i);
 											$itemobj = new Feed_Item_Model();		
@@ -230,12 +231,18 @@ class Main_Controller extends Template_Controller {
 													$itemobj->item_source = $item->get_author()->get_name(); //temporary not working.
 											}											
 										
-										//		 echo "in Main Controller $dbfeed->feed_url =>  latitude =".$feed->get_latitude().", longitude =".$feed->get_longitude()."<br/>";
+										//echo "in Main Controller $dbfeed->feed_url =>  latitude =".$feed->get_latitude().", longitude =".$feed->get_longitude()."<br/>";
 										//echo "in Main Controller $dbfeed->feed_url =>   get_author() => ".$feed->get_author()."<br/>";
-											if(count(ORM::factory('feed_item')->where('item_link',$item->get_permalink())->find_all()) == 0)	
-											 {
+											$linkCount = ORM::factory('feed_item')->where('item_link',$item->get_permalink())->count_all() ;
+											if($linkCount == 0)	
+											{ 	$new_item_counter++;
+													//  echo "link:=> ".$item->get_permalink()." is new and has appear ".$linkCount." times <br/>";
 											 		$itemobj->save();
-											 }
+										  }
+										  else if($linkCount > 0)
+										  {
+										  //	echo "link:=> ".$item->get_permalink()." appears ".$linkCount." times <br/>";
+										  }
 											 
 								}
 						}
@@ -260,10 +267,11 @@ This is the index function called by default.
 			 }
 			//try getting new feeds and cache them to the database.
 			  $this->get_new_feeds();
-				$message = new Messages_Controller();
+				$messages = new Messages_Controller();
+				$messages->auto_render=false;
 				if($category_id == 11)
 				{
-					$message->load_tweets();
+					$messages->load_tweets();
 				}
 			
         // Get all active top level categories
@@ -411,7 +419,19 @@ This is the index function called by default.
         // XXX: Might need to replace magic no. 8 with a constant
         $this->template->content->feedcounts = $Feedcounts->count();        
         
-        $this->template->content->feedsummary = $db->query(" SELECT f.feed_name,f.feed_url,count(fi.id) as total FROM `feed` f ,feed_item fi WHERE fi.feed_id = f.id GROUP BY f.feed_name ");
+        $feed_summary_sql = "SELECT f.feed_name as feed_name ,f.feed_url as feed_url ,count(fi.id) as total 
+															FROM `feed` f ,feed_item fi 
+															WHERE fi.feed_id = f.id AND f.category_id NOT IN (1,11) GROUP BY f.feed_name 
+															UNION 
+															SELECT f.feed_name as feed_name ,concat('http://twitter.com/statuses/user_timeline/', concat(f.feed_url,'.rss')) as feed_url,count(fi.id) as total 
+															FROM `feed` f ,feed_item fi 
+															WHERE fi.feed_id = f.id AND f.category_id IN (1) GROUP BY f.feed_name 
+															UNION 
+															SELECT  twitter_hashtags as feed_name, concat('http://twitter.com/search?q=', REPLACE(replace(twitter_hashtags,'#',''),',',' ' )) as 
+															feed_url ,count(m.id) as total
+															FROM settings s , message m  Group BY 1";
+															
+        $this->template->content->feedsummary = $db->query($feed_summary_sql);
 		
 		
 		$this->template->content->pagination = $pagination;

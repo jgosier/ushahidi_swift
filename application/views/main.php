@@ -218,7 +218,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 													 </form>
 													 <?php if(isset($_SESSION['auth_user'])){ ?>
 													 <div style="float:right">
-													 <a href="<?php echo $feed_link; ?>" target="_blank">
+													 <a href="http://twitter.com/<?php echo $feed->item_source; ?>" target="_blank">
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
 													 <img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
@@ -290,7 +290,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 	 								if ($feedcounts == 0)
 									{
 									?>
-									<tr><td colspan="3">No Reports In The System</td></tr>
+									<tr><td colspan="3">No Feeds In The System</td></tr>
 
 									<?php
 									}
@@ -298,7 +298,7 @@ require_once APPPATH.'libraries/Arc90/Service/Twitter.php';
 									{
 											?>
 									<tr>
-										<td><a href="<?php echo $feedsum->feed_url; ?>"> <?php echo $feedsum->feed_name; ?></a></td>
+										<td><a href="<?php echo $feedsum->feed_url; ?>" target="_BLANK"> <?php echo $feedsum->feed_name; ?></a></td>
 										<td><?php echo $feedsum->total;  ?></td>
 									</tr>
 									<?php

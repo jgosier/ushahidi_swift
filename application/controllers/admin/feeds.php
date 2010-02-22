@@ -134,11 +134,11 @@ class Feeds_Controller extends Admin_Controller
 							
 								
 								$hashtags = isset($_POST["hashtag1"])	&& !empty($_POST["hashtag1"])? $_POST["hashtag1"] : '' ;
-								for($i=2;$i<$num_of_fields_persection  ;$i++)
+					  		for($i=2;$i<$num_of_fields_persection  ;$i++)
 							  {					
 										if (isset($_POST["hashtag".$i])	&& !empty($_POST["hashtag".$i]))
 										{	
-											$hashtags .=	",".$_POST["hashtag".$i]	;	
+												$hashtags .=	",".$_POST["hashtag".$i]	;													
 										}		
 								}
 								//save the hashtags in the settings table.		
