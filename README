@@ -1,0 +1,38 @@
+==========================
+Ushahidi Swift River 0.0.0
+==========================
+ 
+Swift River is a FOSS platform that verifies crowd sourced reports that are then forwarded on to Ushahidi for mapping. There's a global emergency.  Twitter, blogs and the news are all ablaze with updates and reports.  Swift River is being designed to sit in-between Ushahidi instances and the deluge of information coming from the internet.  The system has a dual function, to help Ushahidi 'sweep' through and find only relevant content (avoiding duplicates and chatter), while also offering the public and casual users a way to identify relevant sources of news on any given subject.
+ 
+It is currently being built as a scalable sister platform to Ushahidi.  It's being build largely on the same codebase (KohanaPHP) with various modules and APIs that power more complex components.
+ 
+Architecture / Roadmap - https://docs.google.com/Doc?docid=0AXtjM3UhUoCeZGZ0azVwYjdfMWdjeDc5Y2Rj&hl=en
+Mockups / UI Design - https://docs.google.com/Doc?docid=0AXtjM3UhUoCeZGZ0azVwYjdfNGN6NXBzc2d4&hl=en
+Other Research - https://docs.google.com/View?docID=0AXtjM3UhUoCeZGZ0azVwYjdfMTBkZ2Q4OGtmMg&revision=_latest
+ 
+On Github - http://github.com/appfrica/ushahidi_swift
+ 
+ 
+===================
+OTHER COMPONENTS
+===================
+ 
+Swift is being constructed with a distributed architecture to spread load across servers.  There are two other components of the system that can also be found on GitHub. Swift User Location Services App (SULSa) and Swift Language Computation Core (SiLCC).
+ 
+SULSa - http://github.com/appfrica/SULSa
+SiLCC - http://github.com/vicmiclovich/SiLCC
+ 
+ 
+===============
+CONTRIBUTORS
+===============
+ 
+Jon Gosier
+Ivan Kavuma
+Maarten J. van der Veen
+ 
+Moses Mugisha (SULSa)
+ 
+Victor Miclovich (SiLCC)
+Wolfgang Werner (SiLCC)
+M. Edward (Ed) Borasky (SiLCC)
