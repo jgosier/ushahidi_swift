@@ -1410,6 +1410,7 @@ CREATE TABLE IF NOT EXISTS `feed` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=217 ;
 
+<<<<<<< HEAD
 ---
 --- Dumping data for table `feed`
 ---
@@ -1427,6 +1428,14 @@ INSERT INTO `feed` (`id`, `feed_name`, `feed_url`, `category_id`, `weight`, `fee
 ---
 --- Table structure for table `feed_item`
 ---
+=======
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feed_item`
+--
+>>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 DROP TABLE IF EXISTS `feed_item`;
 
 CREATE TABLE IF NOT EXISTS `feed_item` (
@@ -1442,9 +1451,15 @@ CREATE TABLE IF NOT EXISTS `feed_item` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=537 ;
 
+<<<<<<< HEAD
 ---
 --- Dumping data for table `feed_item`
 ---
+=======
+--
+-- Dumping data for table `feed_item`
+--
+>>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 
 
 DROP TABLE IF EXISTS `category`;
@@ -1463,9 +1478,15 @@ CREATE TABLE IF NOT EXISTS `category` (
   KEY `category_visible` (`category_visible`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
+<<<<<<< HEAD
 ---
 --- Dumping data for table `category`
 ---
+=======
+--
+-- Dumping data for table `category`
+--
+>>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 
 INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_title`, `category_description`, `category_color`, `category_image`, `category_image_shadow`, `category_visible`) VALUES
 (1, 0, 'en_US', 5, 'TWITTER', 'TWITTER', 'FFFFFF', NULL, NULL, 1),
