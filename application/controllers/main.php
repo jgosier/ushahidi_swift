@@ -131,32 +131,195 @@ class Main_Controller extends Template_Controller {
         // Get tracking javascript for stats
         $this->template->footer->ushahidi_stats = $this->_ushahidi_stats();
     }
+    
+    
+    /**
+    		Mark as irrevant.
+    */
+    public function mark_irrelevant($feedid,$categoryid)
+		{
+				if(request::is_ajax())
+				{	
+						$db = new Database();
+						$this->auto_render=false;
+						$sql1 = "";
+			  		$sql2 = "";
+						$sql3 = "";
+						if($categoryid >= 3 && $categoryid <= 5)
+					  {
+					  		$sql2 = " UPDATE feed_item SET submited_to_ushahidi = 2 WHERE id=".$feedid ;
+						}
+					  else
+				  	{		
+								$sql2 = " UPDATE message SET submited_to_ushahidi = 2 WHERE id=".$feedid ;
+					  }	
+					//	echo $sql2."<br/>";
+						$update = $db->query($sql2);						
+					//	echo json_encode(array('message' => 'feed marked as seen'));		
+				url::redirect("/main/index/category/".$categoryid."/page/1");
+				}
+		}
+		/**
+    		change the weight of the feed source.
+    */
+    
+    public function change_source_rating($feedid,$categoryid,$increment)
+		{
+			//	if(request::is_ajax())
+			//	{	
+						$db = new Database();
+						$this->auto_render=false;
+						$sql1 = "";
+			  		$sql2 = "";
+						$sql3 = "";
+						if($categoryid >= 3 && $categoryid <= 5)
+					  {
+					  		$sql2 = "UPDATE feed SET weight = weight ".$increment." WHERE weight ".$increment." <= 100 AND weight ".$increment." >= 0 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+					  		$sql3 = "SELECT weight FROM feed  WHERE id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+						}
+					  else
+				  	{		$sql2 = "UPDATE reporter SET weight = weight ".$increment." WHERE weight ".$increment." <= 100 AND weight ".$increment." >= 0 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+								$sql3 = "SELECT weight FROM reporter  WHERE id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+					  }	
+					//	echo $sql2."<br/>";
+						$update = $db->query($sql2);
+						$weightrs = $db->query($sql3);
+						$weight_value = round($weightrs[0]->weight,0);
+										  
+						echo json_encode(array('message' => 'Message Sent to Ushahidi','weight'=>$weight_value));		
+				
+			//	}
+		}
+    
+    
+    
+    
+    
+    /**
+    		This function submits reports to the ushahidi instance API
+    */
+    public function submit_report_via_API($feedid,$categoryid)
+		{
+				if(request::is_ajax())
+				{	
+					//get information from the database
+						$db = new Database();
+					  $this->auto_render=false;
+					  $sql1 = "";
+					
+					  //categories news,blogs,others use the feeds table.  others come from the messages table.
+					  if($categoryid >= 3 && $categoryid <= 5)
+					  {
+						$sql1 = "SELECT 	f.id as id,	item_title,		item_description,		item_link, 
+											item_date, 	a.feed_name as item_source,
+											l.longitude,	l.latitude,	l.location_name ,
+											 '' as reporter_first,  '' as reporter_last,  a.feed_name as reporter_email  
+												FROM feed_item f 
+														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
+														 LEFT OUTER JOIN location l ON l.id = f.location_id
+												WHERE f.id = ".$feedid;
+						}
+						else
+						{
+								$sql1 =	" 	SELECT 
+											 m.id as id
+											,m.message as item_title,
+											 m.message as item_description,
+											  CASE r.service_id 
+			 									WHEN 3 THEN CONCAT('http://twitter.com/',m.message_from,'/statuses/',m.service_messageid)
+			 									ELSE '#'
+			 									END as item_link,
+											 m.message_date as item_date,
+											 m.message_from as item_source,
+											 l.longitude,	l.latitude,	l.location_name ,
+											 r.reporter_first,  r.reporter_last ";  
+											 
+									if ($categoryid == 2 )//sms
+											$sql1 .= ", r.reporter_phone as reporter_email" ;		
+									else 
+											$sql1 .= ", r.reporter_email" ; 	 
+											
+									$sql1	.= " FROM message m   
+													LEFT OUTER JOIN reporter r ON r.service_account = m.message_from 
+													LEFT OUTER JOIN location l ON l.id = r.location_id
+												WHERE m.id = ".$feedid ;
+						}
+														 
+						$feeds = $db->query($sql1);
+						$feed = $feeds[0];
+						$xmlcontent = "<?xml version='1.0' encoding='UTF-8'>\n\r";
+				  		
+							$xmlcontent .=	"<root><incident_title>".$feed->item_title."</incident_title>" ; // - Required. The title of the incident/report.
+							$xmlcontent .=	"<incident_description>".$feed->item_description."</incident_description>" ; //incident_description - Required. The description of the incident/report.
+							$xmlcontent .=	"<incident_date>".date('m/d/Y', strtotime($feed->item_date))."</incident_date>" ;//incident_date - Required. The date of the incident/report. It usually in the format mm/dd/yyyy.
+							$xmlcontent .=	"<incident_hour>".(date('h', strtotime($feed->item_date))%12)."</incident_hour>"; //"incident_hour - Required. The hour of the incident/report. In the 12 hour format.
+					  	$xmlcontent .=	"<incident_minute>".date('i', strtotime($feed->item_date))."</incident_minute>"; //incident_minute - Required. The minute of the incident/report.
+							$xmlcontent .=	"<incident_ampm>";
+													 if(date('h', strtotime($feed->item_date))<= 12) $xmlcontent .= "am"; else $xmlcontent .= "pm";
+								 								$xmlcontent .= "</incident_ampm>"; //"incident_ampm - Required. Is the incident/report am or pm. It of the form, am or pm.
+							$xmlcontent .=	"<incident_category>".$categoryid."</incident_category>";//	"incident_category - Required. The categories the incident/report belongs to. It should be a comma separated value csv
+							$xmlcontent .=	"<latitude>".$feed->latitude."</latitude>"; //"latitude - Required. The latitude of the location of the incident report.
+							$xmlcontent .=	"<longitude>".$feed->longitude."</longitude>"; //"longitude - Required. The longitude of the location of the incident/report.
+							$xmlcontent .=	"<location_name>".$feed->location_name."</location_name>"; 	//"location_name - Required. The location of the incident/report.
+							$xmlcontent .=	"<person_first>".$feed->reporter_first."</person_first>"; //person_first - Optional. The first name of the person submitting the incident/report.
+							$xmlcontent .=	"<person_last>".$feed->reporter_last."</person_last>"; //person_last - Optional. The last name of the person submitting the incident/report.
+							$xmlcontent .=	"<person_email>".$feed->reporter_email."</person_email>"; //person_email - Optional. The email address of the person submitting the incident/report.
+							$xmlcontent .=	"<resp>XML</resp></root>"; 	//resp - Optional. The data exchange, either XML or JSON. When not specified, JSON is used.
+								
+						//	echo 	$xmlcontent;
+						//	exit(0);
+/*"
+incident_photo[] - Optional. Photos to accompany the incident/report.
+incident_news - Optional. A news source regarding the incident/report. A news feed.
+incident_video - Optional. A video link regarding the incident/report. Video services like youtube.com, video.google.com, metacafe.com,etc
+ "*/
+							
+						$ch = curl_init(); 
+						curl_setopt($ch, CURLOPT_HEADER, 0); 
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); 
+						curl_setopt($ch, CURLOPT_URL, "http://localhost/swiftriver/api/index/"); 
+						curl_setopt($ch, CURLOPT_POST, 1); 
+						curl_setopt($ch, CURLOPT_POSTFIELDS, "XML=".$xmlcontent); 
+					//	$content=curl_exec($ch); 
+						
+					//	echo $xmlcontent."<br/>";
+				//			echo json_encode(array('message' => $content));		
+						
+				//	}
+						$status = true;
+							
+						if ($status)
+						{
+									  $sql2 = "";
+									  $sql3 = "";
+								if($categoryid >= 3 && $categoryid <= 5)
+							  {
+							  			$sql1 = "UPDATE feed_item SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
+							  			$sql2 = "UPDATE feed SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+							  			$sql3 = "SELECT weight FROM feed  WHERE id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+								}
+							  else
+							  {			$sql1 = "UPDATE message SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
+							  			$sql2 = "UPDATE reporter SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+											$sql3 = "SELECT weight FROM reporter  WHERE id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+							  }	
+								$update = $db->query($sql1);			
+								$update = $db->query($sql2);												  
+								url::redirect("/main/index/category/".$categoryid."/page/1");
+						//		echo json_encode(array('message' => 'Message Sent to Ushahidi'));		
+						}
+						
+			}
+				
+    }
+    
+    
     /**
     	This function update the tags.
     */
 
 		private function update_tags($id,$tag)
 		{
-<<<<<<< HEAD
-						if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->count_all() == 0)
-						{	
-							$tags = new Tags_Model();
-							$tags->tagged_id = $id;
-							$tags->tablename = 'feed_item';
-							$tags->tags = $tag;
-							$tags->save();
-						}
-						else
-						{
-								$db = new Database();
-							  $sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
-								$tags = $db->query($sql1);
-								$tagnew_tags = $tag." ".$tags[0]->tags ;																
-								$sql2 = "UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags[0]->id;								
-								$db->query($sql2);
-											
-						}	
-=======
 					if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->count_all() == 0)
 					{	
 						$tags = new Tags_Model();
@@ -174,18 +337,12 @@ class Main_Controller extends Template_Controller {
 							$sql2 = "UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags[0]->id;								
 							$db->query($sql2);											
 					}	
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 		}
 		
 		public function Ajax_tagging($id,$tag)
 		{
-<<<<<<< HEAD
-				//	if(request::is_ajax())
-				//	{	
-=======
 					if(request::is_ajax())
 					{	
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 						$db = new Database();
 					  $this->auto_render=false;
 						$this->update_tags($id,$tag);
@@ -193,32 +350,19 @@ class Main_Controller extends Template_Controller {
 						$tags = $db->query($sql1);
 						$tagnew_tags = $tags[0]->tags ;							
 						echo json_encode(array('tags' => $tagnew_tags));		
-<<<<<<< HEAD
-				//	}
-=======
 					}
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 		}
 		
 		/**
 		*		This function help the tagging feeds
 		*/
 		public function tagging($feed,$object_id,$cat,$category_id,$page_val,$page_no)
-<<<<<<< HEAD
-		{
-			
-=======
 		{			
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 					if($_POST)
 					{
 							$this->update_tags($object_id,$_POST["tag_$object_id"]);
 							url::redirect("/main/index/category/$category_id/page/".$page_no );	
 					}			
-<<<<<<< HEAD
-
-=======
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 		}
 
 		
@@ -226,9 +370,17 @@ class Main_Controller extends Template_Controller {
 	*
 	*   //get all the admin feeds in database.
 	*/
-		private function get_new_feeds()
+		private function get_new_feeds($category_id)
 		{  //get all the admin feeds in database.
-				foreach (ORM::factory('feed')->select('id','feed_url','category_id')->find_all() as $dbfeed )
+		
+			$dbfeeds = ORM::factory('feed')->select('id','feed_url','category_id')->where('category_id',$category_id)->find_all();
+			
+			if($category_id == 0) 
+			{
+				$dbfeeds	= ORM::factory('feed')->select('id','feed_url','category_id')->find_all();
+			}
+				
+				foreach ($dbfeeds as $dbfeed )
 				{				
 						//Don't do anything about twitter categories.
 						if($dbfeed->category_id != 11 )
@@ -249,36 +401,45 @@ class Main_Controller extends Template_Controller {
 
 								$feed->set_cache_location(APPPATH.'cache');
 								$feed->set_timeout(10);
-								$feed->init();							
+								$feed->init();			
+											
+							//		$channel = $feed->get_feed_tags('', 'channel');
+							//		echo " tags=> ".$channel."<br/>";
+							// echo "$url :<br/>";
+								
+							//	exit(0)				
 								$max_items =	$feed->get_item_quantity();								
-<<<<<<< HEAD
-								$required_items = 10;
-=======
 								$require_new_items = 20;
 								$new_item_counter = 0;
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 								$start = 0	;
 																											
 								for($i = $start ;$i < $max_items && $new_item_counter < $require_new_items;$i++)
 								{
 											$item = $feed->get_item($i);
+											
+								/*				//getting all the feed information.								 
+									echo "$url:  latitude => ".$item->get_latitude();
+									echo "   longitude => ".$item->get_longitude();
+									echo '<a href="' . $feed->get_image_link() . '" title="' . $feed->get_image_title() . '">';
+									echo '<img src="' . $feed->get_image_url() . '" width="' . $feed->get_image_width() . '" height="' . $feed->get_image_height() . '" />';
+									echo '</a><br/>Title:'.$item->get_title();
+									echo '<br/>Description:'.$item->get_description();
+									echo '<hr/>';
+											
+									*/		
+											
 											$itemobj = new Feed_Item_Model();		
 											$itemobj->feed_id = $dbfeed->id;
 											$itemobj->item_title = $item->get_title();
 											$itemobj->item_description = $item->get_description();
 											$itemobj->item_link = $item->get_permalink();
-											$itemobj->item_description = $item->get_description();
 											$itemobj->item_date = $item->get_date('Y-m-d h:m:s');
 											if ($author = $item->get_author())
 											{
 													$itemobj->item_source = $item->get_author()->get_name(); //temporary not working.
 											}											
 										
-<<<<<<< HEAD
-										//		 echo "in Main Controller $dbfeed->feed_url =>  latitude =".$feed->get_latitude().", longitude =".$feed->get_longitude()."<br/>";
-=======
 										//echo "in Main Controller $dbfeed->feed_url =>  latitude =".$feed->get_latitude().", longitude =".$feed->get_longitude()."<br/>";
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 										//echo "in Main Controller $dbfeed->feed_url =>   get_author() => ".$feed->get_author()."<br/>";
 											$linkCount = ORM::factory('feed_item')->where('item_link',$item->get_permalink())->count_all() ;
 											if($linkCount == 0)	
@@ -295,6 +456,7 @@ class Main_Controller extends Template_Controller {
 						}
 				}
 				
+		//		exit(0);
 		 }
 /**
 This is the index function called by default.
@@ -313,13 +475,10 @@ This is the index function called by default.
          $this->template->content->auth = $_SESSION['auth_user'] ;
 			 }
 			//try getting new feeds and cache them to the database.
-			  $this->get_new_feeds();
-<<<<<<< HEAD
-				$message = new Messages_Controller();
-=======
+			  $this->get_new_feeds($category_id);
 				$messages = new Messages_Controller();
 				$messages->auto_render=false;
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
+				
 				if($category_id == 11)
 				{
 					$messages->load_tweets();
@@ -408,43 +567,56 @@ This is the index function called by default.
 	// Filter By Category
 			$categoryYes = ( isset($category_id) && !empty($category_id) && !$category_id == 0 );
 		
-		$category_filter = $categoryYes	? " f.feed_id in ( SELECT id FROM feed  WHERE category_id = ".$category_id." ) " : " 1=1 ";
+		$category_filter = $categoryYes	? "  a.category_id = ".$category_id."  " : " 1=1 ";
 	
 //	echo " location /Application/main/index  Category_filter query = ".$category_filter."<br/>";
 
+
+/*
+CASE a.category_id
+													WHEN 1 THEN concat('http://twitter.com/statuses/user_timeline/',item_link,'.rss')  
+													ELSE item_link
+												END as   
+*/
 		$numItems_per_page =  Kohana::config('settings.items_per_page');
 
 		$sql = "	SELECT 
-										f.id as id,
-										item_title,
-										item_description,
-										item_link, 
-										item_date, 
-										 t.tags AS tags,
-										 a.weight as weight,
-										item_source 
+												f.id as id,
+												item_title,
+												item_description,
+												item_link,												
+												item_date, 
+										 		t.tags AS tags,
+										 		a.weight as weight,
+										 		a.feed_name as item_source,
+										 		a.category_id as category_id
 												FROM feed_item f LEFT OUTER JOIN tags t ON t.tagged_id = f.id AND t.tablename = 'feed_item'
-														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
-												WHERE ".$category_filter;
+														 INNER JOIN feed a ON f.feed_id = a.id 
+												WHERE submited_to_ushahidi = 0 AND ".$category_filter;
 								
-		if($category_id == 11)
+		if($category_id == 11 || $category_id == 10 || $category_id == 2 )
 		{ 	
-			$sql .=		"UNION 					SELECT 
-											m.id as id
+			$sql =	" 	SELECT 
+											 m.id as id
 											,m.message as item_title,
-											m.message as item_description,";
+											 m.message as item_description,";
 											//ISNULL(m.message,'') + ' ' + ISNULL (message_detail,'') as item_description,
-			 $sql .=	  		"m.service_messageid as item_link,
-											m.message_date as item_date,
+			 $sql .=	  		" CASE r.service_id 
+			 									WHEN 3 THEN CONCAT('http://twitter.com/',m.message_from,'/statuses/',m.service_messageid)
+			 									ELSE '#'
+			 									END as item_link,
+											 m.message_date as item_date,
 											 t.tags AS tags,
-											 a.weight as weight,
-											m.message_from as item_source
+											 r.weight as weight,
+											 m.message_from as item_source,
+											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 WHEN 3 THEN 11 END as category_id
 											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
-													LEFT OUTER JOIN reporter a ON a.id = m.reporter_id ";
+													LEFT OUTER JOIN reporter r ON r.service_account = m.message_from 
+													WHERE  submited_to_ushahidi = 0 ";
 											
 			}					
 			
-			$sql .= "ORDER BY item_date desc ";		
+			$sql .= " ORDER BY item_date desc ";		
 
 		 $db=new Database;
 			$Feedcounts = $db->query($sql );
@@ -458,10 +630,10 @@ This is the index function called by default.
 				'total_items' => $Feedcounts->count()
 				));
 				
-			//echo	$sql." Limit ".$numItems_per_page." , ".$numItems_per_page*$page_no ;
-		
+		//	echo	$sql." Limit ".$numItems_per_page." , ".$numItems_per_page*$page_no ;		
 		//	exit(0);
-	  $Feedlist = $db->query($sql." Limit ".$numItems_per_page*$page_no ." , ".$numItems_per_page);
+		
+	  $Feedlist = $db->query($sql." Limit ".$numItems_per_page*($page_no - 1) ." , ".$numItems_per_page);
 		// Get RSS News Feeds
 		$this->template->content->feeds = $Feedlist;
 		$this->template->content->current_page = $page_no;
@@ -470,17 +642,17 @@ This is the index function called by default.
         // XXX: Might need to replace magic no. 8 with a constant
         $this->template->content->feedcounts = $Feedcounts->count();        
         
-        $feed_summary_sql = "SELECT f.feed_name as feed_name ,f.feed_url as feed_url ,count(fi.id) as total 
+        $feed_summary_sql = " SELECT f.feed_name as feed_name ,f.feed_url as feed_url ,count(fi.id) as total 
 															FROM `feed` f ,feed_item fi 
 															WHERE fi.feed_id = f.id AND f.category_id NOT IN (1,11) GROUP BY f.feed_name 
 															UNION 
-															SELECT f.feed_name as feed_name ,concat('http://twitter.com/statuses/user_timeline/', concat(f.feed_url,'.rss')) as feed_url,count(fi.id) as total 
+															SELECT f.feed_name as feed_name ,concat('http://twitter.com/statuses/user_timeline/',f.feed_url,'.rss') as feed_url,count(fi.id) as total 
 															FROM `feed` f ,feed_item fi 
 															WHERE fi.feed_id = f.id AND f.category_id IN (1) GROUP BY f.feed_name 
 															UNION 
 															SELECT  twitter_hashtags as feed_name, concat('http://twitter.com/search?q=', REPLACE(replace(twitter_hashtags,'#',''),',',' ' )) as 
 															feed_url ,count(m.id) as total
-															FROM settings s , message m  Group BY 1";
+															FROM settings s , message m  Group BY 1 ";
 															
         $this->template->content->feedsummary = $db->query($feed_summary_sql);
 		

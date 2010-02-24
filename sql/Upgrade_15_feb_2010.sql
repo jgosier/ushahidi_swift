@@ -36,5 +36,7 @@ VALUES (
 ALTER TABLE `reporter` ADD `weight` DECIMAL(10,2) NOT NULL AFTER `reporter_ip` ;
 
 
+ALTER TABLE `feed_item` ADD `submited_to_ushahidi` TINYINT NOT NULL DEFAULT '0' AFTER `item_source` ;
 
+ALTER TABLE `message` ADD `submited_to_ushahidi` TINYINT NOT NULL DEFAULT '0' AFTER `message_level` ;
 

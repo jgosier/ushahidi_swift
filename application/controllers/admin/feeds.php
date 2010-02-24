@@ -83,7 +83,7 @@ class Feeds_Controller extends Admin_Controller
 							$pre_feed	=	$prev_feeds[$cat_counter];
 							$form[$cat->category_title."ID".$i] = $pre_feed->id;
 							$form[$cat->category_title."feed_url".$i] = $pre_feed->feed_url;
-							$form[$cat->category_title."weight".$i] = $pre_feed->weight == 100 ?1:0 ;
+							$form[$cat->category_title."weight".$i] = $pre_feed->weight ;
 							$form[$cat->category_title."feed_category".$i] = $pre_feed->category_id;
 							
 							$cat_counter++;
@@ -117,7 +117,7 @@ class Feeds_Controller extends Admin_Controller
 							{
 									for($i=1; $i<=$num_of_fields_persection ; $i++)
 									{
-											if( isset($_POST[$cat->category_title."feed_url".$i]) )
+											if( isset($_POST[$cat->category_title."feed_url".$i]) && !empty($_POST[$cat->category_title."feed_url".$i]) )
 											{
 														$feed_url = $_POST[$cat->category_title."feed_url".$i];
 																							
@@ -125,28 +125,25 @@ class Feeds_Controller extends Admin_Controller
 																						$feed_url,
 																						$cat->id,
 																						$feed_url,
-																						isset($_POST[$cat->category_title."weight".$i])?1:0
+																						isset($_POST[$cat->category_title."weight".$i])?100:0
 																						);																	
 																					
+											}
+											else if(isset( $_POST[$cat->category_title."ID".$i]) && $_POST[$cat->category_title."ID".$i] != 0)
+											{	 // delete what the user has deleted.
+													$db = new Database();
+													$db->query("Delete from feed where id=".$_POST[$cat->category_title."ID".$i] );
 											}
 									}												
 							}			
 							
 								
 								$hashtags = isset($_POST["hashtag1"])	&& !empty($_POST["hashtag1"])? $_POST["hashtag1"] : '' ;
-<<<<<<< HEAD
-								for($i=2;$i<$num_of_fields_persection  ;$i++)
-							  {					
-										if (isset($_POST["hashtag".$i])	&& !empty($_POST["hashtag".$i]))
-										{	
-											$hashtags .=	",".$_POST["hashtag".$i]	;	
-=======
 					  		for($i=2;$i<$num_of_fields_persection  ;$i++)
 							  {					
 										if (isset($_POST["hashtag".$i])	&& !empty($_POST["hashtag".$i]))
 										{	
 												$hashtags .=	",".$_POST["hashtag".$i]	;													
->>>>>>> 18b74e170ed12b1bdf93807c2832bdac1e9f68c6
 										}		
 								}
 								//save the hashtags in the settings table.		
@@ -181,7 +178,7 @@ class Feeds_Controller extends Admin_Controller
 	}
 	
 	// STEP 2: SAVE Feed
-	private function _save_feed($feed_id,$feed_url,$feed_category,$feed_name="none",$weight=0)
+	private function _save_feed($feed_id,$feed_url,$feed_category,$feed_name="none",$weight)
 	{
 	
 				$feedname = $feed_name == "none" ? $feed_url :$feed_name ;
@@ -195,14 +192,18 @@ class Feeds_Controller extends Admin_Controller
 						{		
 								$feed->feed_name = $feedname ;
 								$feed->feed_url = $feed_url;
-								$feed->weight = (isset($weight) && $weight != 0 )? 100:0;
+								$feed->weight =  $weight ;
 								$feed->category_id = $feed_category;	
 								$feed->save();
 								
 						}else if($feed_id != 0 )
 						{
 								$db = new Database();
-								$sql = " UPDATE feed SET feed_url = '".$feed_url."' , feed_name = '".$feedname."' 	WHERE id = ".$feed_id ;
+								$sql = " UPDATE feed SET feed_url = '".$feed_url."' , feed_name = '".$feedname."' ";
+								if($weight == 100){
+										$sql .= ", weight= ".$weight."	";
+								}
+								$sql .= " WHERE id = ".$feed_id ;
 							//				echo $sql."<br/>";						
 								$Result = $db->query($sql);
 						}

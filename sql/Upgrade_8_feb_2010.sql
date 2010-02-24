@@ -97,7 +97,7 @@ INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_
 (3, 0, 'en_US', 5, 'BLOGS', 'BLOGS', 'FFFFFF', NULL, NULL, 1),
 (4, 0, 'en_US', 5, 'NEWS', 'NEWS', 'FFFFFF', NULL, NULL, 1),
 (5, 0, 'en_US', 5, 'OTHERS', 'OTHERS', 'FFFFFF', NULL, NULL, 1),
-(10, 0, 'en_US', 5, 'EMAILS', 'EMAILS', 'FFFFFF', NULL, NULL, 0),
+(10, 0, 'en_US', 5, 'EMAILS', 'EMAILS', 'FFFFFF', NULL, NULL, 1),
 (6, 0, 'en_US', 5, 'GOVERNMENT FORCES', 'GOVERNMENT FORCES', '9999FF', NULL, NULL, 0),
 (7, 0, 'en_US', 5, 'CIVILIANS', 'CIVILIANS', '66CC00', NULL, NULL, 0),
 (8, 0, 'en_US', 5, 'LOOTING', 'LOOTING', 'FFCC00', NULL, NULL, 0),
