@@ -104,7 +104,7 @@
 																					id="<?php echo $cat."ID".$i; ?>" 
 																					value="<?php echo $form[$cat.'ID'.$i] ?>" />
 												<?php			print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '  class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>											
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i] >= 100?TRUE:FALSE,' class="check-box"'); ?>											
 											</td>	
 											<td  width="30%" >
 												<?php $cat = "BLOGS"; ?>
@@ -112,7 +112,7 @@
 																					id="<?php echo $cat."ID".$i; ?>" 
 																					value="<?php echo $form[$cat.'ID'.$i] ?>" />
 												<?php		print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>			
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i] >= 100?TRUE:FALSE,' class="check-box"'); ?>			
 											</td>
 											<td>
 														<?php  
@@ -151,14 +151,14 @@
 																					value="<?php echo $form[$cat.'ID'.$i] ?>" />
 												<?php
 															print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>	
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i] >= 100?TRUE:FALSE,' class="check-box"'); ?>		</td>	
 											<td  width="30%" >
 												<?php $cat = "OTHERS"; ?>
 													<input type="hidden" name="<?php echo $cat."ID".$i; ?>" 
 																					id="<?php echo $cat."ID".$i; ?>" 
 																					value="<?php echo $form[$cat.'ID'.$i] ?>" />
 												<?php		print form::input($cat.'feed_url'.$i,$form[$cat.'feed_url'.$i] , '   class="text long3" '); ?>
-												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i]== 1?TRUE:FALSE,' class="check-box"'); ?>		</td>
+												<?php print form::checkbox($cat.'weight'.$i,$form[$cat.'weight'.$i], $form[$cat.'weight'.$i] >= 100?TRUE:FALSE,' class="check-box"'); ?>		</td>
 											<td  width="30%" >
 												<?php $cat = "hashtag"; ?>
 												<?php		print form::input($cat.$i,$form[$cat.$i] , '   class="text long3" '); ?>

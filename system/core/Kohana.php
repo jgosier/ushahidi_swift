@@ -1,3 +1,4 @@
+ * @author     Kohana Team
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * Provides Kohana-specific helper functions. This is where the magic happens!

@@ -88,7 +88,7 @@
 
 <!-- this is temporary to the tagging working.-->
 <script type="text/javascript">
-function submitform(id)
+function submit_tags(id)
 {  
 	  var tag = document.getElementById('tag_'+id);
 	  var theurl	= '/main/Ajax_tagging/'+id+'/'+tag.value; 
@@ -104,6 +104,54 @@ function submitform(id)
 				   }			   
 		    });		    
 	}
+
+function submitfeed_to_ushahidi(id,cat)
+{  
+	   var theurl	= '/main/submit_report_via_API/'+id+'/'+cat; 	  
+			   $.ajax( //ajax request starting
+				 	{
+		       url: theurl, //send the ajax request to student/delete/$id
+           type:"POST",//request is a POSt request
+		       dataType: "json",//expect json as 
+		       success: function(data) //trigger this on success
+			   	 {  //in the future this is suposed to make the this feed this disappear.
+				   		document.getElementById('feed_row_'+id).innerHTML = "" ; 				   	
+						// 	document.getElementById('weight_'+id).innerHTML = data['weight']+'%';
+				   }			   
+		    });		    
+	}
+
+function change_feed_rating(id,cat,increment)
+{  
+	   var theurl	= '/main/change_source_rating/'+id+'/'+cat+'/'+increment; 	  
+			   $.ajax( //ajax request starting
+				 	{
+		       url: theurl, //send the ajax request to student/delete/$id
+           type:"POST",//request is a POSt request
+		       dataType: "json",//expect json as 
+		       success: function(data) //trigger this on success
+			   	 {
+				   		document.getElementById('weight_'+id).innerHTML = data['weight']+'%';
+				   }			   
+		    });		    
+	}
+
+function mark_irrelevant(id,cat)
+{  
+	   var theurl	= '/main/mark_irrelevant/'+id+'/'+cat+'/'; 	  
+			   $.ajax( //ajax request starting
+				 	{
+		       url: theurl, //send the ajax request to student/delete/$id
+           type:"POST",//request is a POSt request
+		       dataType: "json",//expect json as 
+		       success: function(data) //trigger this on success
+			   	 {
+				   		document.getElementById('feed_row_'+id).innerHTML = "" ; 
+				   }			   
+		    });		    
+	}
+	
+	
 
 </script>
 
