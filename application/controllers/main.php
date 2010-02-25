@@ -139,25 +139,26 @@ class Main_Controller extends Template_Controller {
     public function mark_irrelevant($feedid,$categoryid)
 		{
 				if(request::is_ajax())
-				{	
+				{
+
 						$db = new Database();
 						$this->auto_render=false;
 						$sql1 = "";
 			  		$sql2 = "";
 						$sql3 = "";
-						if($categoryid >= 3 && $categoryid <= 5)
+						if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
 					  {
-					  		$sql2 = " UPDATE feed_item SET submited_to_ushahidi = 2 WHERE id=".$feedid ;
+					  		$sql2 = " UPDATE message SET submited_to_ushahidi = 2 WHERE id=".$feedid ;
 						}
 					  else
 				  	{		
-								$sql2 = " UPDATE message SET submited_to_ushahidi = 2 WHERE id=".$feedid ;
+								$sql2 = " UPDATE feed_item SET submited_to_ushahidi = 2 WHERE id=".$feedid ;					
 					  }	
 					//	echo $sql2."<br/>";
 						$update = $db->query($sql2);						
-					//	echo json_encode(array('message' => 'feed marked as seen'));		
-				url::redirect("/main/index/category/".$categoryid."/page/1");
+						echo json_encode(array('message' => '<span style=color:red> Feed marked for deletion.</span>'));				
 				}
+			//	url::redirect("/main/index/category/".$categoryid."/page/1");
 		}
 		/**
     		change the weight of the feed source.
@@ -165,30 +166,31 @@ class Main_Controller extends Template_Controller {
     
     public function change_source_rating($feedid,$categoryid,$increment)
 		{
-			//	if(request::is_ajax())
-			//	{	
+				if(request::is_ajax())
+				{	
 						$db = new Database();
 						$this->auto_render=false;
 						$sql1 = "";
 			  		$sql2 = "";
 						$sql3 = "";
-						if($categoryid >= 3 && $categoryid <= 5)
+						if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
 					  {
-					  		$sql2 = "UPDATE feed SET weight = weight ".$increment." WHERE weight ".$increment." <= 100 AND weight ".$increment." >= 0 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
-					  		$sql3 = "SELECT weight FROM feed  WHERE id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
-						}
-					  else
-				  	{		$sql2 = "UPDATE reporter SET weight = weight ".$increment." WHERE weight ".$increment." <= 100 AND weight ".$increment." >= 0 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+								$sql2 = "UPDATE reporter SET weight = weight ".$increment." WHERE weight ".$increment." <= 100 AND weight ".$increment." >= 0 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
 								$sql3 = "SELECT weight FROM reporter  WHERE id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
-					  }	
+					
+					  }
+					  else
+				  	{		
+								$sql2 = "UPDATE feed SET weight = weight ".$increment." WHERE weight ".$increment." <= 100 AND weight ".$increment." >= 0 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+					  		$sql3 = "SELECT weight FROM feed  WHERE id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+						}	
 					//	echo $sql2."<br/>";
 						$update = $db->query($sql2);
 						$weightrs = $db->query($sql3);
 						$weight_value = round($weightrs[0]->weight,0);
 										  
-						echo json_encode(array('message' => 'Message Sent to Ushahidi','weight'=>$weight_value));		
-				
-			//	}
+						echo json_encode(array('message' => 'Message Sent to Ushahidi','weight'=>$weight_value));						
+				}
 		}
     
     
@@ -201,25 +203,14 @@ class Main_Controller extends Template_Controller {
     public function submit_report_via_API($feedid,$categoryid)
 		{
 				if(request::is_ajax())
-				{	
+				{
 					//get information from the database
 						$db = new Database();
 					  $this->auto_render=false;
 					  $sql1 = "";
 					
 					  //categories news,blogs,others use the feeds table.  others come from the messages table.
-					  if($categoryid >= 3 && $categoryid <= 5)
-					  {
-						$sql1 = "SELECT 	f.id as id,	item_title,		item_description,		item_link, 
-											item_date, 	a.feed_name as item_source,
-											l.longitude,	l.latitude,	l.location_name ,
-											 '' as reporter_first,  '' as reporter_last,  a.feed_name as reporter_email  
-												FROM feed_item f 
-														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
-														 LEFT OUTER JOIN location l ON l.id = f.location_id
-												WHERE f.id = ".$feedid;
-						}
-						else
+					  if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
 						{
 								$sql1 =	" 	SELECT 
 											 m.id as id
@@ -243,6 +234,17 @@ class Main_Controller extends Template_Controller {
 													LEFT OUTER JOIN reporter r ON r.service_account = m.message_from 
 													LEFT OUTER JOIN location l ON l.id = r.location_id
 												WHERE m.id = ".$feedid ;
+						}
+						else
+						{
+								$sql1 = "SELECT 	f.id as id,	item_title,		item_description,		item_link, 
+											item_date, 	a.feed_name as item_source,
+											l.longitude,	l.latitude,	l.location_name ,
+											 '' as reporter_first,  '' as reporter_last,  a.feed_name as reporter_email  
+												FROM feed_item f 
+														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
+														 LEFT OUTER JOIN location l ON l.id = f.location_id
+												WHERE f.id = ".$feedid;
 						}
 														 
 						$feeds = $db->query($sql1);
@@ -292,25 +294,27 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 						{
 									  $sql2 = "";
 									  $sql3 = "";
-								if($categoryid >= 3 && $categoryid <= 5)
-							  {
+								if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
+							  {				
+							  			$sql1 = "UPDATE message SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
+							  			$sql2 = "UPDATE reporter SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+											$sql3 = "SELECT weight FROM reporter  WHERE id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+							  }
+								else
+								{
 							  			$sql1 = "UPDATE feed_item SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
 							  			$sql2 = "UPDATE feed SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
 							  			$sql3 = "SELECT weight FROM feed  WHERE id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
-								}
-							  else
-							  {			$sql1 = "UPDATE message SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
-							  			$sql2 = "UPDATE reporter SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
-											$sql3 = "SELECT weight FROM reporter  WHERE id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
-							  }	
+								}	
 								$update = $db->query($sql1);			
-								$update = $db->query($sql2);												  
-								url::redirect("/main/index/category/".$categoryid."/page/1");
-						//		echo json_encode(array('message' => 'Message Sent to Ushahidi'));		
+								$update = $db->query($sql2);	
+								$weightrs = $db->query($sql3);
+								$weight_value = round($weightrs[0]->weight,0);										  							  
+	
+								echo json_encode(array('message' => '<span style=color:red >Message will be sent to Ushahidi</span>','weight'=>$weight_value));		
 						}
-						
-			}
-				
+				}
+					//url::redirect("/main/index/category/".$categoryid."/page/1");
     }
     
     
@@ -609,7 +613,7 @@ CASE a.category_id
 											 t.tags AS tags,
 											 r.weight as weight,
 											 m.message_from as item_source,
-											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 WHEN 3 THEN 11 END as category_id
+											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 ELSE 11 END as category_id
 											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
 													LEFT OUTER JOIN reporter r ON r.service_account = m.message_from 
 													WHERE  submited_to_ushahidi = 0 ";
@@ -644,15 +648,15 @@ CASE a.category_id
         
         $feed_summary_sql = " SELECT f.feed_name as feed_name ,f.feed_url as feed_url ,count(fi.id) as total 
 															FROM `feed` f ,feed_item fi 
-															WHERE fi.feed_id = f.id AND f.category_id NOT IN (1,11) GROUP BY f.feed_name 
+															WHERE fi.feed_id = f.id AND f.category_id NOT IN (1,11) AND submited_to_ushahidi = 0 GROUP BY f.feed_name 
 															UNION 
 															SELECT f.feed_name as feed_name ,concat('http://twitter.com/statuses/user_timeline/',f.feed_url,'.rss') as feed_url,count(fi.id) as total 
 															FROM `feed` f ,feed_item fi 
-															WHERE fi.feed_id = f.id AND f.category_id IN (1) GROUP BY f.feed_name 
+															WHERE fi.feed_id = f.id AND f.category_id IN (1) AND  submited_to_ushahidi = 0  GROUP BY f.feed_name 
 															UNION 
 															SELECT  twitter_hashtags as feed_name, concat('http://twitter.com/search?q=', REPLACE(replace(twitter_hashtags,'#',''),',',' ' )) as 
 															feed_url ,count(m.id) as total
-															FROM settings s , message m  Group BY 1 ";
+															FROM settings s , message m WHERE m.submited_to_ushahidi = 0  Group BY feed_name ";
 															
         $this->template->content->feedsummary = $db->query($feed_summary_sql);
 		
@@ -660,150 +664,12 @@ CASE a.category_id
 		$this->template->content->pagination = $pagination;
 		$this->template->content->selected_category = $category_id;
 		
-		
-        // Get The START, END and most ACTIVE Incident Dates
-        $startDate = "";
-        $endDate = "";
-		$active_month = 0;
-		$active_startDate = 0;
-		$active_endDate = 0;
-		
-		$db = new Database();
-		// First Get The Most Active Month
-		$query = $db->query('SELECT incident_date, count(*) AS incident_count FROM incident WHERE incident_active = 1 GROUP BY DATE_FORMAT(incident_date, \'%Y-%m\') ORDER BY incident_count DESC LIMIT 1');
-		foreach ($query as $query_active)
-		{
-			$active_month = date('n', strtotime($query_active->incident_date));
-			$active_year = date('Y', strtotime($query_active->incident_date));
-			$active_startDate = strtotime($active_year . "-" . $active_month . "-01");
-			$active_endDate = strtotime($active_year . "-" . $active_month . 
-				"-" . date('t', mktime(0,0,0,$active_month,1))." 23:59:59");
-		}
-		
-        // Next, Get the Range of Years
-        $query = $db->query('SELECT DATE_FORMAT(incident_date, \'%Y\') AS incident_date FROM incident WHERE incident_active = 1 GROUP BY DATE_FORMAT(incident_date, \'%Y\') ORDER BY incident_date');
-        foreach ($query as $slider_date)
-        {
-			$years = $slider_date->incident_date;
-            $startDate .= "<optgroup label=\"" . $years . "\">";
-            for ( $i=1; $i <= 12; $i++ ) {
-                if ( $i < 10 )
-                {
-                    $i = "0" . $i;
-                }
-                $startDate .= "<option value=\"" . strtotime($years . "-" . $i . "-01") . "\"";
-				if ( $active_month && 
-						( (int) $i == ( $active_month - 1)) )
-				{
-					$startDate .= " selected=\"selected\" ";
-				}
-				$startDate .= ">" . date('M', mktime(0,0,0,$i,1)) . " " . $years . "</option>";
-            }
-            $startDate .= "</optgroup>";
-			
-            $endDate .= "<optgroup label=\"" . $years . "\">";
-            for ( $i=1; $i <= 12; $i++ ) 
-            {
-                if ( $i < 10 )
-                {
-                    $i = "0" . $i;
-                }
-                $endDate .= "<option value=\"" . strtotime($years . "-" . $i . "-" . date('t', mktime(0,0,0,$i,1))." 23:59:59") . "\"";
-                if ( $active_month && 
-						( ( (int) $i == ( $active_month + 1)) )
-						 	|| $i == 12)
-				{
-					$endDate .= " selected=\"selected\" ";
-                }
-                $endDate .= ">" . date('M', mktime(0,0,0,$i,1)) . " " . $years . "</option>";
-            }
-            $endDate .= "</optgroup>";			
-        }
-        $this->template->content->startDate = $startDate;
-        $this->template->content->endDate = $endDate;
-		
-		
-		// get graph data
-		// could not use DB query builder. It does not support parentheses yet
-		$graph_data = array();		
-		$all_graphs = Incident_Model::get_incidents_by_interval('month');
-		$daily_graphs = Incident_Model::get_incidents_by_interval('day');
-		$weekly_graphs = Incident_Model::get_incidents_by_interval('week');
-		$hourly_graphs = Incident_Model::get_incidents_by_interval('hour');
-		$this->template->content->all_graphs = $all_graphs;
-		$this->template->content->daily_graphs = $daily_graphs;
-		
-		// If we are looking at the standard street map set by user
-		if(!isset($_GET['3dmap'])) {
-		
-			//echo 'STREET MAP';
-		
-			// Javascript Header
-			$this->template->header->map_enabled = 'streetmap';
-			$this->template->content->map_enabled = 'streetmap';
-			$this->template->content->map_container = 'map';
-			$this->template->header->main_page = TRUE;
-			$this->template->header->validator_enabled = TRUE;
-			
-			// Map Settings
-			$clustering = Kohana::config('settings.allow_clustering');
-			$marker_radius = Kohana::config('map.marker_radius');
-			$marker_opacity = Kohana::config('map.marker_opacity');
-			$marker_stroke_width = Kohana::config('map.marker_stroke_width');
-			$marker_stroke_opacity = Kohana::config('map.marker_stroke_opacity');
-			$this->template->header->js = new View('main_cluster_js');
-			$this->template->header->js->cluster = ($clustering == 1) ? "true" : "false";
-			$this->template->header->js->marker_radius =
-				($marker_radius >=1 && $marker_radius <= 10 ) ? $marker_radius : 5;
-			$this->template->header->js->marker_opacity =
-				($marker_opacity >=1 && $marker_opacity <= 10 ) 
-				? $marker_opacity * 0.1  : 0.9;
-			$this->template->header->js->marker_stroke_width =
-				($marker_stroke_width >=1 && $marker_stroke_width <= 5 ) ? $marker_stroke_width : 2;
-			$this->template->header->js->marker_stroke_opacity =
-				($marker_stroke_opacity >=1 && $marker_stroke_opacity <= 10 ) 
-				? $marker_stroke_opacity * 0.1  : 0.9;	
-			
-			$this->template->header->js->default_map = Kohana::config('settings.default_map');
-			$this->template->header->js->default_zoom = Kohana::config('settings.default_zoom');
-			$this->template->header->js->latitude = Kohana::config('settings.default_lat');
-			$this->template->header->js->longitude = Kohana::config('settings.default_lon');
-			$this->template->header->js->graph_data = $graph_data;
-			$this->template->header->js->all_graphs = $all_graphs;
-			$this->template->header->js->daily_graphs = $daily_graphs;
-			$this->template->header->js->hourly_graphs = $hourly_graphs;
-			$this->template->header->js->weekly_graphs = $weekly_graphs;
-			$this->template->header->js->default_map_all = Kohana::config('settings.default_map_all');
-			
-			//
-			$this->template->header->js->active_startDate = $active_startDate;
-			$this->template->header->js->active_endDate = $active_endDate;
-			
-		// If we are viewing the 3D map
-		}else{
-		
-			//echo '3D MAP';
-			
-			// Javascript Header
-			$this->template->header->map_enabled = '3dmap';
-			$this->template->content->map_enabled = '3dmap';
-			$this->template->content->map_container = 'map3d';
-			$this->template->header->main_page = FALSE; // Setting to false because we don't want all the external controls that the street map has
-			$this->template->header->js = new View('main_3d_js');
-			
-			$this->template->header->js->default_zoom = Kohana::config('settings.default_zoom');
-			$this->template->header->js->latitude = Kohana::config('settings.default_lat');
-			$this->template->header->js->longitude = Kohana::config('settings.default_lon');
-			
-			// Override API URL
-			$this->template->header->api_url = '<script src="http://www.google.com/jsapi?key='.Kohana::config('settings.api_google').'"> </script>';
-		}
-		
-		
 		$footerjs = new View('footer_form_js');
+		$feedjs = new View('feed_functions_js');
 		
 		// Pack the javascript using the javascriptpacker helper		
 		$this->template->header->js .= $footerjs;
+		$this->template->header->js2 = $feedjs;
 		
 		$myPacker = new javascriptpacker($this->template->header->js , 'Normal', false, false);
 		$this->template->header->js = $myPacker->pack();
