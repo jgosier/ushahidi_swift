@@ -117,6 +117,8 @@
 								</ol>					
 		
 							</div>
+						
+
 							<!-- / additional content -->
 					
 						</div>
@@ -125,27 +127,7 @@
 						<!-- content column -->
 						<div id="content" class="clearingfix">
 							<div class="floatbox">
-							
-								<!-- filters -->
-							<!--	<div class="filters clearingfix">
-								<div style="float:left; width: 65%">
-									<strong><?php echo Kohana::lang('ui_main.filters'); ?></strong>
-									<ul>
-										<li><a id="media_0" class="active" href="#"><span><?php echo Kohana::lang('ui_main.reports'); ?></span></a></li>
-										<li><a id="media_4" href="#"><span><?php echo Kohana::lang('ui_main.news'); ?></span></a></li>
-										<li><a id="media_1" href="#"><span><?php echo Kohana::lang('ui_main.pictures'); ?></span></a></li>
-										<li><a id="media_2" href="#"><span><?php echo Kohana::lang('ui_main.video'); ?></span></a></li>
-										<li><a id="media_0" href="#"><span><?php echo Kohana::lang('ui_main.all'); ?></span></a></li>
-									</ul>
-</div>
-								<div style="float:right; width: 31%">
-									<strong><?php echo Kohana::lang('ui_main.views'); ?></strong>
-									<ul>
-										<li><a id="view_0" <?php if($map_enabled === 'streetmap') { echo 'class="active" '; } ?>href="#"><span><?php echo Kohana::lang('ui_main.clusters'); ?></span></a></li>
-										<li><a id="view_1" <?php if($map_enabled === '3dmap') { echo 'class="active" '; } ?>href="#"><span><?php echo Kohana::lang('ui_main.time'); ?></span></a></li>
-</div>
-								</div>
-								< !-- / filters -->
+					
 								<div>
 									<table class="table-list">
 										<!--<thead>
@@ -168,7 +150,9 @@
 											?>
 											<tr>
 												<td  id="feed_row_<?php echo $feed_id ;?>" >
-												<a href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" >
+												<?php if(isset($_SESSION['auth_user'])){ ?>
+													<a id="feed_link_<?php echo $feed_id ;?>"  href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" >
+												<?php } ?>
 													<div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
 												  	<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													<br/> 
@@ -178,7 +162,9 @@
 															</label>
 													</span>
 													 </div>
-													 </a>
+													 <?php if(isset($_SESSION['auth_user'])){ ?>
+													 		</a>
+													 <?php } ?>
 												</td>
 												<td style="border-bottom:2px solid #AAAAAA;"   id="feed_row_<?php echo $feed_id ;?>" >
 												 <?php echo $feed->item_description ;?>  ...
@@ -204,13 +190,13 @@
 
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','+2')" > 
+													<a  id="increase_ratting_link_<?php echo $feed_id ;?>"  href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','+1')" > 
 														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','-2')" > 
+													<a id="reduce_ratting_link_<?php echo $feed_id ;?>"  href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','-1')" > 
 													  <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													</a>
-													<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+													<a id="irrelevant_link_<?php echo $feed_id ;?>"  href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
 													 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													</a> 
 													 </div>
@@ -233,22 +219,6 @@
 								<?php
 									// My apologies for the inline CSS. Seems a little wonky when styles added to stylesheet, not sure why.
 									?>
-								<div class="<?php echo $map_container; ?>" id="<?php echo $map_container; ?>" <?php if($map_container === 'map3d') { echo 'style="width:573px; height:573px;"'; } ?>></div> 
-								<?php if($map_container === 'map') { ?>
-								<div class="slider-holder">
-									<form action="">
-										<fieldset>
-											<div class="play"><a href="#" id="playTimeline">PLAY</a></div>
-											<label for="startDate">From:</label>
-											<select name="startDate" id="startDate"><?php echo $startDate; ?></select>
-											<label for="endDate">To:</label>
-											<select name="endDate" id="endDate"><?php echo $endDate; ?></select>
-										</fieldset>
-									</form>
-								</div>
-								<?php } ?> -->
-								<!-- / map -->
-							<!--	<div id="graph" class="graph-holder"></div> -->
 							</div>
 						</div>
 						<!-- / content column -->
@@ -268,11 +238,7 @@
 							<h5><?php echo Kohana::lang('ui_main.incidents_listed'); ?></h5>
 							<table class="table-list">
 								<thead>
-								<!--	<tr>
-										<th scope="col" class="title"><?php echo Kohana::lang('ui_main.title'); ?></th>
-										<th scope="col" class="location"><?php echo Kohana::lang('ui_main.location'); ?></th>
-										<th scope="col" class="date"><?php echo Kohana::lang('ui_main.date'); ?></th>
-									</tr> -->
+							
 								</thead>
 								<tbody>
 									<?php
@@ -306,19 +272,6 @@
 				
 					</div>
 					<!-- /content blocks -->
-<?php
-/*
- *					<!-- site footer -->
- *					<div class="site-footer">
- *
- *						<h5>Site Footer</h5>
- *						Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris porta. Sed eget nisi. Fusce rhoncus lorem ac erat. Maecenas turpis tellus, volutpat quis, sodales et, consectetuer ac, est. Nullam sed est sed augue vestibulum condimentum. In tellus. Integer luctus odio eu arcu. Pellentesque imperdiet felis eu tortor. Morbi ante dui, iaculis id, vulputate sit amet, venenatis in, turpis. Fusce in risus.
- *
- *					</div>
- *					<!-- / site footer -->
-*/
-?>
-			
 				</div>
 				<!-- content -->
 		
