@@ -27,12 +27,17 @@ SiLCC - http://github.com/vicmiclovich/SiLCC
 CONTRIBUTORS
 ===============
  
-Jon Gosier
-Ivan Kavuma
-Maarten J. van der Veen
- 
+Chris Blow (Concept and Strategy)
+Kaushal Jhalla (Concept)
+
+Jon Gosier (Core Architect)
+Ivan Kavuma (Core Build)
+
 Moses Mugisha (SULSa)
- 
+
 Victor Miclovich (SiLCC)
 Wolfgang Werner (SiLCC)
 M. Edward (Ed) Borasky (SiLCC)
+
+Maarten J. van der Veen (Twitter API)
+The Ushahidi Team
