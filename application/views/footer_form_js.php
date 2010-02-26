@@ -67,6 +67,10 @@ function clearField()
 	jQuery('#person_email').val("");
 } 
 
-
-
-
+$(function(){
+// Slider
+				$('#slider').slider({
+					range: true,
+					values: [17, 67]
+				});
+});
