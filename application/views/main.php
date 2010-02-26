@@ -117,8 +117,6 @@
 								</ol>					
 		
 							</div>
-						
-
 							<!-- / additional content -->
 					
 						</div>
@@ -127,7 +125,11 @@
 						<!-- content column -->
 						<div id="content" class="clearingfix">
 							<div class="floatbox">
-					
+							
+								<!-- filters -->
+			
+								</div>
+								<!-- / filters -->
 								<div>
 									<table class="table-list">
 										<!--<thead>
@@ -151,7 +153,7 @@
 											<tr>
 												<td  id="feed_row_<?php echo $feed_id ;?>" >
 												<?php if(isset($_SESSION['auth_user'])){ ?>
-													<a id="feed_link_<?php echo $feed_id ;?>"  href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" >
+													<a href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')"  >
 												<?php } ?>
 													<div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
 												  	<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
@@ -190,13 +192,13 @@
 
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-													<a  id="increase_ratting_link_<?php echo $feed_id ;?>"  href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','+1')" > 
+													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','+1')" > 
 														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-													<a id="reduce_ratting_link_<?php echo $feed_id ;?>"  href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','-1')" > 
+													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','-1')" > 
 													  <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													</a>
-													<a id="irrelevant_link_<?php echo $feed_id ;?>"  href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+													<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
 													 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													</a> 
 													 </div>
@@ -214,11 +216,8 @@
 									</div>
 									<!--<a class="more" href="<?php echo url::base() . 'feeds' ?>">View More...</a> -->
 							</div>
-								<!-- map -->
-								<!--
-								<?php
-									// My apologies for the inline CSS. Seems a little wonky when styles added to stylesheet, not sure why.
-									?>
+								
+							<!--	<div id="graph" class="graph-holder"></div> -->
 							</div>
 						</div>
 						<!-- / content column -->
@@ -238,7 +237,11 @@
 							<h5><?php echo Kohana::lang('ui_main.incidents_listed'); ?></h5>
 							<table class="table-list">
 								<thead>
-							
+								<!--	<tr>
+										<th scope="col" class="title"><?php echo Kohana::lang('ui_main.title'); ?></th>
+										<th scope="col" class="location"><?php echo Kohana::lang('ui_main.location'); ?></th>
+										<th scope="col" class="date"><?php echo Kohana::lang('ui_main.date'); ?></th>
+									</tr> -->
 								</thead>
 								<tbody>
 									<?php
@@ -266,12 +269,24 @@
 				
 						<!-- right content block -->
 						<div class="content-block-right">
-						
+							<h5>ANALYTIC SUITE</h5>
+							<table class="table-list">
+									<?php
+									foreach ($analyticSummary as $feedsum)
+												{
+														?>
+												<tr>
+												<td><h3> <?php echo $feedsum->count." of ".$feedsum->total."  ".$feedsum->title;  ?> </h3></td>
+												</tr>
+												<?php
+												}		?>
+								</table>
 						</div>
 						<!-- / right content block -->
 				
 					</div>
-					<!-- /content blocks -->
+				
+			
 				</div>
 				<!-- content -->
 		
