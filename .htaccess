@@ -1,22 +1,23 @@
+Options +FollowSymlinks
+
 # Turn on URL rewriting
 RewriteEngine On
 
 # Installation directory
 RewriteBase /
 
-# Protect application and system files from being viewed
+# Begin Kohana rewrite settings
+# - Forbidden access to these directories
 RewriteRule ^(application|modules|system) - [F,L]
 
-# Prevent schedulers from being accessed remotely
-RewriteCond %{REMOTE_ADDR} !^127.0.0.1$
-RewriteRule ^.*/scheduler/.*$ - [F,L]
-
-# Allow any files or directories that exist to be displayed directly
+# - Passthrough for files that exists
 RewriteCond %{REQUEST_FILENAME} !-f
+# - Passthrough for directories that exists
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Rewrite all other URLs to index.php/URL
+# - Redirect all else to index.php
 RewriteRule .* index.php/$0 [PT,L]
+# End Kohana rewrite settings
 
 # Protect the htaccess from being viewed
 <Files .htaccess>
@@ -25,4 +26,4 @@ deny from all
 </Files>
 
 # Don't show directory listings for URLs which map to a directory.
-Options -Indexes
+#Options -Indexes

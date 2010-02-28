@@ -286,7 +286,7 @@ class Install
 	    $handle = @fopen('../application/config/database.php', 'w');
 	    foreach( $database_file as $line_number => $line )
 	    {   
-	        switch( trim(substr( $line,0,14 )) ) {
+	    	switch( trim(substr( $line,0,14 )) ) {
 	            case "'type'     =":
 	                fwrite($handle, str_replace("'mysql'","'".
 	                    $select_db_type."'",$line ));
@@ -558,11 +558,29 @@ class Install
 	public function _check_writable_dir() {
 		global $form;
 		
-		
-		if( !is_writable('../.htaccess')) {
-		    $form->set_error('htaccess_perm',
-			"<strong>Oops!</strong> Ushahidi is unable to write to your <code>.htaccess</code> file. " .
-			"Please change the permissions of that file to allow write access (777).  ");
+		//Check to see if the .htaccess file exists
+		$htaccessDir = '..';
+		$htaccessFilePath = $htaccessDir . '/.htaccess';
+		if( file_exists($htaccessFilePath)) {
+			//if it does then check its writable
+			if( !is_writable('../.htaccess')) {
+			    $form->set_error('htaccess_perm',
+				"<strong>Oops!</strong> Ushahidi is unable to write to your <code>.htaccess</code> file. " .
+				"Please change the permissions of that file to allow write access (777).  ");
+			}
+		} else {
+			//if the .htaccess file does not exsits
+			//Check if the .htaccess directory is writable
+			if (!is_writable($htaccessDir)) {
+				//If not then complain about it
+				$form->set_error('htaccess_perm',
+				"<strong>Oops!</strong> You are missing a <code>.htaccess</code> file in the root directory " .
+				"and Ushahidi was unable to create one for you Please change the permissions of the root " .
+				"directory (777) or create one yourself.  ");
+			} else {
+				//If possible, create the file
+				$this->_write_basic_htaccess_file($htaccessFilePath);
+			}	
 		}
 
 		if( !is_writable('../application/config')) {
@@ -571,29 +589,96 @@ class Install
 			"Please change the permissions of that folder to allow write access (777).  ");
 		}
 		
-		if( !is_writable('../application/config/config.php')) {
-		    $form->set_error('config_file_perm',
-			"<strong>Oops!</strong> Ushahidi is unable to write to <code>application/config/config.php</code> file. " .
-			"Please change the permissions of that file to allow write access (777).  ");
+		//Check if the config.php file exists
+		$configDir = '../application/config';
+		$configFilePath = $configDir . '/config.php';
+		if( file_exists($configFilePath)) {
+			//If it does then check to see if its writable	
+			if( !is_writable('../application/config/config.php')) {
+			    $form->set_error('config_file_perm',
+				"<strong>Oops!</strong> Ushahidi is unable to write to <code>application/config/config.php</code> file. " .
+				"Please change the permissions of that file to allow write access (777).  ");
+			}
+		} else {
+			//If it does not exists, check to see if the confi dir is writable
+			if( !is_writable($configDir)) {
+			    $form->set_error('config_file_perm',
+				"<strong>Oops!</strong> You are missing a <code>application/config/config.php</code> file " .
+				"and Ushahidi was uanble to create one for you. Please change the permissions of the " .
+			    "directory <code>application/config</code> (777) or create one your self.  ");
+			} else {
+				//If possible create the file
+				$file = fopen($configFilePath, 'w');
+				fclose($file);
+			}
 		}
 		
-		if( !is_writable('../application/cache')) {
-		    $form->set_error('cache_perm',
-			"<strong>Oops!</strong> Ushahidi needs <code>application/cache</code> folder to be writable. ".
-			"Please change the permissions of that folder to allow write access (777).  ");
+		//Check to see if the cache directory is writable
+		$cacheParentDir = '../application'; 
+		$cacheDir = $cacheParentDir . '/cache';
+		if( file_exists($cacheDir)) {
+			//If the directory exists, check to see if its writable
+			if( !is_writable('../application/cache')) {
+			    $form->set_error('cache_perm',
+				"<strong>Oops!</strong> Ushahidi needs <code>application/cache</code> folder to be writable. ".
+				"Please change the permissions of that folder to allow write access (777).  ");
+			}
+		} else {
+			//If it does not exist, try to create it
+			if( !is_writable($cacheParentDir)) {
+			    $form->set_error('cache_perm',
+				"<strong>Oops!</strong> You are missing the directory <code>application/cache</code> and ".
+				"Ushahidi was unable to create one for you. Please change the permissions of the " .
+			    "<code>application</code> folder (777) or create one yourself.  ");
+			} else {
+				mkdir($cacheDir);
+			}
 		}
 		
-		if( !is_writable('../application/logs')) {
-		    $form->set_error('logs_perm',
-			"<strong>Oops!</strong> Ushahidi needs <code>application/logs</code> folder to be writable. " .
-			"Please change the permissions of that folder to allow write access (777). ");
+		//check to see if the logs directory is writable
+		$logsParentDir = '../application';
+		$logsDir = $logsParentDir . '/logs';
+		if( file_exists($logsDir)) {
+			//If the directory exists, check to see if it is writable
+			if( !is_writable($logsDir)) {
+			    $form->set_error('logs_perm',
+				"<strong>Oops!</strong> Ushahidi needs <code>application/logs</code> folder to be writable. " .
+				"Please change the permissions of that folder to allow write access (777). ");
+			}
+		} else {
+			//If not, try to create it
+			if( !is_writable($logsParentDir)) {
+			    $form->set_error('logs_perm',
+				"<strong>Oops!</strong> You are missing the directory <code>application/logs</code> and ".
+				"Ushahidi was unable to create one for you. Please change the permissions of the " .
+			    "<code>application</code> folder (777) or create one yourself.  ");
+			} else {
+				mkdir($logsDir);
+			}
 		}
 		
-		if( !is_writable('../media/uploads')) {
-		    $form->set_error('uploads_perm',
-			"<strong>Oops!</strong> Ushahidi needs <code>media/uploads</code> folder to be writable. " .
-			"Please change the permissions of that folder to allow write access (777). ");
+		//Check to see if the uploads directory is writable
+		$uploadsParentDir = '../media';
+		$uploadsDir = $uploadsParentDir . '/uploads';
+		if( file_exists($uploadsDir)) {
+			//if the directory exists, check to see if tis writable
+			if( !is_writable($uploadsDir)) {
+			    $form->set_error('uploads_perm',
+				"<strong>Oops!</strong> Ushahidi needs <code>media/uploads</code> folder to be writable. " .
+				"Please change the permissions of that folder to allow write access (777). ");
+			}
+		} else {
+			//If not then try to create it
+			if( !is_writable($uploadsParentDir)) {
+			    $form->set_error('uploads_perm',
+				"<strong>Oops!</strong> You are missing the directory <code>media/uploads</code> and ".
+				"Ushahidi was unable to create one for you. Please change the permissions of the " .
+			    "<code>uploads</code> folder (777) or create one yourself.  ");
+			} else {
+				mkdir($uploadsDir);
+			}		
 		}
+		
 		
 		/**
 	     * error exists, have user correct them.
@@ -637,6 +722,51 @@ HTML;
 		
 	}
 	
+
+	public function _write_basic_htaccess_file($filePath)
+	{
+		//Define the basic .htaccess file
+		$fileLines = array (
+			"Options +FollowSymlinks\n",
+			"\n",
+			"# Turn on URL rewriting\n",
+			"RewriteEngine On\n",
+			"\n",
+			"# Installation directory\n",
+			"RewriteBase /\n",
+			"\n",
+			"# Begin Kohana rewrite settings\n",
+			"# - Forbidden access to these directories\n",
+			"RewriteRule ^(application|modules|system) - [F,L]\n", 
+			"\n",
+			"# - Passthrough for files that exists\n",
+			"RewriteCond %{REQUEST_FILENAME} !-f\n",
+			"# - Passthrough for directories that exists\n",
+			"RewriteCond %{REQUEST_FILENAME} !-d\n",
+			"\n",
+			"# - Redirect all else to index.php\n",
+			"RewriteRule .* index.php/$0 [PT,L]\n",
+			"# End Kohana rewrite settings\n",
+			"\n",
+			"# Protect the htaccess from being viewed\n",
+			"<Files .htaccess>\n",
+			"order allow,deny\n",
+			"deny from all\n",
+			"</Files>\n",
+			"\n",
+			"# Don't show directory listings for URLs which map to a directory.\n",
+			"#Options -Indexes"
+		);
+		
+		//Open the file
+		$file = fopen($filePath, 'w');
+		//write out the lines
+		foreach($fileLines as $line) {
+			fwrite($file, $line);
+		}
+		//close the handle
+		fclose($file);
+	}
 }
 
 $install = new Install();
