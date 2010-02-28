@@ -1,4 +1,3 @@
- * @author     Kohana Team
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * Provides Kohana-specific helper functions. This is where the magic happens!
@@ -1718,3 +1717,4 @@ class Kohana_404_Exception extends Kohana_Exception {
 	}
 
 } // End Kohana 404 Exception
+?>
