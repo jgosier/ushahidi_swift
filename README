@@ -1,8 +1,8 @@
 ==========================
-Ushahidi Swiftriver 0.0.1
+Ushahidi Swiftriver 0.0.2
 ==========================
  
-Swiftriver is a FOSS platform for determining the veracity and and accuracy of news during a crisis. There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role is to surface information based on relevancy using probabilistic algorithms and crowd-sourcing.  The system has a dual function, to help Ushahidi 'sweep' through and find only relevant content (avoiding duplicates and chatter), while also offering the public and casual users a way to identify relevant sources of news on any given subject.
+Swiftriver is a FOSS platform for determining the veracity and and accuracy of news during a crisis. There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role is to surface relevant information using probabilistic algorithms and crowd-sourcing. 
  
 It is currently being built as a scalable sister platform to Ushahidi like our other project SMS Turks.  We are also incorporating various modules and APIs that power complex components like the predictive tagging and deductive location features. 
  
@@ -13,33 +13,50 @@ Other Research - https://docs.google.com/View?docID=0AXtjM3UhUoCeZGZ0azVwYjdfMTB
 On Github - http://github.com/appfrica/ushahidi_swift
  
  
-===================
-OTHER COMPONENTS
-===================
+====================
+MODULAR COMPONENTS
+====================
  
 Swift is being constructed with a distributed architecture to spread load across servers.  There are two other components of the system that can also be found on GitHub. Swift User Location Services App (SULSa) and Swift Language Computation Core (SiLCC).
  
-SULSa - http://github.com/appfrica/SULSa
-SiLCC - http://github.com/vicmiclovich/SiLCC
+SULSa (location services) - http://github.com/appfrica/SULSa
+SiLCC (natural language processing) - http://github.com/vicmiclovich/SiLCC
  
  
 ===============
 CONTRIBUTORS
 ===============
- 
+
+Jon Gosier (System Architect) 
+
 Chris Blow (Concept and Strategy)
 Kaushal Jhalla (Concept)
 Ed Bice (Strategy)
-Andrew Turner (Original Build)
 
-Jon Gosier (Core Architect)
-Ivan Kavuma (Core Build)
-
-Moses Mugisha (SULSa)
-
-Victor Miclovich (SiLCC)
-Wolfgang Werner (SiLCC)
-M. Edward (Ed) Borasky (SiLCC)
-
+Ivan Kavuma (Swift Developer)
+Matthew Griffiths (Swift Developer)
+Moses Mugisha (Swift - SULSa)
+Victor Miclovich (Swift - SiLCC)
+Wolfgang Werner (Swift - SiLCC)
+M. Edward (Ed) Borasky (Swift - SiLCC)
 Maarten J. van der Veen (Twitter API)
+Andrew Turner (Swift - Original Build)
+
 The Ushahidi Team
+
+
+===============
+CHANGE LOG
+===============
+2010-02-28	Fixed Installer and .htaccess file (Matthew Griffiths)
+2010-02-26	Veracity Slider and Analytics (Ivan Kavuma)
+2010-02-25	Fixes to Scoring Algorithm (Ivan Kavuma)
+2010-02-24	Implemented Rating Algorithm (Ivan Kavuma)
+2010-02-22	Sweeper Login, Ajax Tagging, Dupe Supression, Routing Problems, Change to .sql (Ivan Kavuma & Jon Gosier)
+2010-02-18	Ajax Tagging (Ivan Kavuma)
+2010-02-16	Veracity: Tagging and Weighting (Ivan Kavuma)
+2010-02-14	Sql update (Ivan Kavuma)
+2010-02-12	Implemented Tagging (Ivan Kavuma)
+2010-02-11	Update (Ivan Kavuma)
+2010-02-10	Early Build (Jon Gosier)
+2010-01-27	Initial Push, README (Jon Gosier)
