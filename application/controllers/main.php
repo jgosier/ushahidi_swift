@@ -658,7 +658,26 @@ CASE a.category_id
 															feed_url ,count(m.id) as total
 															FROM settings s , message m WHERE m.submited_to_ushahidi = 0  Group BY feed_name ";
 															
-        $this->template->content->feedsummary = $db->query($feed_summary_sql);
+    
+		$this->template->content->feedsummary = $db->query($feed_summary_sql);
+		
+		$AnalyicQuery = " SELECT 'Submitted' as title,
+(select count(*) FROM feed_item WHERE  submited_to_ushahidi = 1)+
+(select count(*) FROM message WHERE  submited_to_ushahidi = 1) as count,
+(select count(*) FROM feed_item )+(select count(*) FROM message ) as total
+UNION
+SELECT 'Sources Trusted' as title,
+(select count(*) FROM feed WHERE  weight > 99)+
+(select count(*) FROM reporter WHERE  weight > 99) as count,
+(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
+UNION
+SELECT 'tags added' as title,
+(select count(*) FROM tags WHERE  tablename = 'feed_item') as count,
+(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
+ ";
+		
+		$this->template->content->analyticSummary = $db->query($AnalyicQuery);
+		
 		
 		
 		$this->template->content->pagination = $pagination;
@@ -672,7 +691,7 @@ CASE a.category_id
 		$this->template->header->js2 = $feedjs;
 		
 		$myPacker = new javascriptpacker($this->template->header->js , 'Normal', false, false);
-		$this->template->header->js = $myPacker->pack();
+	//	$this->template->header->js = $myPacker->pack();
 	}
 	
 	/*

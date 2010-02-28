@@ -84,11 +84,26 @@
 	
 	//Custom stylesheet
 	echo html::stylesheet(url::base().'themes/'.$site_style."/style.css");
-	?>
 
-<!-- this is temporary to the tagging working.-->
+	echo html::stylesheet(url::base().'media/css/jquery-ui-1.7.2.custom.css');
+	echo html::script('media/js/jquery-1.3.2.min', true);
+	echo html::script('media/js/ui.core.js', true); 
+	echo html::script('media/js/ui.slider.js', true); 	
+	?>
 <script type="text/javascript">
-</script>
+	$(function() {
+		$("#slider-range").slider({
+			range: true,
+			min: 0,
+			max: 100,
+			values: [75, 300],
+			slide: function(event, ui) {
+				$("#amount").val('$' + ui.values[0] + ' - $' + ui.values[1]);
+			}
+		});
+		$("#amount").val('$' + $("#slider-range").slider("values", 0) + ' - $' + $("#slider-range").slider("values", 1));
+	});
+	</script>
 
 	<!--[if IE 6]>
 	<script type="text/javascript" src="js/ie6pngfix.js"></script>
