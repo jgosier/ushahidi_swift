@@ -560,41 +560,37 @@ class Messages_Controller extends Admin_Controller
 			//XXX For Twitter Search, should we curl Twitter for a full tweet?
 			
     		$reporter = null;
-    		if ($tweet_user) {
+    	//	if ($tweet_user) {
 	    		$reporter_model = new Reporter_Model();
 				$reporters = $reporter_model->where('service_id', $service->id)->
-				             where('service_userid', $tweet_user->{'id'})->
+				             where('service_userid', $tweet->{'from_user_id'})->
 				             find_all();
 				if (count($reporters) < 1) {
 					// Add new reporter
-		    		$names = explode(' ', $tweet_user->{'name'}, 2);
-		    		$last_name = '';
-		    		if (count($names) == 2) {
-		    			$last_name = $names[1];
-		    		}
-
+		   
 		    		// get default reporter level (Untrusted)
 		    		$levels = new Level_Model();
 			    	$default_level = $levels->where('level_weight', 0)->find();
 
 		    		$reporter = new Reporter_Model();
 		    		$reporter->service_id       = $service->id;
-		    		$reporter->service_userid   = $tweet_user->{'id'};
-		    		$reporter->service_account  = $tweet_user->{'screen_name'};
-		    		$reporter->reporter_level   = $default_level;
-		    		$reporter->reporter_first   = $names[0];
-		    		$reporter->reporter_last    = $last_name;
+		    		$reporter->service_userid   = $tweet->{'from_user_id'};
+		    		$reporter->service_account  = $tweet->{'from_user'}; //$tweet_user->{'screen_name'};
+		    		$reporter->level_id   = $default_level->id;
+		    		$reporter->reporter_first   = null;//$names[0];
+		    		$reporter->reporter_last    = null;//$last_name;
 		    		$reporter->reporter_email   = null;
 		    		$reporter->reporter_phone   = null;
 		    		$reporter->reporter_ip      = null;
 		    		$reporter->reporter_date    = date('Y-m-d');
 		    		$reporter->save();
+		    	
 	    		} else {
 	    			// reporter already exists
 	    			$reporter = $reporters[0];
 	    		}
-	    	}
-						
+	  //}
+	    			
 			if (count(ORM::factory('message')->where('service_messageid', $tweet->{'id'})
 			                           ->find_all()) == 0) {
 				// Save Tweet as Message
@@ -623,7 +619,8 @@ class Messages_Controller extends Admin_Controller
 	    		$message->service_messageid = $tweet->{'id'};
 	    		$message->save();
     		}
-    	}
+    	
+    }
     	return true;
 	}
 
