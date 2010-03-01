@@ -231,7 +231,7 @@ class Main_Controller extends Template_Controller {
 											$sql1 .= ", r.reporter_email" ; 	 
 											
 									$sql1	.= " FROM message m   
-													LEFT OUTER JOIN reporter r ON r.service_account = m.message_from 
+													LEFT OUTER JOIN reporter r ON  r.id = m.reporter_id  
 													LEFT OUTER JOIN location l ON l.id = r.location_id
 												WHERE m.id = ".$feedid ;
 						}
@@ -569,9 +569,10 @@ This is the index function called by default.
 		
 
 	// Filter By Category
-			$categoryYes = ( isset($category_id) && !empty($category_id) && !$category_id == 0 );
-		
+			$categoryYes = ( isset($category_id) && !empty($category_id) && !$category_id == 0 );		
 		$category_filter = $categoryYes	? "  a.category_id = ".$category_id."  " : " 1=1 ";
+		
+		$category_filter2 =	" r.service_id = ".($category_id == 2?" 1 ":($category_id == 10? " 2 " : " 3 "));		
 	
 //	echo " location /Application/main/index  Category_filter query = ".$category_filter."<br/>";
 
@@ -583,7 +584,7 @@ CASE a.category_id
 												END as   
 */
 		$numItems_per_page =  Kohana::config('settings.items_per_page');
-
+		
 		$sql = "	SELECT 
 												f.id as id,
 												item_title,
@@ -615,15 +616,22 @@ CASE a.category_id
 											 m.message_from as item_source,
 											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 ELSE 11 END as category_id
 											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
-													LEFT OUTER JOIN reporter r ON r.service_account = m.message_from 
-													WHERE  submited_to_ushahidi = 0 ";
-											
+													INNER JOIN reporter r ON r.id = m.reporter_id 
+													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2;											
 			}					
 			
 			$sql .= " ORDER BY item_date desc ";		
 
 		 $db=new Database;
-			$Feedcounts = $db->query($sql );
+			if ($category_id == 11 || $category_id == 10 || $category_id == 2 )
+			{ 
+					$countersql	= " SELECT count(m.id)as Total FROM message m INNER JOIN reporter r ON r.id = m.reporter_id AND ".$category_filter2 ;
+				  $Feedcounts =	$db->query($countersql);
+		
+			}else
+			{
+					$Feedcounts =	$db->query("select count(f.id)as Total FROM feed_item f INNER JOIN feed a ON f.feed_id = a.id  WHERE ".$category_filter);
+			}
 			
 		
 		$pagination = new Pagination(array(
@@ -631,11 +639,10 @@ CASE a.category_id
 				'uri_segment' => 'page',
 				'items_per_page' => (int) $numItems_per_page,
 				'style' => 'digg',
-				'total_items' => $Feedcounts->count()
+				'total_items' => $Feedcounts[0]->Total
 				));
 				
-		//	echo	$sql." Limit ".$numItems_per_page." , ".$numItems_per_page*$page_no ;		
-		//	exit(0);
+
 		
 	  $Feedlist = $db->query($sql." Limit ".$numItems_per_page*($page_no - 1) ." , ".$numItems_per_page);
 		// Get RSS News Feeds
@@ -662,23 +669,24 @@ CASE a.category_id
 		$this->template->content->feedsummary = $db->query($feed_summary_sql);
 		
 		$AnalyicQuery = " SELECT 'Submitted' as title,
-(select count(*) FROM feed_item WHERE  submited_to_ushahidi = 1)+
-(select count(*) FROM message WHERE  submited_to_ushahidi = 1) as count,
-(select count(*) FROM feed_item )+(select count(*) FROM message ) as total
-UNION
-SELECT 'Sources Trusted' as title,
-(select count(*) FROM feed WHERE  weight > 99)+
-(select count(*) FROM reporter WHERE  weight > 99) as count,
-(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
-UNION
-SELECT 'tags added' as title,
-(select count(*) FROM tags WHERE  tablename = 'feed_item') as count,
-(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
- ";
+										(select count(*) FROM feed_item WHERE  submited_to_ushahidi = 1)+
+										(select count(*) FROM message WHERE  submited_to_ushahidi = 1) as count,
+										(select count(*) FROM feed_item )+(select count(*) FROM message ) as total
+										UNION
+										SELECT 'Sources Trusted' as title,
+										(select count(*) FROM feed WHERE  weight > 99)+
+										(select count(*) FROM reporter WHERE  weight > 99) as count,
+										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
+										UNION
+										SELECT 'tags added' as title,
+										(select count(*) FROM tags WHERE  tablename = 'feed_item') as count,
+										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
+										 ";
 		
 		$this->template->content->analyticSummary = $db->query($AnalyicQuery);
 		
-		
+		//	echo	$AnalyicQuery ;		
+		//	exit(0);
 		
 		$this->template->content->pagination = $pagination;
 		$this->template->content->selected_category = $category_id;
