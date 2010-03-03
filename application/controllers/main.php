@@ -164,7 +164,17 @@ class Main_Controller extends Template_Controller {
     		change the weight of the feed source.
     */
     
-    public function change_source_rating($feedid,$categoryid,$increment)
+    public function increment_source_rating($feedid,$categoryid)
+    {
+    	$increment = " + 1";
+			$this->change_source_rating($feedid,$categoryid,$increment);
+    }
+    public function decrement_source_rating($feedid,$categoryid)
+    {
+    		$decrement = " - 1";
+    		$this->change_source_rating($feedid,$categoryid,$decrement);
+    }
+    private function change_source_rating($feedid,$categoryid,$increment)
 		{
 				if(request::is_ajax())
 				{	

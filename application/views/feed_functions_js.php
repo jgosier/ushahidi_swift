@@ -56,10 +56,20 @@ function disable_feed_links(id)
 		document.getElementById('increase_ratting_link_'+id).setAttribute('href','#');
 		document.getElementById('reduce_ratting_link_'+id).setAttribute('href','#');
 }
-function change_feed_rating(id,cat,increment)
+function increment_feed_rating(id,cat)
 {  
-	   var theurl	= '/main/change_source_rating/'+id+'/'+cat+'/'+increment; 	  
-			   $.ajax( //ajax request starting
+	   var theurl	= '/main/increment_source_rating/'+id+'/'+cat; 	  
+		change_feed(id,theurl);    
+}
+	
+function decrement_feed_rating(id,cat)
+{  
+	   var theurl	= '/main/decrement_source_rating/'+id+'/'+cat; 	
+		 change_feed(id,theurl);  			  
+}
+function change_feed(id,theurl)
+{
+	  $.ajax( //ajax request starting
 				 	{
 		       url: theurl, //send the ajax request to student/delete/$id
            type:"POST",//request is a POSt request
@@ -68,8 +78,8 @@ function change_feed_rating(id,cat,increment)
 			   	 {
 				   		document.getElementById('weight_'+id).innerHTML = data['weight']+'%';
 				   }			   
-		    });		    
-	}
+		    });		   
+}
 
 function mark_irrelevant(id,cat)
 {  
