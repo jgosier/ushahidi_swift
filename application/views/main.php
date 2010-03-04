@@ -192,10 +192,17 @@
 
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
+<<<<<<< HEAD
 													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','+1')" > 
 														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
 													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','-1')" > 
+=======
+													<a href="javascript:increment_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+													 </a>
+													<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+>>>>>>> b5cd17824b4593bc62f6f7ca70036c91fb41f4bf
 													  <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													</a>
 													<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
