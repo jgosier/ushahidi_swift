@@ -1717,7 +1717,3 @@ class Kohana_404_Exception extends Kohana_Exception {
 	}
 
 } // End Kohana 404 Exception
-<<<<<<< HEAD
-=======
-?>
->>>>>>> b5cd17824b4593bc62f6f7ca70036c91fb41f4bf

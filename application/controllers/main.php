@@ -164,9 +164,6 @@ class Main_Controller extends Template_Controller {
     		change the weight of the feed source.
     */
     
-<<<<<<< HEAD
-    public function change_source_rating($feedid,$categoryid,$increment)
-=======
     public function increment_source_rating($feedid,$categoryid)
     {
     	$increment = " + 1";
@@ -178,7 +175,6 @@ class Main_Controller extends Template_Controller {
     		$this->change_source_rating($feedid,$categoryid,$decrement);
     }
     private function change_source_rating($feedid,$categoryid,$increment)
->>>>>>> b5cd17824b4593bc62f6f7ca70036c91fb41f4bf
 		{
 				if(request::is_ajax())
 				{	
@@ -383,6 +379,20 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 					}			
 		}
 
+/**
+		*		This function help the verocity selector
+		*/
+		public function verocity($category_id)
+		{			
+					if($_POST)
+					{
+							$_SESSION['verocity_min'] = isset($_POST['verocity_min'])?$_POST['verocity_min']:0;
+							$_SESSION['verocity_max'] = isset($_POST['verocity_max'])?$_POST['verocity_max']:100;
+					}
+							url::redirect("/main/index/category/".$category_id."/page/1" );	
+								
+		}
+
 		
 	/**
 	*
@@ -584,19 +594,14 @@ This is the index function called by default.
 
 	// Filter By Category
 			$categoryYes = ( isset($category_id) && !empty($category_id) && !$category_id == 0 );		
-		$category_filter = $categoryYes	? "  a.category_id = ".$category_id."  " : " 1=1 ";
-		
-		$category_filter2 =	" r.service_id = ".($category_id == 2?" 1 ":($category_id == 10? " 2 " : " 3 "));		
-	
-//	echo " location /Application/main/index  Category_filter query = ".$category_filter."<br/>";
+		  $category_filter = $categoryYes	? "  a.category_id = ".$category_id."  " : " 1=1 ";		  		
+		  $category_filter2 =	" r.service_id = ".($category_id == 2?" 1 ":($category_id == 10? " 2 " : " 3 "));		
+		  
+		  $verocity_filter =	"";
+		  if(isset( $_SESSION['verocity_min']) && isset( $_SESSION['verocity_max'])){
+			 $verocity_filter =	"	AND weight >=	".$_SESSION['verocity_min']." AND weight <= ".$_SESSION['verocity_max']." ";
+			}	
 
-
-/*
-CASE a.category_id
-													WHEN 1 THEN concat('http://twitter.com/statuses/user_timeline/',item_link,'.rss')  
-													ELSE item_link
-												END as   
-*/
 		$numItems_per_page =  Kohana::config('settings.items_per_page');
 		
 		$sql = "	SELECT 
@@ -611,7 +616,7 @@ CASE a.category_id
 										 		a.category_id as category_id
 												FROM feed_item f LEFT OUTER JOIN tags t ON t.tagged_id = f.id AND t.tablename = 'feed_item'
 														 INNER JOIN feed a ON f.feed_id = a.id 
-												WHERE submited_to_ushahidi = 0 AND ".$category_filter;
+												WHERE submited_to_ushahidi = 0 AND ".$category_filter.$verocity_filter;
 								
 		if($category_id == 11 || $category_id == 10 || $category_id == 2 )
 		{ 	
@@ -631,20 +636,20 @@ CASE a.category_id
 											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 ELSE 11 END as category_id
 											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
 													INNER JOIN reporter r ON r.id = m.reporter_id 
-													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2;											
+													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2.$verocity_filter;											
 			}					
 			
-			$sql .= " ORDER BY item_date desc ";		
+			$sql .= " ORDER BY item_date desc ";	
 
 		 $db=new Database;
 			if ($category_id == 11 || $category_id == 10 || $category_id == 2 )
 			{ 
-					$countersql	= " SELECT count(m.id)as Total FROM message m INNER JOIN reporter r ON r.id = m.reporter_id AND ".$category_filter2 ;
+					$countersql	= " SELECT count(m.id)as Total FROM message m INNER JOIN reporter r ON r.id = m.reporter_id AND ".$category_filter2.$verocity_filter ;
 				  $Feedcounts =	$db->query($countersql);
 		
 			}else
 			{
-					$Feedcounts =	$db->query("select count(f.id)as Total FROM feed_item f INNER JOIN feed a ON f.feed_id = a.id  WHERE ".$category_filter);
+					$Feedcounts =	$db->query("select count(f.id)as Total FROM feed_item f INNER JOIN feed a ON f.feed_id = a.id  WHERE ".$category_filter.$verocity_filter);
 			}
 			
 		

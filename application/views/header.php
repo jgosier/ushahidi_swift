@@ -90,20 +90,37 @@
 	echo html::script('media/js/ui.core.js', true); 
 	echo html::script('media/js/ui.slider.js', true); 	
 	?>
-<script type="text/javascript">
-	$(function() {
+	
+	<style type="text/css">
+		#demo-frame > div.demo { padding: 10px !important; };
+	</style>
+	<script type="text/javascript">
+$(function() {
 		$("#slider-range").slider({
 			range: true,
 			min: 0,
 			max: 100,
-			values: [75, 300],
+			<?php 
+					if(isset( $_SESSION['verocity_min']) && isset( $_SESSION['verocity_max'])){
+			 echo	"	values: [".$_SESSION['verocity_min']." , ".$_SESSION['verocity_max']." ],";
+			}else
+			{ ?> 
+						values: [0, 100],
+				<?php
+			}
+				?>
+
 			slide: function(event, ui) {
-				$("#amount").val('$' + ui.values[0] + ' - $' + ui.values[1]);
+				$("#verocity_min").val(ui.values[0]);
+			  $("#verocity_max").val(ui.values[1]);
 			}
 		});
-		$("#amount").val('$' + $("#slider-range").slider("values", 0) + ' - $' + $("#slider-range").slider("values", 1));
+		$("#verocity_min").val( $("#slider-range").slider("values", 0));
+		$("#verocity_max").val( $("#slider-range").slider("values", 1));
 	});
+
 	</script>
+
 
 	<!--[if IE 6]>
 	<script type="text/javascript" src="js/ie6pngfix.js"></script>

@@ -61,7 +61,7 @@
 								<div class="cat-filters clearingfix" style="margin-top:20px;">
 									<strong><?php echo Kohana::lang('ui_main.layers_filter');?></strong>
 								</div>
-								<ul class="category-filters">
+								<ul class="category-filters" >
 									<?php
 									foreach ($layers as $layer => $layer_info)
 									{
@@ -82,7 +82,18 @@
 								<?php
 							}
 							?>
-							
+								<div class="cat-filters clearingfix" style="Text-align:center;padding:20px;background: #CCCCCC;" >
+								<form method="POST" name="verocityfrm" id="verocityfrm" action="<?php echo url::base().'main/verocity/'.$selected_category ; ?>" >
+
+										<H5 >VERACITY SLIDER</H5>		 
+									<br/>			
+									<div id="slider-range" ></div><br/><span style="color:#f6931f; font-weight:bold;">
+										<input type="text"  name="verocity_min"  id="verocity_min" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="text" name="verocity_max"  id="verocity_max" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%</span><br/><br/>
+										<input class="" type="submit" name="verocitysubmit" id="verocitysubmit" value=" Filter "/>
+									
+									</form>
+								</div>		
 							
 							<br />
 						
@@ -114,8 +125,8 @@
 									} ?></li><?php } ?>
 									<li>By <a href="<?php echo url::base() . 'reports/submit/'; ?>">filling a form</a> at the website</li>
 										-->
-								</ol>					
-		
+								</ol>		
+								
 							</div>
 							<!-- / additional content -->
 					
@@ -192,17 +203,10 @@
 
 													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
-<<<<<<< HEAD
-													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','+1')" > 
-														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													 </a>
-													<a href="javascript:change_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>','-1')" > 
-=======
 													<a href="javascript:increment_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
 														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													 </a>
 													<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
->>>>>>> b5cd17824b4593bc62f6f7ca70036c91fb41f4bf
 													  <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 													</a>
 													<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
