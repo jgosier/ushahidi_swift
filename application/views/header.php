@@ -105,7 +105,7 @@ $(function() {
 			 echo	"	values: [".$_SESSION['verocity_min']." , ".$_SESSION['verocity_max']." ],";
 			}else
 			{ ?> 
-						values: [0, 100],
+						values: [20, 100],
 				<?php
 			}
 				?>

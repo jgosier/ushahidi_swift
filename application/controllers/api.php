@@ -39,12 +39,13 @@ class Api_Controller extends Controller {
 		$ret = ""; //return value
 		$request = array();
 		$error = array();
-		
+	
+	
 		//determine if we are using GET or POST
 		if($_SERVER['REQUEST_METHOD'] == 'GET'){
-			$request =& $_GET;
+			$request = $_GET;
 		} else {
-			$request =& $_POST;
+			$request = $_POST;
 		}
 		
 		//make sure we have a task to work with

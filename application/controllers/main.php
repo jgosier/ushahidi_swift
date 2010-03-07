@@ -212,8 +212,8 @@ class Main_Controller extends Template_Controller {
     */
     public function submit_report_via_API($feedid,$categoryid)
 		{
-				if(request::is_ajax())
-				{
+				//if(request::is_ajax())
+			//	{
 					//get information from the database
 						$db = new Database();
 					  $this->auto_render=false;
@@ -250,33 +250,36 @@ class Main_Controller extends Template_Controller {
 								$sql1 = "SELECT 	f.id as id,	item_title,		item_description,		item_link, 
 											item_date, 	a.feed_name as item_source,
 											l.longitude,	l.latitude,	l.location_name ,
-											 '' as reporter_first,  '' as reporter_last,  a.feed_name as reporter_email  
+											 '' as reporter_first,  '' as reporter_last,  '' as reporter_email  
 												FROM feed_item f 
 														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
 														 LEFT OUTER JOIN location l ON l.id = f.location_id
 												WHERE f.id = ".$feedid;
 						}
 														 
+														 
 						$feeds = $db->query($sql1);
 						$feed = $feeds[0];
-						$xmlcontent = "<?xml version='1.0' encoding='UTF-8'>\n\r";
-				  		
-							$xmlcontent .=	"<root><incident_title>".$feed->item_title."</incident_title>" ; // - Required. The title of the incident/report.
-							$xmlcontent .=	"<incident_description>".$feed->item_description."</incident_description>" ; //incident_description - Required. The description of the incident/report.
-							$xmlcontent .=	"<incident_date>".date('m/d/Y', strtotime($feed->item_date))."</incident_date>" ;//incident_date - Required. The date of the incident/report. It usually in the format mm/dd/yyyy.
-							$xmlcontent .=	"<incident_hour>".(date('h', strtotime($feed->item_date))%12)."</incident_hour>"; //"incident_hour - Required. The hour of the incident/report. In the 12 hour format.
-					  	$xmlcontent .=	"<incident_minute>".date('i', strtotime($feed->item_date))."</incident_minute>"; //incident_minute - Required. The minute of the incident/report.
-							$xmlcontent .=	"<incident_ampm>";
-													 if(date('h', strtotime($feed->item_date))<= 12) $xmlcontent .= "am"; else $xmlcontent .= "pm";
-								 								$xmlcontent .= "</incident_ampm>"; //"incident_ampm - Required. Is the incident/report am or pm. It of the form, am or pm.
-							$xmlcontent .=	"<incident_category>".$categoryid."</incident_category>";//	"incident_category - Required. The categories the incident/report belongs to. It should be a comma separated value csv
-							$xmlcontent .=	"<latitude>".$feed->latitude."</latitude>"; //"latitude - Required. The latitude of the location of the incident report.
-							$xmlcontent .=	"<longitude>".$feed->longitude."</longitude>"; //"longitude - Required. The longitude of the location of the incident/report.
-							$xmlcontent .=	"<location_name>".$feed->location_name."</location_name>"; 	//"location_name - Required. The location of the incident/report.
-							$xmlcontent .=	"<person_first>".$feed->reporter_first."</person_first>"; //person_first - Optional. The first name of the person submitting the incident/report.
-							$xmlcontent .=	"<person_last>".$feed->reporter_last."</person_last>"; //person_last - Optional. The last name of the person submitting the incident/report.
-							$xmlcontent .=	"<person_email>".$feed->reporter_email."</person_email>"; //person_email - Optional. The email address of the person submitting the incident/report.
-							$xmlcontent .=	"<resp>XML</resp></root>"; 	//resp - Optional. The data exchange, either XML or JSON. When not specified, JSON is used.
+						$xmlcontent = "task=report";
+				  	
+						//$reportdata="api?task=report&incident_title=Test&incident_description=Testing+with+the+api.&incident_date=03/18/2009&incident_hour=10&incident_minute=10&incident_ampm=pm&incident_category=2,4,5,7&latitude=-1.28730007&longitude=36.82145118200820&location_name=accra&person_first=Henry+Addo&person_last=Addo&person_email=henry@ushahidi.com&resp=xml "
+							
+							$xmlcontent .=	"&incident_title=".$feed->item_title; //"</incident_title>" ; // - Required. The title of the incident/report.
+							$xmlcontent .=	"&incident_description=".$feed->item_description; //"</incident_description>" ; //incident_description - Required. The description of the incident/report.
+							$xmlcontent .=	"&incident_date=".date('m/d/Y', strtotime($feed->item_date)); //"</incident_date>" ;//incident_date - Required. The date of the incident/report. It usually in the format mm/dd/yyyy.
+							$xmlcontent .=	"&incident_hour=".date('h', strtotime($feed->item_date)); //"</incident_hour>"; //"incident_hour - Required. The hour of the incident/report. In the 12 hour format.
+					  	$xmlcontent .=	"&incident_minute=".date('i', strtotime($feed->item_date)) ; //."</incident_minute>"; //incident_minute - Required. The minute of the incident/report.
+							$xmlcontent .=	"&incident_ampm=";
+													 if(date('H', strtotime($feed->item_date))<= 12) $xmlcontent .= "am"; else $xmlcontent .= "pm";
+								 							//	$xmlcontent .= "</incident_ampm>"; //"incident_ampm - Required. Is the incident/report am or pm. It of the form, am or pm.
+							$xmlcontent .=	"&incident_category=".$categoryid; //"</incident_category>";//	"incident_category - Required. The categories the incident/report belongs to. It should be a comma separated value csv
+							$xmlcontent .=	"&latitude=".(!empty($feed->latitude) ? $feed->latitude:"0"); //"</latitude>"; //"latitude - Required. The latitude of the location of the incident report.
+							$xmlcontent .=  "&longitude=".(!empty($feed->longitude) ?	$feed->longitude:"0") ; //"</longitude>"; //"longitude - Required. The longitude of the location of the incident/report.
+							$xmlcontent .=	"&location_name=".(!empty($feed->location_name)? $feed->location_name :"unknown") ; //"</location_name>"; 	//"location_name - Required. The location of the incident/report.
+							$xmlcontent .=	!empty($feed->reporter_first) ? "&person_first=".$feed->reporter_first: ""; //"</person_first>"; //person_first - Optional. The first name of the person submitting the incident/report.
+							$xmlcontent .=	!empty($feed->reporter_last)? "&person_last=".$feed->reporter_last:""; //"</person_last>"; //person_last - Optional. The last name of the person submitting the incident/report.
+							$xmlcontent .=	!empty($feed->reporter_email)? "&person_email=".$feed->reporter_email:""; //."</person_email>"; //person_email - Optional. The email address of the person submitting the incident/report.
+							$xmlcontent .=	"&resp=json";//</resp></root>"; 	//resp - Optional. The data exchange, either XML or JSON. When not specified, JSON is used.
 								
 						//	echo 	$xmlcontent;
 						//	exit(0);
@@ -289,17 +292,17 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 						$ch = curl_init(); 
 						curl_setopt($ch, CURLOPT_HEADER, 0); 
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); 
-						curl_setopt($ch, CURLOPT_URL, "http://localhost/swiftriver/api/index/"); 
+						curl_setopt($ch, CURLOPT_URL, "http://localhost/swiftriver/api/index?"); 
 						curl_setopt($ch, CURLOPT_POST, 1); 
-						curl_setopt($ch, CURLOPT_POSTFIELDS, "XML=".$xmlcontent); 
-					//	$content=curl_exec($ch); 
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlcontent); 
+						$content=curl_exec($ch); 
 						
-					//	echo $xmlcontent."<br/>";
-				//			echo json_encode(array('message' => $content));		
+					  //	{"payload":{"success":"true"},"error":{"code":"0","message":"No Error."}}
 						
-				//	}
-						$status = true;
-							
+						$status = false;
+						if(strlen(strstr($content,"success\":\"true"))>0)
+							$status = true;
+						
 						if ($status)
 						{
 									  $sql2 = "";
@@ -321,9 +324,12 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 								$weightrs = $db->query($sql3);
 								$weight_value = round($weightrs[0]->weight,0);										  							  
 	
-								echo json_encode(array('message' => '<span style=color:red >Message will be sent to Ushahidi</span>','weight'=>$weight_value));		
+								echo json_encode(array('message' => '<span style=color:red >Incident has been reported to Ushahidi</span>','weight'=>$weight_value));		
 						}
-				}
+						else
+								echo ($content);
+						
+		//		}
 					//url::redirect("/main/index/category/".$categoryid."/page/1");
     }
     
@@ -601,6 +607,10 @@ This is the index function called by default.
 		  if(isset( $_SESSION['verocity_min']) && isset( $_SESSION['verocity_max'])){
 			 $verocity_filter =	"	AND weight >=	".$_SESSION['verocity_min']." AND weight <= ".$_SESSION['verocity_max']." ";
 			}	
+			else
+			{
+				$verocity_filter =	"	AND weight >=	20 AND weight <= 100 ";
+			}
 
 		$numItems_per_page =  Kohana::config('settings.items_per_page');
 		
