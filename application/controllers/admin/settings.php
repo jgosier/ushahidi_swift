@@ -64,7 +64,8 @@ class Settings_Controller extends Admin_Controller
 			'laconica_username' => '',
 			'laconica_password' => '',
 			'laconica_site' => '',
-			'api_akismet' => ''
+			'api_akismet' => '',
+			'ushahidi_url' => ''
 	    );
         //  Copy the form as errors, so the errors will be stored with keys
         //  corresponding to the form field names
@@ -137,6 +138,7 @@ class Settings_Controller extends Admin_Controller
 				$settings->laconica_site = $post->laconica_site;
 				$settings->api_akismet = $post->api_akismet;
 				$settings->date_modify = date("Y-m-d H:i:s",time());
+				$settings->ushahidi_url = $post->ushahidi_url;
 				$settings->save();
 				
 				// Delete Settings Cache
@@ -192,7 +194,8 @@ class Settings_Controller extends Admin_Controller
 				'laconica_username' => $settings->laconica_username,
 				'laconica_password' => $settings->laconica_password,
 				'laconica_site' => $settings->laconica_site,
-				'api_akismet' => $settings->api_akismet
+				'api_akismet' => $settings->api_akismet,
+				'ushahidi_url' => $settings->ushahidi_url
 		    );
 		}
 		

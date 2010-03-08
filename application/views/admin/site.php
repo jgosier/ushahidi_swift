@@ -153,7 +153,11 @@
 									});
 								});
 							</script>
-						</div>						
+						</div>		
+						<div class="row">
+							<h4>Ushahidi Instance URL </h4>
+							<?php print form::input('ushahidi_url', $form['ushahidi_url'], ' class="text long"'); ?>		
+						</div>		
 						<div class="row">
 							<h4>Google Analytics</h4>
 							Web Property ID - Format: UA-XXXXX-XX &nbsp;&nbsp;

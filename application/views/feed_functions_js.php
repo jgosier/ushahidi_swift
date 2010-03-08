@@ -43,8 +43,11 @@ function submitfeed_to_ushahidi(id,cat)
 		       success: function(data) //trigger this on success
 			   	 {  //in the future this is suposed to make the this feed this disappear.
 				   		document.getElementById('lblreport_'+id).innerHTML = data['message'];
-						 	document.getElementById('weight_'+id).innerHTML = data['weight']+'%';
-						 	disable_feed_links(id);
+				   		if(typeof data['weight'] != "undefined" )//typeof x=="undefined"
+						 	{	
+								 document.getElementById('weight_'+id).innerHTML = data['weight']+'%';
+						 	}
+							 disable_feed_links(id);
 				   }			   
 		    });			
 }

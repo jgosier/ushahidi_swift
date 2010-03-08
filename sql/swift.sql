@@ -1497,3 +1497,5 @@ ALTER TABLE `feed_item` ADD `submited_to_ushahidi` TINYINT NOT NULL DEFAULT '0' 
 
 ALTER TABLE `message` ADD `submited_to_ushahidi` TINYINT NOT NULL DEFAULT '0' AFTER `message_level` ;
 
+ALTER TABLE `settings` ADD `ushahidi_url` VARCHAR( 100 ) NOT NULL AFTER `ushahidi_version`  ;
+

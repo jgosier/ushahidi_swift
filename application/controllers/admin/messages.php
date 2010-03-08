@@ -565,10 +565,14 @@ class Messages_Controller extends Admin_Controller
 				$reporters = $reporter_model->where('service_id', $service->id)->
 				             where('service_userid', $tweet->{'from_user_id'})->
 				             find_all();
-				if (count($reporters) < 1) {
+				  $counter = $reporter_model->where('service_id', $service->id)->
+				             where('service_userid', $tweet->{'from_user_id'})->
+				             count_all();           
+				          
+				if ($counter < 1) {
+				
 					// Add new reporter
-		   
-		    		// get default reporter level (Untrusted)
+		   		// get default reporter level (Untrusted)
 		    		$levels = new Level_Model();
 			    	$default_level = $levels->where('level_weight', 0)->find();
 
@@ -590,9 +594,11 @@ class Messages_Controller extends Admin_Controller
 	    			$reporter = $reporters[0];
 	    		}
 	  //}
-	    			
-			if (count(ORM::factory('message')->where('service_messageid', $tweet->{'id'})
-			                           ->find_all()) == 0) {
+	    		$counter2 = ORM::factory('message')->where('message',$tweet->{'text'})->count_all() ;  
+					//->where('service_messageid', $tweet->{'id'})	
+					
+			if ($counter2 == 0) {
+			
 				// Save Tweet as Message
 	    		$message = new Message_Model();
 	    		$message->parent_id = 0;

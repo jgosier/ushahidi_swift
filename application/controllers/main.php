@@ -288,11 +288,18 @@ incident_photo[] - Optional. Photos to accompany the incident/report.
 incident_news - Optional. A news source regarding the incident/report. A news feed.
 incident_video - Optional. A video link regarding the incident/report. Video services like youtube.com, video.google.com, metacafe.com,etc
  "*/
+						$ushahidi_url = ORM::factory('settings', 1)->ushahidi_url;	
+						
+						if (empty($ushahidi_url))
+						{		
+								echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
+								return;
+						}	
 							
 						$ch = curl_init(); 
 						curl_setopt($ch, CURLOPT_HEADER, 0); 
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); 
-						curl_setopt($ch, CURLOPT_URL, "http://localhost/swiftriver/api/index?"); 
+						curl_setopt($ch, CURLOPT_URL, $ushahidi_url."/api/index?"); 
 						curl_setopt($ch, CURLOPT_POST, 1); 
 						curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlcontent); 
 						$content=curl_exec($ch); 
