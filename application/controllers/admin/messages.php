@@ -553,9 +553,9 @@ class Messages_Controller extends Admin_Controller
 
 		foreach($tweets as $tweet) {
 			$tweet_user = null; 
-			if (array_key_exists('user', $tweet)) {
+			/*if (array_key_exists('user', $tweet)) {
 				$tweet_user = $tweet->{'user'};
-			}
+			}*/
 			
 			//XXX For Twitter Search, should we curl Twitter for a full tweet?
 			

@@ -1480,13 +1480,13 @@ CREATE TABLE IF NOT EXISTS `tags` (
 
 
 
-INSERT INTO `ushahidi`.`roles` (
+INSERT INTO `roles` (
 `id` ,
 `name` ,
 `description` 
 )
 VALUES (
-'4', 'sweeper', 'Sweeper look throught the feeds and rate the sources of the feeds'
+4, 'sweeper', 'Sweeper look throught the feeds and rate the sources of the feeds'
 );
 
 
@@ -1499,3 +1499,4 @@ ALTER TABLE `message` ADD `submited_to_ushahidi` TINYINT NOT NULL DEFAULT '0' AF
 
 ALTER TABLE `settings` ADD `ushahidi_url` VARCHAR( 100 ) NOT NULL AFTER `ushahidi_version`  ;
 
+ALTER TABLE `tags` ADD `correct_yn` TINYINT NOT NULL DEFAULT '1' AFTER `tags` ;

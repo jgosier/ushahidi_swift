@@ -15,6 +15,27 @@
  
  require(APPPATH.'controllers/admin/messages.php');
  
+class util{
+	/**
+			Get the tags for display in the home page.
+		*/
+		public static function showtags($id)
+		{
+				$db = new Database();
+				$sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' AND correct_yn = 1 ";
+				$tags = $db->query($sql1);
+				$tagnew_tags = "";
+				foreach($tags as $tag)
+				{ //CC9966
+						$tagnew_tags .= $tag->tags."&nbsp;<a href='javascript:mark_tag_false(".	$tag->id.",".$tag->tagged_id.")' title='Mark tag as incorrect' >".
+											"<span style='color:#CC0000;background:#CCCCCC;font-weight:bold;'> X </span></a>&nbsp;&nbsp;" ;			
+				}				
+				return 	$tagnew_tags;	
+		}
+		
+} 
+ 
+ 
 class Main_Controller extends Template_Controller {
 
     public $auto_render = TRUE;
@@ -345,9 +366,9 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
     	This function update the tags.
     */
 
-		private function update_tags($id,$tag)
+		private function add_tags($id,$tag)
 		{
-					if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->count_all() == 0)
+					if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->where('tags.tags',$tag)->count_all() == 0)
 					{	
 						$tags = new Tags_Model();
 						$tags->tagged_id = $id;
@@ -355,29 +376,36 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 						$tags->tags = $tag;
 						$tags->save();
 					}
-					else
-					{
-							$db = new Database();
-						  $sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
-							$tags = $db->query($sql1);
-							$tagnew_tags = $tag." ".$tags[0]->tags ;																
-							$sql2 = "UPDATE tags SET tags = '".$tagnew_tags."' WHERE id=".$tags[0]->id;								
-							$db->query($sql2);											
-					}	
 		}
 		
+		/**
+				Mark the tag as false
+		*/
+		public function Ajax_mark_tag_false($tagid,$feedid)
+		{
+				if(request::is_ajax())
+				{	
+					$this->auto_render=false;
+					$db = new Database();
+					$sql1 = "UPDATE tags SET correct_yn = 0  WHERE id = ".$tagid." ";
+					$tags = $db->query($sql1);		
+					$tagnew_tags = util::showtags($feedid);	
+					echo json_encode(array('tags' => $tagnew_tags));	
+				}
+		}
+		
+	
+		/**
+				Add a tags.
+		*/		
 		public function Ajax_tagging($id,$tag)
 		{
-					if(request::is_ajax())
-					{	
-						$db = new Database();
-					  $this->auto_render=false;
-						$this->update_tags($id,$tag);
-						$sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' ";
-						$tags = $db->query($sql1);
-						$tagnew_tags = $tags[0]->tags ;							
-						echo json_encode(array('tags' => $tagnew_tags));		
-					}
+				if(request::is_ajax())
+				{		$this->auto_render=false;
+						$this->add_tags($id,$tag);		
+						$tagnew_tags = util::showtags($id);	
+						echo json_encode(array('tags' => $tagnew_tags));	
+				}
 		}
 		
 		/**
@@ -627,11 +655,10 @@ This is the index function called by default.
 												item_description,
 												item_link,												
 												item_date, 
-										 		t.tags AS tags,
 										 		a.weight as weight,
 										 		a.feed_name as item_source,
 										 		a.category_id as category_id
-												FROM feed_item f LEFT OUTER JOIN tags t ON t.tagged_id = f.id AND t.tablename = 'feed_item'
+												FROM feed_item f 
 														 INNER JOIN feed a ON f.feed_id = a.id 
 												WHERE submited_to_ushahidi = 0 AND ".$category_filter.$verocity_filter;
 								
@@ -647,11 +674,10 @@ This is the index function called by default.
 			 									ELSE '#'
 			 									END as item_link,
 											 m.message_date as item_date,
-											 t.tags AS tags,
 											 r.weight as weight,
 											 m.message_from as item_source,
 											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 ELSE 11 END as category_id
-											FROM message m  LEFT OUTER JOIN tags t  ON t.tagged_id = m.id AND t.tablename = 'feed_item'  
+											FROM message m  
 													INNER JOIN reporter r ON r.id = m.reporter_id 
 													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2.$verocity_filter;											
 			}					
@@ -716,6 +742,10 @@ This is the index function called by default.
 										UNION
 										SELECT 'tags added' as title,
 										(select count(*) FROM tags WHERE  tablename = 'feed_item') as count,
+										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
+										UNION
+										SELECT 'tags approved' as title,
+										(select count(*) FROM tags WHERE  tablename = 'feed_item' AND correct_yn = 1) as count,
 										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
 										 ";
 		

@@ -15,21 +15,32 @@
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
  */
 ?>
+function mark_tag_false(tagid,feedid)
+{
+		var tag = document.getElementById('tag_'+feedid);
+	  var theurl	= '/main/Ajax_mark_tag_false/'+tagid+'/'+feedid ; 
+		tag.value = "";
+		showtags(feedid,theurl);
+}
+function showtags(feedid,theurl)
+{
+ 				$.ajax( //ajax request starting
+				 	{
+		       url: theurl, //send the ajax request 
+           type:"POST",//request is a POSt request
+		       dataType: "json",//expect json as 
+		       success: function(data) //trigger this on success
+			   	 {
+				   		document.getElementById('lbltags_'+feedid).innerHTML = data['tags'];
+				   }			   
+		    });		 
+}
 function submit_tags(id)
 {  
 	  var tag = document.getElementById('tag_'+id);
 	  var theurl	= '/main/Ajax_tagging/'+id+'/'+tag.value; 
 		tag.value = "";
-			   $.ajax( //ajax request starting
-				 	{
-		       url: theurl, //send the ajax request to student/delete/$id
-           type:"POST",//request is a POSt request
-		       dataType: "json",//expect json as 
-		       success: function(data) //trigger this on success
-			   	 {
-				   		document.getElementById('lbltags_'+id).innerHTML = data['tags'];
-				   }			   
-		    });		    
+		showtags(id,theurl);	     
 	}
 
 function submitfeed_to_ushahidi(id,cat)

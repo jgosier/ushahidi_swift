@@ -189,31 +189,37 @@
 													</label>
 																										
 													 <form id="formtag<?php echo $feed_id ;?>" name="formtag<?php echo $feed_id ;?>"  method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>/category/<?php echo $selected_category ;?>/page/<?php echo $current_page ; ?>" >
-													 <a href="javascript:submit_tags('<?php echo $feed_id ;?>')" >
-													 <img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													 </a>
-													 <input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;
-													 	<label id="lbltags_<?php echo $feed_id; ?>" name="lbltags_<?php echo $feed_id; ?>" >
-														  <?php echo $feed->tags; ?>	
-														</label>												 
-													 </form>
-													 <?php if(isset($_SESSION['auth_user'])){ ?>
+															<?php if(isset($_SESSION['auth_user'])){ ?>		 
+																 <a href="javascript:submit_tags('<?php echo $feed_id ;?>')" >
+																 		<img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+																 </a>
+																 <input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;
+															<?php }else{ ?> 
+															<img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+															<?php } ?>	
+														 	<label id="lbltags_<?php echo $feed_id; ?>" name="lbltags_<?php echo $feed_id; ?>" >
+															  <?php echo util::showtags($feed->id);?>	
+															</label>												 
+													
+		
 													 <div style="float:right">
-													 <a href="<?php echo $feed->item_link; ?>" target="_blank">
-
-													 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													 </a>
-													<a href="javascript:increment_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-														<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													 </a>
-													<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-													  <img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													</a>
-												<!--	<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-													 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-													</a> --> 
+															 <a href="<?php echo $feed->item_link; ?>" target="_blank">
+																	 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+															 </a>
+													<?php if(isset($_SESSION['auth_user'])){ ?>
+															<a href="javascript:increment_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+																	<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+															 </a>
+															<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+															  	<img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+															</a>
+														<!--	<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+															 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+															</a> --> 
+												 <?php } ?>
 													 </div>
-													 <?php } ?>
+													  </form>
+													
 													 
 													</td>
 											</tr>
@@ -287,7 +293,7 @@
 												{
 														?>
 												<tr>
-												<td><h3> <?php echo $feedsum->count." of ".$feedsum->total."  ".$feedsum->title;  ?> </h3></td>
+												<td><h2> <?php echo $feedsum->count." of ".$feedsum->total."  ".$feedsum->title;  ?> </h2></td>
 												</tr>
 												<?php
 												}		?>
