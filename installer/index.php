@@ -13,6 +13,7 @@
  ?>
 <body>
 <div id="ushahidi_login_container">
+	<!-- Replace all references to Ushahidi; Logo -->
     <div id="ushahidi_login_logo"><img src="../media/img/admin/logo_login.gif" /></div>
     <div id="ushahidi_login" class="clearfix">
     
@@ -20,12 +21,12 @@
 		
 	<a href="basic_summary.php" class="two-col-box tc-left btn-box">
 		<span class="btn-box-title">BASIC INSTALLATION</span>
-		<span class="btn-box-content">Simple and fast.  All you need is your website's root directory and your database information.  Choose this option if you want to get up and running quickly, and you can always configure everything else later.</span>
+		<span class="btn-box-content">Simple and fast, Swiftly, if you will.  All you need is your website's root directory and your database information.  Choose this option if you want to get up and running quickly, and you can always configure everything else later.</span>
 		<span class="last btn-action">Proceed with basic &rarr;</span>
 	</a>
 	<a href="advanced_summary.php" class="two-col-box tc-right btn-box">
 		<span class="btn-box-title">ADVANCED INSTALLATION</span>
-		<span class="btn-box-content">Get all the basic settings completed through this 5-step process.  This includes server, map, site name and contact details.</span>
+		<span class="btn-box-content">Get all the basic settings completed through this 5-step process.  This includes server, site name, and contact details.</span>
 		<span class="last btn-action">Proceed with advanced &rarr;</span><br /><br />
 	</a>
 	

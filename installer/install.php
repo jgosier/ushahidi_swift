@@ -386,7 +386,7 @@ class Install
 	private function _import_sql($username, $password, $host,$db_name)
 	{
 	    $connection = @mysql_connect("$host", "$username", "$password");
-	    $db_schema = @file_get_contents('../sql/ushahidi.sql');
+	    $db_schema = @file_get_contents('../sql/swift.sql');
 
 	    $result = @mysql_query('CREATE DATABASE '.$db_name);
 	    

@@ -1,53 +1,70 @@
 ==========================
-Ushahidi Swiftriver 0.0.2
+SWIFT RIVER v0.0.4 - Rumba
 ==========================
  
-Swiftriver is a FOSS platform for determining the veracity and and accuracy of news during a crisis. There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role is to surface relevant information using probabilistic algorithms and crowd-sourcing. 
+Swiftriver is a FOSS platform for determining the veracity and and accuracy of news during a crisis. There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. 
  
-It is currently being built as a scalable sister platform to Ushahidi like our other project SMS Turks.  We are also incorporating various modules and APIs that power complex components like the predictive tagging and deductive location features. 
+It is currently being built as a scalable sister platform to Ushahidi.  It has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://swift.ushahidi.com/extend/
+
+Find it on Github - http://github.com/appfrica/ushahidi_swift
+
+===========================
+DOCUMENTATION
+===========================
  
 Architecture / Roadmap - https://docs.google.com/Doc?docid=0AXtjM3UhUoCeZGZ0azVwYjdfMWdjeDc5Y2Rj&hl=en
 Mockups / UI Design - https://docs.google.com/Doc?docid=0AXtjM3UhUoCeZGZ0azVwYjdfNGN6NXBzc2d4&hl=en
 Other Research - https://docs.google.com/View?docID=0AXtjM3UhUoCeZGZ0azVwYjdfMTBkZ2Q4OGtmMg&revision=_latest
- 
-On Github - http://github.com/appfrica/ushahidi_swift
- 
- 
+
+
 ====================
 MODULAR COMPONENTS
 ====================
  
 Swift is being constructed with a distributed architecture to spread load across servers.  There are two other components of the system that can also be found on GitHub. Swift User Location Services App (SULSa) and Swift Language Computation Core (SiLCC).
  
-SULSa (location services) - http://github.com/appfrica/SULSa
-SiLCC (natural language processing) - http://github.com/vicmiclovich/SiLCC
+SULSa (location services) - http://swift.ushahidi.com/extend/sulsa
+SiLCC (natural language processing) - http://swift.ushahidi.com/extend/silcc
  
  
-===============
-CONTRIBUTORS
-===============
+======================
+PROJECT CONTRIBUTORS
+======================
 
-Jon Gosier (System Architect) 
+Team Swift Core
 
-Chris Blow (Concept and Strategy)
-Kaushal Jhalla (Concept)
-Ed Bice (Strategy)
+	Jon Gosier (System Architect) 
+	Ivan Kavuma (Core Developer)
+	Matthew Griffiths (Lead Developer)
 
-Ivan Kavuma (Swift Developer)
-Matthew Griffiths (Swift Developer)
-Moses Mugisha (Swift - SULSa)
-Victor Miclovich (Swift - SiLCC)
-Wolfgang Werner (Swift - SiLCC)
-M. Edward (Ed) Borasky (Swift - SiLCC)
-Maarten J. van der Veen (Twitter API)
-Andrew Turner (Swift - Original Build)
+Team Swift Volunteers
 
-The Ushahidi Team
+	Moses Mugisha (Swift - SULSa)
+	Victor Miclovich (Swift - SiLCC)
+	Wolfgang Werner (Swift - SiLCC)
+	M. Edward (Ed) Borasky (Swift - SiLCC)
+	Maarten J. van der Veen (Twitter API)
+
+Team Swift Advisors
+
+	Andrew Turner (Swift - Original Build)
+	Chris Blow (Concept and Strategy)
+	Kaushal Jhalla (Concept)
+	Ed Bice (Strategy)
+
+Contributing Organizations
+
+	The Ushahidi Team
+	Appfrica Labs
+	GeoRSS
+	Meedan
 
 
 ===============
 CHANGE LOG
 ===============
+2010-03-10	User Roles & Tagging, UI fixes (Ivan Kavuma)
+2010-03-01  Announced Release Schedule (Jon Gosier)
 2010-02-28	Fixed Installer and .htaccess file (Matthew Griffiths)
 2010-02-26	Veracity Slider and Analytics (Ivan Kavuma)
 2010-02-25	Fixes to Scoring Algorithm (Ivan Kavuma)
@@ -65,7 +82,7 @@ CHANGE LOG
 ==================
 RELEASE SCHEDULE
 ==================
-0.0.0	Rumba		(Alpha)
+0.0.0	*Rumba		(Alpha)
 0.1.0	Apala
 0.2.0	Batuque		
 0.3.0	Benga
