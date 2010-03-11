@@ -1,24 +1,24 @@
 /*
-Theme Name: Terra
+Theme Name: Rumba
 Description: Some dark blues and browns
-Demo: http://beta1-1.ushahididev.com/
+Demo: http://swift.ushahididev.com/
 Version: 1.0
-Author: David Kobia
-Author Email: david@ushahidi.com
+Author: Jon Gosier
+Author Email: jon@ushahidi.com
 */
 
 /* header background */
 body#page{
-	background: #031634 url(terra.gif) 50% 0 repeat-x;
+	background: #edd9c3 url(bg.png) repeat-x;
 }
 
 /* footer */
 div#footer
 {
-	background-color: #033649;
+	background-color: #660000 ;
 }
 div#underfooter{
-	background-color:#033649;
+	background-color:#edd9c3;
 }
 
 /* links */
@@ -36,7 +36,7 @@ table.table-list tbody tr td a{
 
 /* Logo Box */
 div#logo{
-    background-color: #E8DDCB;
+
 }
 
 /* Main Menu */

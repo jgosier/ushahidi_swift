@@ -70,6 +70,11 @@ h6{
     color: #333333;
 }
 
+h7{
+    font-size: 125%;
+    color: #FFFFFF;
+}
+
 /* page setup */
 body{
     font-family: Arial, Helvetica, sans-serif;
@@ -97,7 +102,7 @@ div#header{
 /* logo */
 div#logo{
     border: 0;
-    background: #E2E2E2;
+     /* background: #E2E2E2; */
     padding: 35px 24px;
     float: left;
     margin: 14px 0 0 0;
@@ -106,9 +111,13 @@ div#logo h1{
 	margin:0;
 	padding:0;
 	font-size: 20px;
+	color:#ffffff;
+	font-weight: bold;
+	text-transform: uppercase;
 }
 div#logo span{
 	font-size:14px;
+	font-style: italic;
 }
 
 /* main body setup */
@@ -229,11 +238,11 @@ div#searchbox{
     position: absolute;
     top: 0px;
     right: 0px;
-    background: #BEBEBE;
-    border: #9F9F9F 2px solid;
+    background: #edd9c3;
+    border: #660000 2px solid;
     border-top: 0;
     height: 45px;
-/*    width: 290px;*/
+	width: 400px;
 }
 
 /* languages */
@@ -560,7 +569,7 @@ div.site-footer{
 
 /* footer menu */
 div.footermenu{
-    margin: 0 10px;
+    margin: 0px 10px;
     float: left;
 }
 
@@ -1563,37 +1572,37 @@ ul.pager li a.active {background:#f2f7fa;}
 }
 
 .feedback_forms textarea, .feedback_forms textarea input{
-	color : #000;
-	border : 1px solid #996;
+	color: #000;
+	border: 1px solid #996;
 }
 
 .feedback_forms button {
-	height : 22px;
-	border : 1px solid #000;
-	background : #ccc;
+	height: 22px;
+	border: 1px solid #000;
+	background: #ccc;
 }
 
 .feedback_title {
-	padding : 20px 0 0 10px;
+	padding: 20px 0 0 10px;
 }
 
 .or_txt {
-	padding : 0 10px 0 10px;
+	padding: 0 10px 0 10px;
 	font:14px/17px Arial, Helvetica, sans-serif;
 }
 
 .detailed_feedback {
-	text-align : center;
+	text-align: center;
 	padding: 10px 0 0 0;
-	width : 150px;
-	height : 50px;
-	border : 1px solid #000;
-	background : #ccc;
+	width: 150px;
+	height: 50px;
+	border: 1px solid #000;
+	background: #ccc;
 	
 }
 
 .detailed_feedback a {
-	color : #000;
+	color: #000;
 	font:14px/17px Arial, Helvetica, sans-serif;
 	text-decoration :none;
 }
