@@ -85,7 +85,7 @@
 								<div class="cat-filters clearingfix" style="Text-align:center;padding:20px;background: #CCCCCC;" >
 								<form method="POST" name="verocityfrm" id="verocityfrm" action="<?php echo url::base().'main/verocity/'.$selected_category ; ?>" >
 
-										<H5 >VERACITY SLIDER</H5>		 
+										<H5>VERACITY SLIDER</H5>		 
 									<br/>			
 									<div id="slider-range" ></div><br/><span style="color:#f6931f; font-weight:bold;">
 										<input type="text"  name="verocity_min"  id="verocity_min" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
@@ -200,22 +200,30 @@
 														 	<label id="lbltags_<?php echo $feed_id; ?>" name="lbltags_<?php echo $feed_id; ?>" >
 															  <?php echo util::showtags($feed->id);?>	
 															</label>												 
-													
+				<!-- Begin Sweeper Panel -->
 		
-													 <div style="float:right">
-															 <a href="<?php echo $feed->item_link; ?>" target="_blank">
-																	 <img src="<?php echo url::base(); ?>/media/img/page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-															 </a>
+				<div style="float:right">
+					
+				<!-- Item Detail, Read the Item -->						
+				<a href="<?php echo $feed->item_link; ?>" target="_blank">											
+				<img src="<?php echo url::base(); ?>/media/img/newspaper.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" /></a>
 													<?php if(isset($_SESSION['auth_user'])){ ?>
-															<a href="javascript:increment_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-																	<img src="<?php echo url::base(); ?>/media/img/swift_page_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
-															 </a>
-															<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-															  	<img src="<?php echo url::base(); ?>/media/img/no_entry_icon.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+														
+				<!-- See Reverberations -->										
+				<!-- <a href="javascript:increment_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+				<img src="<?php echo url::base(); ?>/media/img/newspaper.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+															 </a> -->
+															
+				<!-- Mark as Inaccurate, Falsehood or Biased -->											
+				<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+				<img src="<?php echo url::base(); ?>/media/img/delete.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 															</a>
-														<!--	<a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-															 <img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+				<!-- Mark as Crosstalk -->	
+				<!-- <a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
+				<img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 															</a> --> 
+															
+				<!-- End Sweeper Panel -->							
 												 <?php } ?>
 													 </div>
 													  </form>
