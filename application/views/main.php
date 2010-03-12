@@ -39,7 +39,7 @@
 										$setactive = $selected_category == $category? " class='active' " :"" ;
 										$category_title = $category_info[0];
 										$category_color = $category_info[1];
-										echo '<li><a '.$setactive.' href="/main/index/category/'.$category.'/page/1/" id="cat_'. $category .'"><div class="swatch" style="background-color:#'.$category_color.'"></div><div class="category-title">'.$category_title.'</div></a></li>';
+										echo '<li><a '.$setactive.' href="'.url::base().'/main/index/category/'.$category.'/page/1/" id="cat_'. $category .'"><div class="swatch" style="background-color:#'.$category_color.'"></div><div class="category-title">'.$category_title.'</div></a></li>';
 										// Get Children
 										echo '<div class="hide" id="child_'. $category .'">';
 										foreach ($category_info[2] as $child => $child_info)
