@@ -507,7 +507,7 @@ class Messages_Controller extends Admin_Controller
 
 				if(isset($full_tweet) && !empty($full_tweet)) {
 					// We need to check for duplicates.
-					// Note: Heave on server.
+					// Note: Leave on server.
 					$dupe_count = ORM::factory('twitter')->where(" tweet_date = '".$tweet_date."' and tweet_from = '".$tweet_from."' and tweet = '".$tweet."' ")->count_all();
 					if ($dupe_count == 0) {
 						// Add tweet to database

@@ -1841,3 +1841,14 @@ div.green-box ul, div.red-box ul{
 .alert_confirm .label{
 	margin-bottom:10px;
 }
+
+/*--Sweeper/Tagging Panel --*/
+#sweeper {
+	display:block;
+	padding-top:12px;
+	width:100%;
+}
+#item_panel {
+	display:block;
+	width:100%;
+}

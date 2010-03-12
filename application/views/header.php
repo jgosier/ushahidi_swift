@@ -138,7 +138,7 @@ $(function() {
 </head>
 
 <body id="page">
-	<!-- wrapper -->
+	<!-- begin wrapper -->
 	<div class="rapidxwpr floatholder">
 
 		<!-- header -->
@@ -183,7 +183,7 @@ $(function() {
 		</div>
 		<!-- / header -->
 
-		<!-- main body -->
+		<!-- begin major main body -->
 		<div id="middle">
 			<div class="background layoutleft">
 		
