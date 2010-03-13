@@ -160,7 +160,7 @@ $(function() {
 						
 				<!-- / login -->
 				<div class="language-box">				
-						<input type="text" name="username" id="username" class="login_text" value="Username" />					
+						<input type="text" name="username" id="username" class="login_text" size="10" value="Username" />					
 				</div>
 				<div class="search-form">
 						<ul>
