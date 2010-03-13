@@ -32,8 +32,22 @@ class util{
 				}				
 				return 	$tagnew_tags;	
 		}
+		/**
+		 Get the categeories for display in the home page.
+		*/
 		
-} 
+		public static function get_category_name($id)
+		
+		{
+		
+		$category = ORM::factory('category')->where('id',$id)->find_all();
+
+		$category_title = $category[0]->category_title;              
+		
+		return   $category_title;  
+		}
+
+	} 
  
  
 class Main_Controller extends Template_Controller {
@@ -433,7 +447,6 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 							url::redirect("/main/index/category/".$category_id."/page/1" );	
 								
 		}
-
 		
 	/**
 	*
@@ -680,7 +693,8 @@ This is the index function called by default.
 											FROM message m  
 													INNER JOIN reporter r ON r.id = m.reporter_id 
 													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2.$verocity_filter;											
-			}					
+			}
+				// echo $sql; exit(0);
 			
 			$sql .= " ORDER BY item_date desc ";	
 

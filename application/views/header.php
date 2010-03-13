@@ -105,7 +105,7 @@ $(function() {
 			 echo	"	values: [".$_SESSION['verocity_min']." , ".$_SESSION['verocity_max']." ],";
 			}else
 			{ ?> 
-						values: [20, 100],
+						values: [0, 100],
 				<?php
 			}
 				?>
@@ -164,8 +164,8 @@ $(function() {
 				</div>
 				<div class="search-form">
 						<ul>
-							<li><input name="password" type="password" class="login_text" id="password" size="20" value="password" /></li>
-							<li><input type="submit" name="b"  value=" Login " style="background:url(../img/right_arrow.JPG) repeat-x left top;" /></li>
+							<li><input name="password" type="password" class="login_text" id="password" size="10" value="password" /></li>
+							<li><input type="image" src="../media/img/right_arrow.jpg" alt="submit" /></li>
 						</ul>					
 				</div>
 					<?php } ?>

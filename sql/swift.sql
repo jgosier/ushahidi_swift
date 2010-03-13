@@ -832,7 +832,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `site_timezone` varchar(80) default NULL,
   `site_contact_page` TINYINT NOT NULL DEFAULT '1',
   `site_help_page` TINYINT NOT NULL DEFAULT '1',
-  `allow_reports` tinyint(4) NOT NULL default '1',
+  `allow_reports` tinyint(4) NOT NULL default '0',
   `allow_comments` tinyint(4) NOT NULL default '1',
   `allow_feed` tinyint(4) NOT NULL default '1',
   `allow_stat_sharing` tinyint(4) NOT NULL default '1',
@@ -1467,7 +1467,7 @@ INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_
 (7, 0, 'en_US', 5, 'CIVILIANS', 'CIVILIANS', '66CC00', NULL, NULL, 0),
 (8, 0, 'en_US', 5, 'LOOTING', 'LOOTING', 'FFCC00', NULL, NULL, 0),
 (9, 0, 'en_US', 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', NULL, NULL, 0),
-(11, 0, 'en_US', 5, 'TWITTER SEARCH', 'TWTTER SEARCH', 'FFFFFF', NULL, NULL, 1);
+(11, 0, 'en_US', 5, 'TWITTER SEARCH', 'TWITTER SEARCH', 'FFFFFF', NULL, NULL, 1);
 
 
 CREATE TABLE IF NOT EXISTS `tags` (

@@ -32,14 +32,14 @@
 						
 							<ul class="category-filters">
 								
-								<li><a  <?php	if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="/main/index/category/0/page/1"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">ALL SOURCES</div></a></li>
+								<li><a  <?php  if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="<?php echo url::base() ; ?>main/index/category/0/page/1"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">ALL SOURCES</div></a></li>
 								<?php
 									foreach ($categories as $category => $category_info)
 									{
 										$setactive = $selected_category == $category? " class='active' " :"" ;
 										$category_title = $category_info[0];
 										$category_color = $category_info[1];
-										echo '<li><a '.$setactive.' href="'.url::base().'/main/index/category/'.$category.'/page/1/" id="cat_'. $category .'"><div class="swatch" style="background-color:#'.$category_color.'"></div><div class="category-title">'.$category_title.'</div></a></li>';
+										echo '<li><a '.$setactive.' href="'.url::base().'main/index/category/'.$category.'/page/1/" id="cat_'. $category .'"><div class="swatch" style="background-color:#'.$category_color.'"></div><div class="category-title">'.$category_title.'</div></a></li>';
 										// Get Children
 										echo '<div class="hide" id="child_'. $category .'">';
 										foreach ($category_info[2] as $child => $child_info)
@@ -129,11 +129,12 @@
 				<a href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')"  >
 						<?php } ?>
 				<div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
-				<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+				<img src="<?php echo url::base(); ?>media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 				<br/> 
 				<span style="font-weight:bold;color:#660033">
 					<label id="weight_<?php echo $feed_id; ?>" name="weight_<?php echo $feed_id; ?>" >
-						<?php if ($feed->weight == 0.00){ echo "_" ;}else{ echo round($feed->weight,0 )."%"; } ?>
+						<!-- Null not Zero -->
+						<?php if ($feed->weight == 0.00 || $feed->weight == -1 ){ echo "_" ;}else{ echo round($feed->weight,0 )."%"; } ?>
 					</label>
 				</span>
 						<?php if(isset($_SESSION['auth_user'])){ ?>
@@ -144,7 +145,7 @@
 						<div class="description"><?php echo $feed->item_description ;?></div>
 					<p>&nbsp;</p>	
 					<p>
-					<strong>Delivered:</strong> <?php echo $feed->item_date; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp; 
+					<strong>Delivered by <span style="text-transform: lowercase;"><?php echo util::get_category_name($feed->category_id ); ?></span></strong> on <?php echo $feed->item_date; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp; 
 					<strong>Source:</strong> <a href="<?php echo $feed->item_link; ?>" target="_blank" style="color:#000000;">	<?php echo $feed->item_source; ?></a>
 					</p>
 				<!-- to displace status of submited feed to ushahidi -->
@@ -158,11 +159,11 @@
 				<form id="formtag<?php echo $feed_id ;?>" name="formtag<?php echo $feed_id ;?>"  method="POST" action="/main/tagging/feed/<?php echo $feed_id ; ?>/category/<?php echo $selected_category ;?>/page/<?php echo $current_page ; ?>" >
 						<?php if(isset($_SESSION['auth_user'])){ ?>		 
 				<a href="javascript:submit_tags('<?php echo $feed_id ;?>')" >
-				<img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+				<img src="<?php echo url::base(); ?>/media/img/tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 																 </a>
 				<input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;
 						<?php }else{ ?> 
-				<img src="<?php echo url::base(); ?>/media/img/Tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+				<img src="<?php echo url::base(); ?>/media/img/tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 						<?php } ?>	
 				<label id="lbltags_<?php echo $feed_id; ?>" name="lbltags_<?php echo $feed_id; ?>" >
 						<?php echo util::showtags($feed->id);?>	
