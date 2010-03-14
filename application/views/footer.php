@@ -34,73 +34,18 @@
 				<ul class="clearingfix">
 					<li><a class="item1" href="<?php echo url::base() ?>"><?php echo Kohana::lang('ui_main.home'); ?></a></li>
 					<li><a href="<?php echo url::base() . "reports/submit" ?>"><?php echo Kohana::lang('ui_main.report_an_incident'); ?></a></li>
-					<li><a href="#"><?php echo Kohana::lang('ui_main.about'); ?></a></li>
-					<li><a href="#"><?php echo Kohana::lang('ui_main.contact'); ?></a></li>
-					<li><a href="#"><?php echo Kohana::lang('ui_main.blog'); ?></a></li>
-					<li><a href="javascript:showForm('table-holder')">Feedback</a></li>
+					<li><a href="http://swift.ushahidi.com"><?php echo Kohana::lang('ui_main.about'); ?></a></li>
+					<li><a href="http://ushahidi.com/contact" title="contact Swiftriver" >Contact</a></li>
+					<li><a href="http://blog.ushahidi.com/index.php/category/swift-river/" title="our blog" ><?php echo Kohana::lang('ui_main.blog'); ?></a></li>
+					<li><a href="http://forums.ushahidi.com/" title="support forums" >Support</a></li>
+					<li><a href="http://groups.google.com/group/swiftriver" title="feedback" >Feedback</a></li>
+					<li><a href="http://http://github.com/ushahidi/Swiftriver" title="github" >Github</a></li>
+					<li><a href="#" title="documentation" >Documentation</a></li>
 				</ul>
 				<p><?php echo Kohana::lang('ui_main.copyright'); ?></p>
 			</div>
 			<!-- / footer menu -->
- 
-			<!-- feedback form -->
-			<div id="table-holder" class="feedback_forms">
-				<h2><?php echo Kohana::lang('ui_main.feedback'); ?> <button style="margin-left:2em" onclick="javascript:showForm('table-holder')"><?php echo Kohana::lang('ui_main.close'); ?></button></h2>
-				<?php print form::open(NULL, array('id' => 'footerfeedbackMain', 'name' => 'footerfeedbackMain')); ?>
-				<?php print form::hidden('person_ip',getenv("REMOTE_ADDR"),''); ?>
-				<table class="table">
-					<tbody>
-						<tr>
-							<td>
-								<?php print form::textarea("feedback_message",$form['feedback_message'],' class="textarea long" rows="5" cols="50"');?>
-								<br /><br />
-								<?php
-									print(empty($errors['feedback_message'])) ?'': $errors['feedback_message'].'<br /><br />';
-								?>
-							</td>
-							<td>
-								<div class="or_txt">
-									Or
-								</div>
-							</td>
-							<td>
-								<div class="detailed_feedback">
-									<a href="http://feedback.ushahidi.com/fillsurvey.php?sid=5">Provide Detailed Feedback</a>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="report_row">
-									<strong>Security Code:</strong><br />
-									<?php print $captcha->render(); ?><br />
-									<?php print form::input('feedback_captcha', $form['feedback_captcha'], ' class="text"'); ?>
-									<br /><br />
-									<?php
-										print(empty($errors['feedback_captcha'])) ? '' : $errors['feedback_captcha'].'<br /<br />';
-									?>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<?php $email = empty($form['person_email']) ? 'Email address' : $form['person_email']; ?>
-								<?php print form::input('person_email',$email,'size="40" class="text"  onclick="clearField();"');?>
-								<?php print form::button('submit', 
-									Kohana::lang('feedback.feedback_reply_send')); ?>
-								<br /><br />
-								<?php 
-									print(empty($errors['person_email'])) ?'': $errors['person_email'].'<br /><br />';
-								?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<?php print form::close();?>
-			</div>
-			<!-- /feedback form -->
- 
-		</div>
+ 		</div>
 		<!-- / footer content -->
  
 	</div>

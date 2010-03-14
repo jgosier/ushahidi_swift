@@ -24,8 +24,8 @@ class Feed_Controller extends Controller
 	{
 		parent::__construct();
 		
-			$this->template->header = new View('header');
-				$this->template->footer  = new View('footer');
+		$this->template->header = new View('header');
+		$this->template->footer  = new View('footer');
 		
 		$this->template->header->this_page = "feed_add";
 		
@@ -34,7 +34,7 @@ class Feed_Controller extends Controller
 		
 		$this->template->header->site_name_style = "";
 		$this->template->header->site_tagline = Kohana::config('settings.site_tagline');
-    $this->template->header->api_url = Kohana::config('settings.api_url');
+    	$this->template->header->api_url = Kohana::config('settings.api_url');
 
 		// Display Contact Tab?
 		$this->template->header->site_contact_page = Kohana::config('settings.site_contact_page');
@@ -71,7 +71,7 @@ class Feed_Controller extends Controller
 		$this->template->header->js->default_zoom = Kohana::config('settings.default_zoom');
 
 		//include footer form js file
-		 $this->template->header->js = new View('footer_form_js');
+		 //$this->template->header->js = new View('footer_form_js');
 		 $this->template->header->pages = ORM::factory('page')->where('page_active', '1')->find_all();
 		
 		
@@ -239,22 +239,9 @@ class Feed_Controller extends Controller
 		$this->template->content->errors = $errors;
 		$this->template->content->form_error = $form_error;
 		$this->template->content->categories = $this->_get_categories($form['feed_category']);
-		
-
-		 
-		 $this->template->header->render(TRUE);
-		 $this->template->content->render(TRUE);
-		 		 
-
-     //  $footerjs = new View('footer_form_js');
-    // $this->template->Render();    
-	//	echo $footerjs."I made in to add function without post 5 <br>";
-		// Pack the javascript using the javascriptpacker helper
-//		$myPacker = new javascriptpacker($footerjs , 'Normal', false, false);
-//		$footerjs = $myPacker->pack();
-       // $this->template->header->js = $footerjs;
-		
-
+		$this->template->header->render(TRUE);
+		$this->template->content->render(TRUE);
+        $this->template->Render();    
 	
 	}
 	

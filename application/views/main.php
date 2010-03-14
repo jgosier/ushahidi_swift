@@ -61,7 +61,7 @@
 					<div id="slider-range" ></div><br/><span style="color:#f6931f; font-weight:bold;">
 					<input type="text"  name="verocity_min"  id="verocity_min" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" name="verocity_max"  id="verocity_max" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%</span><br/><br/>
-					<input class="" type="submit" name="verocitysubmit" id="verocitysubmit" value=" Filter "/>
+					<input class="" type="submit" name="verocitysubmit" id="verocitysubmit" value=" Submit "/>
 									
 							</form>
 					</div>		
@@ -129,7 +129,7 @@
 				<a href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')"  >
 						<?php } ?>
 				<div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
-				<img src="<?php echo url::base(); ?>media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+				<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 				<br/> 
 				<span style="font-weight:bold;color:#660033">
 					<label id="weight_<?php echo $feed_id; ?>" name="weight_<?php echo $feed_id; ?>" >
