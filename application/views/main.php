@@ -30,9 +30,8 @@
 								<strong><?php echo Kohana::lang('ui_main.category_filter');?></strong>
 						</div>
 						
-							<ul class="category-filters">
-								
-								<li><a  <?php  if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="<?php echo url::base() ; ?>main/index/category/0/page/1"><div class="swatch" style="background-color:#<?php echo $default_map_all;?>"></div><div class="category-title">ALL SOURCES</div></a></li>
+							<ul class="category-filters">			
+								<li><a  <?php  if ($selected_category == 0 )echo" class='active' " ; ?>  id="cat_0" href="<?php echo url::base() ; ?>main/index/category/0/page/1"><div class="category-title">ALL SOURCES</div></a></li>
 								<?php
 									foreach ($categories as $category => $category_info)
 									{
@@ -58,10 +57,10 @@
 
 					<H5>VERACITY SLIDER</H5>		 
 									<br/>			
-					<div id="slider-range" ></div><br/><span style="color:#f6931f; font-weight:bold;">
-					<input type="text"  name="verocity_min"  id="verocity_min" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" name="verocity_max"  id="verocity_max" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#f6931f; font-weight:bold;" />%</span><br/><br/>
-					<input class="" type="submit" name="verocitysubmit" id="verocitysubmit" value=" Submit "/>
+					<div id="slider-range" ></div><br/><span style="color:#333333; font-weight:bold;">
+					<input type="text"  name="verocity_min"  id="verocity_min" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#333333; font-weight:bold;" />%&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" name="verocity_max"  id="verocity_max" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#333333; font-weight:bold;" />%</span><br/><br/>
+					<input type="image" src="<?php echo url::base() ;?>media/img/submit_btn.png" name="verocitysubmit" id="verocitysubmit" value="Submit"/>
 									
 							</form>
 					</div>		
@@ -78,8 +77,6 @@
 									<li>Flag inaccurate items</li>
 									<li>Mark irrelevant Content as <em>Chatter</em></li>
 									<li>Filter items by their <em>Veracity Score</em></li>
-									<?php if (!empty($report_email)) 
-									{ ?><li>Suggest new reports by emailing <a href="mailto:<?php echo $report_email?>"><?php echo $report_email?></a></li><?php } ?>
 								<!--
 									<?php if (!empty($twitter_hashtag_array)) 
 												{ ?><li>By sending a tweet with the hashtag/s <?php foreach ($twitter_hashtag_array as $twitter_hashtag) {
@@ -128,7 +125,7 @@
 						<?php if(isset($_SESSION['auth_user'])){ ?>
 				<a href="javascript:submitfeed_to_ushahidi('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')"  >
 						<?php } ?>
-				<div style="padding:5px;width:35px;height:45px;border:1px solid #660033;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
+			<div style="padding:5px;width:35px;height:45px;border:1px solid #660000;Text-align:center; -moz-border-radius: 5px; -webkit-border-radius: 5px;">
 				<img src="<?php echo url::base(); ?>/media/img/rssdark.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 				<br/> 
 				<span style="font-weight:bold;color:#660033">
@@ -140,6 +137,7 @@
 						<?php if(isset($_SESSION['auth_user'])){ ?>
 													 		</a>
 						<?php } ?>
+			</div>		
 				</td>
 				<td style="border-bottom:2px solid #AAAAAA;"   id="feed_row_<?php echo $feed_id ;?>" >
 						<div class="description"><?php echo $feed->item_description ;?></div>
@@ -183,7 +181,7 @@
 															
 				<!-- Mark as Inaccurate, Falsehood or Biased -->											
 				<a href="javascript:decrement_feed_rating('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 
-				<img src="<?php echo url::base(); ?>/media/img/delete.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
+				<img src="<?php echo url::base(); ?>/media/img/x_btn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" width="18" />
 															</a>
 				<!-- Mark as Crosstalk -->	
 				<!-- <a href="javascript:mark_irrelevant('<?php echo $feed_id ;?>','<?php echo $feed->category_id ; ?>')" > 

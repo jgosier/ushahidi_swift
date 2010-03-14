@@ -164,7 +164,7 @@ $(function() {
 				<div class="search-form">
 						<ul>
 							<li><input name="password" type="password" class="login_text" id="password" size="10" value="password" /></li>
-							<li><input type="image" src="<?php echo url::base() ;?>/media/img/right_arrow.jpg" alt="submit" /></li>
+							<li><input type="image" src="<?php echo url::base() ;?>media/img/right_arrow.jpg" alt="submit" /></li>
 						</ul>					
 				</div>
 					<?php } ?>
