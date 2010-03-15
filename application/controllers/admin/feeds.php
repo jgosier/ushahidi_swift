@@ -120,12 +120,14 @@ class Feeds_Controller extends Admin_Controller
 											if( isset($_POST[$cat->category_title."feed_url".$i]) && !empty($_POST[$cat->category_title."feed_url".$i]) )
 											{
 														$feed_url = $_POST[$cat->category_title."feed_url".$i];
-																							
+														$feed_weight = $_POST[$cat->category_title."weight_hf".$i];
+														
 														$this->_save_feed($_POST[$cat->category_title."ID".$i],
 																						$feed_url,
 																						$cat->id,
 																						$feed_url,
-																						isset($_POST[$cat->category_title."weight".$i])?100:0
+																						isset($_POST[$cat->category_title."weight".$i])?100:
+																						($feed_weight == 100?0:$feed_weight)
 																						);																	
 																					
 											}
@@ -136,7 +138,7 @@ class Feeds_Controller extends Admin_Controller
 											}
 									}												
 							}			
-							
+						//	exit(0);
 								
 								$hashtags = isset($_POST["hashtag1"])	&& !empty($_POST["hashtag1"])? $_POST["hashtag1"] : '' ;
 					  		for($i=2;$i<$num_of_fields_persection  ;$i++)
@@ -199,10 +201,8 @@ class Feeds_Controller extends Admin_Controller
 						}else if($feed_id != 0 )
 						{
 								$db = new Database();
-								$sql = " UPDATE feed SET feed_url = '".$feed_url."' , feed_name = '".$feedname."' ";
-								if($weight == 100){
-										$sql .= ", weight= ".$weight."	";
-								}
+								$sql = " UPDATE feed SET feed_url = '".$feed_url."' , feed_name = '".
+												$feedname."' , weight= ".$weight."	";
 								$sql .= " WHERE id = ".$feed_id ;
 							//				echo $sql."<br/>";						
 								$Result = $db->query($sql);
