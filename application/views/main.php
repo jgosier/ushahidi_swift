@@ -137,6 +137,7 @@
 						<?php if(isset($_SESSION['auth_user'])){ ?>
 													 		</a>
 						<?php } ?>
+
 			</div>		
 				</td>
 				<td style="border-bottom:2px solid #AAAAAA;"   id="feed_row_<?php echo $feed_id ;?>" >
@@ -149,7 +150,7 @@
 				<!-- to displace status of submited feed to ushahidi -->
 					<label id="lblreport_<?php echo $feed_id; ?>" name="lblreport_<?php echo $feed_id; ?>" >
 					</label>
-			</div>
+
 				<!-- End Item Panel -->
 			
 				<!-- Begin Tagging/Sweeper Panel -->
@@ -188,10 +189,11 @@
 				<img src="<?php echo url::base(); ?>/media/img/qtnmark.jpg" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 															</a> --> 					
 						<?php } ?>
-				</form>
+				
+				
 			</div>
 				<!-- End Sweeper Panel -->
-			</div>
+				</form>
 				<!-- End Tagging/Sweeper Panel -->	 
 													</td>
 											</tr>

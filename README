@@ -1,10 +1,10 @@
 ==========================
-SWIFT RIVER v0.0.4 - Rumba
+SWIFT RIVER v0.0.5 - Rumba
 ==========================
  
-Swiftriver is a FOSS platform for determining the veracity and and accuracy of news during a crisis. There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. 
- 
-It is currently being built as a scalable sister platform to Ushahidi.  It has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://swift.ushahidi.com/extend/
+Swiftriver is a FOSS platform for determining the veracity and accuracy of news related to an event. 
+
+There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://swift.ushahidi.com/extend/
 
 Find it on Github - http://github.com/appfrica/ushahidi_swift
 
@@ -63,6 +63,8 @@ Contributing Organizations
 ===============
 CHANGE LOG
 ===============
+2010-03-15	Admin Panel Styling, Default Veracity Slider Value Changed to '0 - 100'
+2010-03-14	Design, CSS and UI (Jon Gosier)
 2010-03-11	Debug Installer, README, Added Rumba Theme, Sweeper Panel Icons (Jon Gosier)
 2010-03-10	User Roles & Tagging, UI fixes (Ivan Kavuma)
 2010-03-01  Announced Release Schedule (Jon Gosier)

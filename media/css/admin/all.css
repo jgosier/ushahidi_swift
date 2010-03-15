@@ -436,9 +436,7 @@ ul.nav-list li li strong{
 }
 /*-- footer --*/
 #footer{
-	background:#202020 url(../../img/admin/footer-bg.jpg) repeat-x;
-	border-top:4px solid #cb0000;
-	border-bottom:4px solid #cb0000;
+	background:#FFFFFF;
 	height:213px;
 	width:100%;
 	overflow:hidden;

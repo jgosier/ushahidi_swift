@@ -36,7 +36,7 @@
 					<li><a href="<?php echo url::base() . "reports/submit" ?>"><?php echo Kohana::lang('ui_main.report_an_incident'); ?></a></li>
 					<li><a href="http://swift.ushahidi.com"><?php echo Kohana::lang('ui_main.about'); ?></a></li>
 					<li><a href="http://ushahidi.com/contact" title="contact Swiftriver" >Contact</a></li>
-					<li><a href="http://blog.ushahidi.com/index.php/category/swift-river/" title="our blog" ><?php echo Kohana::lang('ui_main.blog'); ?></a></li>
+					<li><a href="http://blog.ushahidi.com/index.php/category/swift-river/" title="our blog" >Swift River Blog</a></li>
 					<li><a href="http://forums.ushahidi.com/" title="support forums" >Support</a></li>
 					<li><a href="http://groups.google.com/group/swiftriver" title="feedback" >Feedback</a></li>
 					<li><a href="http://http://github.com/ushahidi/Swiftriver" title="github" >Github</a></li>
@@ -51,14 +51,14 @@
 	</div>
 	<!-- / footer -->
  
-	<img src="<?php echo $tracker_url; ?>" />
+	<!--<img src="<?php echo $tracker_url; ?>" -->
 	<?php echo $ushahidi_stats; ?>
 	<?php echo $google_analytics; ?>
 	
 	<!-- Task Scheduler -->
-	<img src="<?php echo url::base() . 'scheduler'; ?>" height="1" width="1" border="0" />
+	<img src="<?php echo url::base() . 'scheduler'; ?>" height="0" width="0" border="0" />
  
-        <!-- script for share button -->
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pub=ushahidi"></script>
+    <!-- script for share button -->
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=swiftriver"></script>	
 </body>
 </html>

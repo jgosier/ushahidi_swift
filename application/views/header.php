@@ -27,31 +27,9 @@
 		echo "<!--[if IE 7]>".html::stylesheet('media/css/ie7hacks','',true)."<![endif]-->";
 		echo "<!--[if IE 6]>".html::stylesheet('media/css/ie6hacks','',true)."<![endif]-->";
 
-	// Load OpenLayers before jQuery!
-	if ($map_enabled == 'streetmap') {
-		echo html::script('media/js/OpenLayers', true);
-		echo "<script type=\"text/javascript\">OpenLayers.ImgPath = '".url::base().'media/img/openlayers/'."';</script>";
-		//echo 'STREET!';
-	}
-	
 	// Load jQuery
 	echo html::script('media/js/jquery', true);
 	echo html::script('media/js/jquery.ui.min', true);
-	
-	// Other stuff to load only we have the map enabled
-	if ($map_enabled) {
-		echo $api_url . "\n";
-		if ($main_page || $this_page == 'alerts') {
-			echo html::script('media/js/selectToUISlider.jQuery', true);
-		}
-		if ($main_page) {
-			echo html::script('media/js/jquery.flot', true);
-			echo html::script('media/js/timeline', true);
-			echo "<!--[if IE]>".
-				html::script('media/js/excanvas.pack', true)
-				."<![endif]-->";
-		}
-	}
 	
 	if ($validator_enabled) {
 		echo html::script('media/js/jquery.validate.min');
@@ -82,9 +60,8 @@
 		echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://" . $_SERVER['SERVER_NAME'] . "/feed/\" title=\"RSS2\" />";
 	}
 	
-	//Custom stylesheet
+		//Custom stylesheet
 	echo html::stylesheet(url::base().'themes/'.$site_style."/style.css");
-
 	echo html::stylesheet(url::base().'media/css/jquery-ui-1.7.2.custom.css');
 	echo html::script('media/js/jquery-1.3.2.min', true);
 	echo html::script('media/js/ui.core.js', true); 
@@ -105,7 +82,7 @@ $(function() {
 			 echo	"	values: [".$_SESSION['verocity_min']." , ".$_SESSION['verocity_max']." ],";
 			}else
 			{ ?> 
-						values: [20, 100],
+						values: [0, 100],
 				<?php
 			}
 				?>

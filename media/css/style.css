@@ -1,4 +1,10 @@
-/* Handcoded by RapidxHTML - http://www.rapidxhtml.com */
+/* 
+Description: Swiftriver Main Style Sheet
+Demo: http://swift.ushahidi.com/rc/
+Version: 1.0
+Author: Jon Gosier
+Author Email: jon@ushahidi.com
+*/
 
 /* reset */
 body,div,dl,dt,dd,ul,ol,li,pre,form,fieldset,input,textarea,p,blockquote,th,td{
@@ -19,218 +25,10 @@ body{
     position: relative;
 }
 
-/* links */
-a{
-    color: #3764aa;
-    text-decoration: none;
-}
-
-a:hover{
-    color: #008cff;
-    text-decoration: underline;
-}
-
-/* header elements */
-h1, h2, h3, h4, h5, h6{
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    margin-top: 0;
-    padding: 0;
-}
-
-h1{
-    font-size: 150%;
-    color: #004276;
-}
-
-h2{
-    font-size: 125%;
-    color: #004276;
-    margin-bottom: .2em;
-}
-
-h3{
-    font-size: 150%;
-    color: #333333;
-}
-
-h4{
-    font-size: 175%;
-    color: #333333;
-}
-
-h5{
-    font-size: 150%;
-    color: #333333;
-    margin-bottom: 10px;
-}
-
-h6{
-    font-size: 125%;
-    color: #333333;
-}
-
-h7{
-    font-size: 125%;
-    color: #FFFFFF;
-}
-
-/* page setup */
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    color: #333333;
-    font-size: 12px;
-}
-
-body#page{
-    background: #585858 url(../img/page-bg.jpg) 50% 0 repeat-x;
-}
-
 /* wrapper setup */
 div.rapidxwpr{
     margin: auto;
     width: 960px;
-}
-
-/* header */
-div#header{
-    position: relative;
-    height: 144px;
-    margin: 0px 0px 0px 0px;
-}
-
-/* logo */
-div#logo{
-    border: 0;
-     /* background: #E2E2E2; */
-    padding: 35px 24px;
-    float: left;
-    margin: 14px 0 0 0;
-}
-div#logo h1{
-	margin:0;
-	padding:0;
-	font-size: 20px;
-	color:#ffffff;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-div#logo span{
-	font-size:14px;
-	font-style: italic;
-}
-
-/* main body setup */
-div#middle{
-    width: auto;
-    margin: 0px 0px 0px 0px;
-    clear: both;
-    background: #FFF;
-}
-
-div#middle .background{
-    min-height: 140px;
-}
-
-div#middle .layoutleft{
-    background: none;
-}
-
-div#middle .layoutright{
-    background: none;
-}
-
-/* left column */
-div#left{
-    width: 200px;
-}
-
-div#middle .layoutleft div#left{
-    float: left;
-    padding: 0px 0px 0px 0px;
-}
-
-div#middle .layoutright div#left{
-    float: right;
-    padding: 0px 0px 0px 0px;
-}
-
-/* right column */
-div#right{
-    width: 285px;
-    padding: 0px 0px 0px 0px;
-    float: right;
-}
-
-/* right column (width: 50%) */
-div#equalright{
-    width: 50%;
-    padding: 0px 0px 0px 0px;
-    float: right;
-}
-
-/* content column */
-div#main{
-    width: auto;
-    margin: 0px 0px 0px 0px;
-    padding: 15px 29px;
-}
-
-div#mainmiddle{
-    margin: 0px 0px 0px 0px;
-}
-
-div#main .withoutright{
-    background: transparent;
-}
-
-div#content{
-    width: auto;
-}
-
-div#main .withright div#content{
-    margin: 0px 325px 0px 0px;
-    padding: 0px 0px 0px 0px;
-}
-
-div#main .withoutright div#content{
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-}
-
-/* footer */
-div#footer{
-    width: auto;
-    clear: both;
-    color: #fff;
-    background-color: #A8A8A8;
-    padding-bottom: 20px;
-}
-
-div#underfooter{
-    width:auto;
-    height: 28px;
-    background-color:#A8A8A8;
-    position: relative;
-    top: -28px;
-    z-index: -1;
-}
-
-/* clearing & floating */
-.clearingfix:after{
-    content: ".";
-    display: block;
-    line-height: 0px;
-    clear: both;
-    visibility: hidden;
-}
-
-.clearingfix{
-    display: block;
-}
-
-.floatbox{
-    overflow: hidden;
 }
 
 /* languages */
@@ -428,38 +226,13 @@ div.filters ul li a:hover, div.filters ul li a.active{
 
 a.share{
     float: left;
-		border-right: 1px solid #999;
-		margin-top:7px;
-		padding:5px 25px 5px 5px;
+	border-right: 1px solid #999;
+	margin-top:7px;
+	padding:5px 25px 5px 5px;
     background: url(../img/share.jpg) no-repeat center;
     text-indent:-2000px;
     width:125px;
     height: 18px;
-}
-
-/* map */
-div.map {
-    border: #CCCCCC 1px solid;
-    width: 573px;
-    height: 366px;
-}
-
-div.graph-holder {
-    height:150px;
-    overflow:hidden;
-    width:573px;
-}
-
-div.slider-holder {
-    font-size:70%;
-    height:70px;
-    margin-top:15px;
-    width:554px;
-    padding-left: 11px;
-}
-
-div.slider-holder label{
-    color: #666666;
 }
 
 /* reports */
@@ -1121,7 +894,8 @@ a.rem{
 	float:left;
 	background:url(../img/icon-plus.gif) no-repeat;
 }
-a.rem { background:url(../img/icon-minus.gif) no-repeat;}
+a.rem { background:url(../img/icon-minus.gif) no-repeat;
+	}
 .report_map{
 	overflow:hidden;
 	width:100%;
@@ -1405,53 +1179,6 @@ ul.pager li a{
 ul.pager li a:hover,
 ul.pager li a.active {background:#f2f7fa;}
 
-/*-- feedback --*/
-.feedback_forms{
-	display:none;
-	position: relative;
-	top: -350px;
-	left: 25px;
-	border: 5px solid black;
-	background: #bbb;
-	width: 600px;
-	padding: 5px 20px 5px 20px;
-}
-
-.feedback_forms textarea, .feedback_forms textarea input{
-	color: #000;
-	border: 1px solid #996;
-}
-
-.feedback_forms button {
-	height: 22px;
-	border: 1px solid #000;
-	background: #ccc;
-}
-
-.feedback_title {
-	padding: 20px 0 0 10px;
-}
-
-.or_txt {
-	padding: 0 10px 0 10px;
-	font:14px/17px Arial, Helvetica, sans-serif;
-}
-
-.detailed_feedback {
-	text-align: center;
-	padding: 10px 0 0 0;
-	width: 150px;
-	height: 50px;
-	border: 1px solid #000;
-	background: #ccc;
-	
-}
-
-.detailed_feedback a {
-	color: #000;
-	font:14px/17px Arial, Helvetica, sans-serif;
-	text-decoration :none;
-}
 
 /*-search-*/
 .search_block{

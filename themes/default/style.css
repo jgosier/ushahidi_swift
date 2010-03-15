@@ -1,24 +1,205 @@
 /*
 Theme Name: Rumba
 Description: Some dark blues and browns
-Demo: http://swift.ushahididev.com/
+Demo: http://swift.ushahidi.com/rc/
 Version: 1.0
 Author: Jon Gosier
 Author Email: jon@ushahidi.com
 */
 
+/* page setup */
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    font-size: 12px;
+}
+
 /* header background */
+
 body#page{
 	background: #edd9c3 url(img/bg.png) repeat-x;
 }
 
-/* footer */
-div#footer
-{
-	background-color: #660000 ;
+/* header */
+div#header{
+    position: relative;
+    height: 144px;
+    margin: 0px 0px 0px 0px;
 }
-div#underfooter{
-	background-color:#edd9c3;
+
+/* links */
+a{
+    color: #3764aa;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #008cff;
+    text-decoration: underline;
+}
+
+/* header elements */
+h1, h2, h3, h4, h5, h6{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    margin-top: 0;
+    padding: 0;
+}
+
+h1{
+    font-size: 150%;
+    color: #004276;
+}
+
+h2{
+    font-size: 125%;
+    color: #004276;
+    margin-bottom: .2em;
+}
+
+h3{
+    font-size: 150%;
+    color: #333333;
+}
+
+h4{
+    font-size: 175%;
+    color: #333333;
+}
+
+h5{
+    font-size: 150%;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+h6{
+    font-size: 125%;
+    color: #333333;
+}
+
+h7{
+    font-size: 125%;
+    color: #FFFFFF;
+}
+
+/* logo */
+div#logo{
+    border: 0;
+     /* background: #E2E2E2; */
+    padding: 35px 24px;
+    float: left;
+    margin: 14px 0 0 0;
+}
+div#logo h1{
+	margin:0;
+	padding:0;
+	font-size: 20px;
+	color:#ffffff;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+div#logo span{
+	font-size:14px;
+	font-style: italic;
+}
+
+/* main body setup */
+div#middle{
+    width: auto;
+    margin: 0px 0px 0px 0px;
+    clear: both;
+    background: #FFF;
+}
+
+div#middle .background{
+    min-height: 140px;
+}
+
+div#middle .layoutleft{
+    background: none;
+}
+
+div#middle .layoutright{
+    background: none;
+}
+
+/* left column */
+div#left{
+    width: 200px;
+}
+
+div#middle .layoutleft div#left{
+    float: left;
+    padding: 0px 0px 0px 0px;
+}
+
+div#middle .layoutright div#left{
+    float: right;
+    padding: 0px 0px 0px 0px;
+}
+
+/* right column */
+div#right{
+    width: 285px;
+    padding: 0px 0px 0px 0px;
+    float: right;
+}
+
+/* right column (width: 50%) */
+div#equalright{
+    width: 50%;
+    padding: 0px 0px 0px 0px;
+    float: right;
+}
+
+/* content column */
+div#main{
+    width: auto;
+    margin: 0px 0px 0px 0px;
+    padding: 15px 29px;
+}
+
+div#mainmiddle{
+    margin: 0px 0px 0px 0px;
+}
+
+div#main .withoutright{
+    background: transparent;
+}
+
+/* main feeds */
+
+div#content{
+    width: 580px;
+	display: block;
+}
+
+div#main .withright div#content{
+    margin: 0px 325px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+div#main .withoutright div#content{
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+/* clearing & floating */
+.clearingfix:after{
+    content: ".";
+    display: block;
+    line-height: 0px;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearingfix{
+    display: block;
+}
+
+.floatbox{
+    overflow: hidden;
 }
 
 /* links */
@@ -194,6 +375,24 @@ div.content-block-right{
     background: #FFFFFF;
     width: 427px;
     float: right;
+}
+
+/* footer */
+div#footer{
+    width: auto;
+    clear: both;
+    color: #fff;
+    background-color: #660000;
+    padding-bottom: 20px;
+}
+
+div#underfooter{
+    width:auto;
+    height: 28px;
+    background-color:#edd9c3;
+    position: relative;
+    top: -28px;
+    z-index: -1;
 }
 
 /* site footer */

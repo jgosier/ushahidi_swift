@@ -648,7 +648,7 @@ This is the index function called by default.
 			}	
 			else
 			{
-				$verocity_filter =	"	AND weight >=	20 AND weight <= 100 ";
+				$verocity_filter =	"	AND weight >=	0 AND weight <= 100 ";
 			}
 
 		$numItems_per_page =  Kohana::config('settings.items_per_page');
