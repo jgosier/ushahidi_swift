@@ -147,7 +147,7 @@
 					<strong>Delivered by <span style="text-transform: lowercase;"><?php echo util::get_category_name($feed->category_id ); ?></span></strong> on <?php echo $feed->item_date; /*$testDate;*/ ?>&nbsp;&nbsp;&nbsp; 
 					<strong>Source:</strong> <a href="<?php echo $feed->item_link; ?>" target="_blank" style="color:#000000;">	<?php echo $feed->item_source; ?></a>
 					</p>
-				<!-- to displace status of submited feed to ushahidi -->
+				<!-- to display status of submitted feed to ushahidi -->
 					<label id="lblreport_<?php echo $feed_id; ?>" name="lblreport_<?php echo $feed_id; ?>" >
 					</label>
 
@@ -160,7 +160,7 @@
 				<a href="javascript:submit_tags('<?php echo $feed_id ;?>')" >
 				<img src="<?php echo url::base(); ?>/media/img/tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 																 </a>
-				<input type=text id="tag_<?php echo $feed_id; ?>"  name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;
+				<input type=text id="tag_<?php echo $feed_id; ?>" name="tag_<?php echo $feed_id; ?>" value="" />&nbsp;&nbsp;
 						<?php }else{ ?> 
 				<img src="<?php echo url::base(); ?>/media/img/tagbtn.png" alt="<?php echo $feed_title ?>" align="absmiddle" style="border:0" />
 						<?php } ?>	

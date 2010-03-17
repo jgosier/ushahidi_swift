@@ -28,7 +28,7 @@ class util{
 				foreach($tags as $tag)
 				{ //CC9966
 						$tagnew_tags .= $tag->tags."&nbsp;<a href='javascript:mark_tag_false(".	$tag->id.",".$tag->tagged_id.")' title='Mark tag as incorrect' >".
-											"<span style='color:#CC0000;background:#CCCCCC;font-weight:bold;'> X </span></a>&nbsp;&nbsp;" ;			
+											"<span class='tag_x'>x</span></a>&nbsp;&nbsp;" ;			
 				}				
 				return 	$tagnew_tags;	
 		}
@@ -317,9 +317,11 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 						$ushahidi_url = ORM::factory('settings', 1)->ushahidi_url;	
 						
 						if (empty($ushahidi_url))
+						
 						{		
-								echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
-								return;
+								//echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
+						$ushahidi_url = url::base();
+								//return;
 						}	
 							
 						$ch = curl_init(); 
@@ -357,7 +359,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 								$weightrs = $db->query($sql3);
 								$weight_value = round($weightrs[0]->weight,0);										  							  
 	
-								echo json_encode(array('message' => '<span style=color:red >Incident has been reported to Ushahidi</span>','weight'=>$weight_value));		
+								echo json_encode(array('message' => '<span style=color:green >Success!</span>','weight'=>$weight_value));		
 						}
 						else
 								echo ($content);

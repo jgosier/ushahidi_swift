@@ -18,7 +18,7 @@
 function mark_tag_false(tagid,feedid)
 {
 		var tag = document.getElementById('tag_'+feedid);
-	  var theurl	= '/main/Ajax_mark_tag_false/'+tagid+'/'+feedid ; 
+	  var theurl	= '<?php echo url::base(); ?>main/Ajax_mark_tag_false/'+tagid+'/'+feedid ; 
 		tag.value = "";
 		showtags(feedid,theurl);
 }
@@ -38,14 +38,14 @@ function showtags(feedid,theurl)
 function submit_tags(id)
 {  
 	  var tag = document.getElementById('tag_'+id);
-	  var theurl	= '/main/Ajax_tagging/'+id+'/'+tag.value; 
+	  var theurl	= '<?php echo url::base(); ?>main/Ajax_tagging/'+id+'/'+tag.value; 
 		tag.value = "";
 		showtags(id,theurl);	     
 	}
 
 function submitfeed_to_ushahidi(id,cat)
 {  
-	   var theurl	= '/main/submit_report_via_API/'+id+'/'+cat; 		 	  
+	   var theurl	= '<?php echo url::base(); ?>main/submit_report_via_API/'+id+'/'+cat; 		 	  
 			    $.ajax( //ajax request starting
 				 	{
 		       url: theurl, //send the ajax request to student/delete/$id
@@ -72,13 +72,13 @@ function disable_feed_links(id)
 }
 function increment_feed_rating(id,cat)
 {  
-	   var theurl	= '/main/increment_source_rating/'+id+'/'+cat; 	  
+	   var theurl	= '<?php echo url::base(); ?>main/increment_source_rating/'+id+'/'+cat; 	  
 		change_feed(id,theurl);    
 }
 	
 function decrement_feed_rating(id,cat)
 {  
-	   var theurl	= '/main/decrement_source_rating/'+id+'/'+cat; 	
+	   var theurl	= '<?php echo url::base(); ?>main/decrement_source_rating/'+id+'/'+cat; 	
 		 change_feed(id,theurl);  			  
 }
 function change_feed(id,theurl)
@@ -97,7 +97,7 @@ function change_feed(id,theurl)
 
 function mark_irrelevant(id,cat)
 {  
-	   var theurl	= '/main/mark_irrelevant/'+id+'/'+cat+'/'; 	  
+	   var theurl	= '<?php echo url::base(); ?>main/mark_irrelevant/'+id+'/'+cat+'/'; 	  
 			   $.ajax( //ajax request starting
 				 	{
 		       url: theurl, //send the ajax request to student/delete/$id
