@@ -19,17 +19,19 @@ class util{
 	/**
 			Get the tags for display in the home page.
 		*/
-		public static function showtags($id)
+		public static function showtags($id,$tablename)
 		{
 				$db = new Database();
-				$sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = 'feed_item' AND correct_yn = 1 ";
+				$sql1 = "SELECT id,  tagged_id,  tablename,  tags   FROM tags WHERE tagged_id = ".$id." AND tablename = '".$tablename."' AND correct_yn = 1 ";
 				$tags = $db->query($sql1);
 				$tagnew_tags = "";
 				foreach($tags as $tag)
 				{ //CC9966
-						$tagnew_tags .= $tag->tags."&nbsp;<a href='javascript:mark_tag_false(".	$tag->id.",".$tag->tagged_id.")' title='Mark tag as incorrect' >".
-											"<span class='tag_x'>x</span></a>&nbsp;&nbsp;" ;			
-				}				
+							$tagnew_tags .= "<a  href='".url::base()."taggedfeeds/index/page/1/tag/".$tag->tags."' >".$tag->tags."</a> &nbsp;<a href=\"javascript:mark_tag_false(".	$tag->id.",".$tag->tagged_id.",'".$tablename."')\" title='Mark tag as incorrect' >"
+													."<img src='".url::base()."/media/img/x_btn.png' alt='".$tag->tags."' align='absmiddle' style='border:0' width='18' />"
+													."</a>&nbsp;&nbsp;" ;	
+				}
+								
 				return 	$tagnew_tags;	
 		}
 		/**
@@ -191,14 +193,16 @@ class Main_Controller extends Template_Controller {
     */
     
     public function increment_source_rating($feedid,$categoryid)
-    {
+    {$this->auto_render=false;
     	$increment = " + 1";
 			$this->change_source_rating($feedid,$categoryid,$increment);
     }
     public function decrement_source_rating($feedid,$categoryid)
     {
-    		$decrement = " - 1";
+    		$this->auto_render=false;
+    		$decrement = " - ".Kohana::config('settings.on_X_feed_decrement_source_rate_by') ;// " - 1";
     		$this->change_source_rating($feedid,$categoryid,$decrement);
+    		
     }
     private function change_source_rating($feedid,$categoryid,$increment)
 		{
@@ -244,6 +248,16 @@ class Main_Controller extends Template_Controller {
 						$db = new Database();
 					  $this->auto_render=false;
 					  $sql1 = "";
+					  
+					  $ushahidi_url = ORM::factory('settings', 1)->ushahidi_url;	
+						
+						if (empty($ushahidi_url))
+						{		
+								//echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
+							$ushahidi_url = url::base();
+							//	return;
+						}	
+					  
 					
 					  //categories news,blogs,others use the feeds table.  others come from the messages table.
 					  if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
@@ -269,7 +283,7 @@ class Main_Controller extends Template_Controller {
 									$sql1	.= " FROM message m   
 													LEFT OUTER JOIN reporter r ON  r.id = m.reporter_id  
 													LEFT OUTER JOIN location l ON l.id = r.location_id
-												WHERE m.id = ".$feedid ;
+												WHERE  submited_to_ushahidi <> 1 AND m.id = ".$feedid ;
 						}
 						else
 						{
@@ -280,12 +294,19 @@ class Main_Controller extends Template_Controller {
 												FROM feed_item f 
 														 LEFT OUTER JOIN feed a ON f.feed_id = a.id 
 														 LEFT OUTER JOIN location l ON l.id = f.location_id
-												WHERE f.id = ".$feedid;
+												WHERE  submited_to_ushahidi <> 1 AND f.id = ".$feedid;
 						}
 														 
 														 
 						$feeds = $db->query($sql1);
+						if(count($feeds) == 0)
+						{
+								echo json_encode(array('message' => '<span style=color:red >Feed already submited.</span>'));
+								return;
+						}
+						
 						$feed = $feeds[0];
+						
 						$xmlcontent = "task=report";
 				  	
 						//$reportdata="api?task=report&incident_title=Test&incident_description=Testing+with+the+api.&incident_date=03/18/2009&incident_hour=10&incident_minute=10&incident_ampm=pm&incident_category=2,4,5,7&latitude=-1.28730007&longitude=36.82145118200820&location_name=accra&person_first=Henry+Addo&person_last=Addo&person_email=henry@ushahidi.com&resp=xml "
@@ -314,15 +335,7 @@ incident_photo[] - Optional. Photos to accompany the incident/report.
 incident_news - Optional. A news source regarding the incident/report. A news feed.
 incident_video - Optional. A video link regarding the incident/report. Video services like youtube.com, video.google.com, metacafe.com,etc
  "*/
-						$ushahidi_url = ORM::factory('settings', 1)->ushahidi_url;	
 						
-						if (empty($ushahidi_url))
-						
-						{		
-								//echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
-						$ushahidi_url = url::base();
-								//return;
-						}	
 							
 						$ch = curl_init(); 
 						curl_setopt($ch, CURLOPT_HEADER, 0); 
@@ -338,6 +351,8 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 						if(strlen(strstr($content,"success\":\"true"))>0)
 							$status = true;
 						
+						$rattingIncrement = Kohana::config('settings.on_submit_feed_increment_source_rate_by') ;
+						
 						if ($status)
 						{
 									  $sql2 = "";
@@ -345,13 +360,13 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 								if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
 							  {				
 							  			$sql1 = "UPDATE message SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
-							  			$sql2 = "UPDATE reporter SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
+							  			$sql2 = "UPDATE reporter SET weight = weight +  ".$rattingIncrement."  WHERE weight + ".$rattingIncrement." <= 100 AND id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
 											$sql3 = "SELECT weight FROM reporter  WHERE id IN (SELECT reporter_id FROM message WHERE id = ".$feedid." ) ";
 							  }
 								else
 								{
 							  			$sql1 = "UPDATE feed_item SET submited_to_ushahidi = 1 WHERE id=".$feedid ;
-							  			$sql2 = "UPDATE feed SET weight = weight + 5 WHERE weight + 5 <= 100 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
+							  			$sql2 = "UPDATE feed SET weight = weight +  ".$rattingIncrement."  WHERE weight +  ".$rattingIncrement."  <= 100 AND id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
 							  			$sql3 = "SELECT weight FROM feed  WHERE id IN (SELECT feed_id FROM feed_item WHERE id = ".$feedid." ) ";
 								}	
 								$update = $db->query($sql1);			
@@ -359,7 +374,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 								$weightrs = $db->query($sql3);
 								$weight_value = round($weightrs[0]->weight,0);										  							  
 	
-								echo json_encode(array('message' => '<span style=color:green >Success!</span>','weight'=>$weight_value));		
+								echo json_encode(array('message' => '<span style=color:red >Incident has been reported to Ushahidi</span>','weight'=>$weight_value));		
 						}
 						else
 								echo ($content);
@@ -373,13 +388,13 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
     	This function update the tags.
     */
 
-		private function add_tags($id,$tag)
+		private function add_tags($id,$tag,$tablename)
 		{
-					if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename','feed_item')->where('tags.tags',$tag)->count_all() == 0)
+					if(ORM::factory('tags')->where('tagged_id',$id)->where('tablename',$tablename)->where('tags.tags',$tag)->count_all() == 0)
 					{	
 						$tags = new Tags_Model();
 						$tags->tagged_id = $id;
-						$tags->tablename = 'feed_item';
+						$tags->tablename = $tablename;
 						$tags->tags = $tag;
 						$tags->save();
 					}
@@ -388,7 +403,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 		/**
 				Mark the tag as false
 		*/
-		public function Ajax_mark_tag_false($tagid,$feedid)
+		public function Ajax_mark_tag_false($tagid,$feedid,$tablename)
 		{
 				if(request::is_ajax())
 				{	
@@ -396,7 +411,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 					$db = new Database();
 					$sql1 = "UPDATE tags SET correct_yn = 0  WHERE id = ".$tagid." ";
 					$tags = $db->query($sql1);		
-					$tagnew_tags = util::showtags($feedid);	
+					$tagnew_tags = util::showtags($feedid,$tablename);	
 					echo json_encode(array('tags' => $tagnew_tags));	
 				}
 		}
@@ -405,12 +420,12 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 		/**
 				Add a tags.
 		*/		
-		public function Ajax_tagging($id,$tag)
+		public function Ajax_tagging($id,$tag,$tablename)
 		{
 				if(request::is_ajax())
 				{		$this->auto_render=false;
-						$this->add_tags($id,$tag);		
-						$tagnew_tags = util::showtags($id);	
+						$this->add_tags($id,$tag,$tablename);		
+						$tagnew_tags = util::showtags($id,$tablename);	
 						echo json_encode(array('tags' => $tagnew_tags));	
 				}
 		}
@@ -428,14 +443,14 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 		}
 
 /**
-		*		This function help the verocity selector
+		*		This function help the veracity selector
 		*/
-		public function verocity($category_id)
+		public function veracity($category_id)
 		{			
 					if($_POST)
 					{
-							$_SESSION['verocity_min'] = isset($_POST['verocity_min'])?$_POST['verocity_min']:0;
-							$_SESSION['verocity_max'] = isset($_POST['verocity_max'])?$_POST['verocity_max']:100;
+							$_SESSION['veracity_min'] = isset($_POST['veracity_min'])?$_POST['veracity_min']:0;
+							$_SESSION['veracity_max'] = isset($_POST['veracity_max'])?$_POST['veracity_max']:100;
 					}
 							url::redirect("/main/index/category/".$category_id."/page/1" );	
 								
@@ -644,13 +659,13 @@ This is the index function called by default.
 		  $category_filter = $categoryYes	? "  a.category_id = ".$category_id."  " : " 1=1 ";		  		
 		  $category_filter2 =	" r.service_id = ".($category_id == 2?" 1 ":($category_id == 10? " 2 " : " 3 "));		
 		  
-		  $verocity_filter =	"";
-		  if(isset( $_SESSION['verocity_min']) && isset( $_SESSION['verocity_max'])){
-			 $verocity_filter =	"	AND weight >=	".$_SESSION['verocity_min']." AND weight <= ".$_SESSION['verocity_max']." ";
+		  $veracity_filter =	"";
+		  if(isset( $_SESSION['veracity_min']) && isset( $_SESSION['veracity_max'])){
+			 $veracity_filter =	"	AND weight >=	".$_SESSION['veracity_min']." AND weight <= ".$_SESSION['veracity_max']." ";
 			}	
 			else
 			{
-				$verocity_filter =	"	AND weight >=	0 AND weight <= 100 ";
+				$veracity_filter =	"	AND weight >=	0 AND weight <= 100 ";
 			}
 
 		$numItems_per_page =  Kohana::config('settings.items_per_page');
@@ -663,10 +678,11 @@ This is the index function called by default.
 												item_date, 
 										 		a.weight as weight,
 										 		a.feed_name as item_source,
-										 		a.category_id as category_id
+										 		a.category_id as category_id,
+										 		'feed_item' as tablename
 												FROM feed_item f 
 														 INNER JOIN feed a ON f.feed_id = a.id 
-												WHERE submited_to_ushahidi = 0 AND ".$category_filter.$verocity_filter;
+												WHERE submited_to_ushahidi = 0 AND ".$category_filter.$veracity_filter;
 								
 		if($category_id == 11 || $category_id == 10 || $category_id == 2 )
 		{ 	
@@ -682,10 +698,11 @@ This is the index function called by default.
 											 m.message_date as item_date,
 											 r.weight as weight,
 											 m.message_from as item_source,
-											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 ELSE 11 END as category_id
+											 CASE r.service_id  WHEN 1 THEN 2 WHEN 2 THEN 10 ELSE 11 END as category_id,
+											 'message' as tablename
 											FROM message m  
 													INNER JOIN reporter r ON r.id = m.reporter_id 
-													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2.$verocity_filter;											
+													WHERE  submited_to_ushahidi = 0 AND ".$category_filter2.$veracity_filter;											
 			}
 				// echo $sql; exit(0);
 			
@@ -694,12 +711,12 @@ This is the index function called by default.
 		 $db=new Database;
 			if ($category_id == 11 || $category_id == 10 || $category_id == 2 )
 			{ 
-					$countersql	= " SELECT count(m.id)as Total FROM message m INNER JOIN reporter r ON r.id = m.reporter_id AND ".$category_filter2.$verocity_filter ;
+					$countersql	= " SELECT count(m.id)as Total FROM message m INNER JOIN reporter r ON r.id = m.reporter_id AND ".$category_filter2.$veracity_filter ;
 				  $Feedcounts =	$db->query($countersql);
 		
 			}else
 			{
-					$Feedcounts =	$db->query("select count(f.id)as Total FROM feed_item f INNER JOIN feed a ON f.feed_id = a.id  WHERE ".$category_filter.$verocity_filter);
+					$Feedcounts =	$db->query("select count(f.id)as Total FROM feed_item f INNER JOIN feed a ON f.feed_id = a.id  WHERE ".$category_filter.$veracity_filter);
 			}
 			
 		
@@ -748,11 +765,11 @@ This is the index function called by default.
 										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
 										UNION
 										SELECT 'tags added' as title,
-										(select count(*) FROM tags WHERE  tablename = 'feed_item') as count,
+										(select count(*) FROM tags WHERE  tablename IN ('feed_item','message')) as count,
 										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
 										UNION
 										SELECT 'tags approved' as title,
-										(select count(*) FROM tags WHERE  tablename = 'feed_item' AND correct_yn = 1) as count,
+										(select count(*) FROM tags WHERE  tablename  IN ('feed_item','message') AND correct_yn = 1) as count,
 										(select count(*) FROM feed )+(select count(*) FROM reporter ) as total
 										 ";
 		
@@ -767,7 +784,13 @@ This is the index function called by default.
 		
 		// Pack the javascript using the javascriptpacker helper		
 		$this->template->header->js2 = $feedjs;
-
+	
+	
+		//feed item content.
+		$feed_item_template	= new View('feed_item');
+		$this->template->content->feed_item_list = $feed_item_template; 
+		$this->template->content->feed_item_list->feeds = $Feedlist; 
+	
 	}
 	
 	/*

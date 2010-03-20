@@ -27,9 +27,31 @@
 		echo "<!--[if IE 7]>".html::stylesheet('media/css/ie7hacks','',true)."<![endif]-->";
 		echo "<!--[if IE 6]>".html::stylesheet('media/css/ie6hacks','',true)."<![endif]-->";
 
+	// Load OpenLayers before jQuery!
+	if ($map_enabled == 'streetmap') {
+		echo html::script('media/js/OpenLayers', true);
+		echo "<script type=\"text/javascript\">OpenLayers.ImgPath = '".url::base().'media/img/openlayers/'."';</script>";
+		//echo 'STREET!';
+	}
+	
 	// Load jQuery
 	echo html::script('media/js/jquery', true);
 	echo html::script('media/js/jquery.ui.min', true);
+	
+	// Other stuff to load only we have the map enabled
+	if ($map_enabled) {
+		echo $api_url . "\n";
+		if ($main_page || $this_page == 'alerts') {
+			echo html::script('media/js/selectToUISlider.jQuery', true);
+		}
+		if ($main_page) {
+			echo html::script('media/js/jquery.flot', true);
+			echo html::script('media/js/timeline', true);
+			echo "<!--[if IE]>".
+				html::script('media/js/excanvas.pack', true)
+				."<![endif]-->";
+		}
+	}
 	
 	if ($validator_enabled) {
 		echo html::script('media/js/jquery.validate.min');
@@ -60,8 +82,9 @@
 		echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://" . $_SERVER['SERVER_NAME'] . "/feed/\" title=\"RSS2\" />";
 	}
 	
-		//Custom stylesheet
+	//Custom stylesheet
 	echo html::stylesheet(url::base().'themes/'.$site_style."/style.css");
+
 	echo html::stylesheet(url::base().'media/css/jquery-ui-1.7.2.custom.css');
 	echo html::script('media/js/jquery-1.3.2.min', true);
 	echo html::script('media/js/ui.core.js', true); 
@@ -78,25 +101,27 @@ $(function() {
 			min: 0,
 			max: 100,
 			<?php 
-					if(isset( $_SESSION['verocity_min']) && isset( $_SESSION['verocity_max'])){
-			 echo	"	values: [".$_SESSION['verocity_min']." , ".$_SESSION['verocity_max']." ],";
+					if(isset( $_SESSION['veracity_min']) && isset( $_SESSION['veracity_max'])){
+			 echo	"	values: [".$_SESSION['veracity_min']." , ".$_SESSION['veracity_max']." ],";
 			}else
 			{ ?> 
-						values: [0, 100],
+						values: [0,100],
 				<?php
 			}
 				?>
 
 			slide: function(event, ui) {
-				$("#verocity_min").val(ui.values[0]);
-			  $("#verocity_max").val(ui.values[1]);
+				$("#veracity_min").val(ui.values[0]);
+			  $("#veracity_max").val(ui.values[1]);
 			}
 		});
-		$("#verocity_min").val( $("#slider-range").slider("values", 0));
-		$("#verocity_max").val( $("#slider-range").slider("values", 1));
+		$("#veracity_min").val( $("#slider-range").slider("values", 0));
+		$("#veracity_max").val( $("#slider-range").slider("values", 1));
 	});
 
 	</script>
+
+
 	<!--[if IE 6]>
 	<script type="text/javascript" src="js/ie6pngfix.js"></script>
 	<script type="text/javascript">DD_belatedPNG.fix('img, ul, ol, li, div, p, a');</script>
@@ -106,7 +131,7 @@ $(function() {
 		   ui_click: true
 		}	
 		
-		<?php echo $js2 . "\n"; ?>
+		<?php if(isset($js2)) {echo $js2 . "\n"; } ?>
 		
 	</script>
 </head>
@@ -165,8 +190,8 @@ $(function() {
 				<div id="mainmenu" class="clearingfix">
 					<ul>
 						<li><a href="<?php echo url::base() . "main" ?>" <?php if ($this_page == 'home') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.home'); ?></a></li>
-						<li><a href="<?php echo url::base() . "#" ?>" <?php if ($this_page == 'reports') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.reports'); ?></a></li>
-						<li><a href="<?php echo url::base() . "reports/submit" ?>" <?php if ($this_page == 'reports_submit') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.submit'); ?></a></li>
+						<li><a href="<?php echo url::base() . "reports/submit" ?>" <?php if ($this_page == 'reports') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.reports'); ?></a></li>
+						<li><a href="<?php echo url::base() . "taggedfeeds/index/page/1" ?>" <?php if ($this_page == 'reports_submit') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.submit'); ?></a></li>
 				<!-- Commenting out 'Download Reports' 
 				<li><a href="<?php echo url::base() . "alerts" ?>" <?php if ($this_page == 'alerts') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.alerts'); ?></a></li> 
 				-->
