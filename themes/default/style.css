@@ -452,3 +452,12 @@ div.score{
 	-moz-border-radius: 5px; 
 	-webkit-border-radius: 5px;
 }
+
+/* Tags */
+
+.tag_x {
+	color:#333; 
+	background:#E3D0B8; 
+	padding:0px 2px 0px 2px;
+	font-size: 10px;
+}

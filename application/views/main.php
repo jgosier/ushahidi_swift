@@ -13,7 +13,8 @@
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General
  * Public License (LGPL)
  */
-  
+ 
+ 
 ?>
 
 			<!-- main body -->
@@ -59,7 +60,7 @@
 					<div id="slider-range" ></div><br/><span style="color:#333333; font-weight:bold;">
 					<input type="text"  name="veracity_min"  id="veracity_min" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#333333; font-weight:bold;" />%&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" name="veracity_max"  id="veracity_max" style="text-align:right; background-color:#CCCCCC;width:30px;border:0; color:#333333; font-weight:bold;" />%</span><br/><br/>
-					<input type="image" src="<?php echo url::base() ;?>media/img/submit_btn.png" name="veracitysubmit" id="veracitysubmit" value="Submit"/>
+					<input type="image" src="<?php echo url::base() ;?>media/img/submit_btn.png" name="veracitysubmit" id="veracitysubmit" value="Submit" />
 									
 							</form>
 					</div>		
@@ -97,9 +98,7 @@
 			<!-- end filters -->
 			<!-- Begin Content Tables -->
 			<div>	
-				<!-- place holder for feed items -->
-				<?php echo $feed_item_list ; ?>	
-				
+			<?php echo $feed_item_list ; ?>  
 			</div>
 			<!-- End Content Tables -->	
 			<!-- End Pagination -->						

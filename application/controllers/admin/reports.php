@@ -618,7 +618,7 @@ class Reports_Controller extends Admin_Controller
 				{
 					$verify->verified_status = '2';
 				}
-				elseif ($post->incident_active == 1 && $post->incident_verified == 1)
+				elseif ($post->incident_active == 1 && $post->incident_verified == 2)
 				{
 					$verify->verified_status = '3';
 				}

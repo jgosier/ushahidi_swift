@@ -26,7 +26,8 @@
 					<!-- tab -->
 					<div class="tab">
 						<ul>
-							<li><a href="#" onclick="reportAction('a','APPROVE', '');">APPROVE</a></li>
+							<!-- Useless Function in Swift, Remove Code
+							<li><a href="#" onclick="reportAction('a','APPROVE', '');">APPROVE</a></li> -->
 							<li><a href="#" onclick="reportAction('u','UNAPPROVE', '');">UNAPPROVED</a></li>
 							<li><a href="#" onclick="reportAction('v','VERIFY', '');">VERIFY</a></li>
 							<li><a href="#" onclick="reportAction('d','DELETE', '');">DELETE</a></li>
@@ -186,8 +187,9 @@
 										<td class="col-3"><?php echo $incident_date; ?></td>
 										<td class="col-4">
 											<ul>
-												<li class="none-separator"><a href="#"<?php if ($incident_approved) echo " class=\"status_yes\"" ?> onclick="reportAction('a','APPROVE', '<?php echo $incident_id; ?>');">Approve</a></li>
-												<li><a href="#"<?php if ($incident_verified) echo " class=\"status_yes\"" ?> onclick="reportAction('v','VERIFY', '<?php echo $incident_id; ?>');">Verify</a></li>
+											<!-- Useless Function in Swift, Remove Code
+											<li class="none-separator"><a href="#"<?php if ($incident_approved) echo " class=\"status_yes\"" ?> onclick="reportAction('a','APPROVE', '<?php echo $incident_id; ?>');">Approve</a></li> -->
+												<li class="none-separator"><a href="#"<?php if ($incident_verified) echo " class=\"status_yes\"" ?> onclick="reportAction('v','VERIFY', '<?php echo $incident_id; ?>');">Verify</a></li>
 												<li><a href="#" class="del" onclick="reportAction('d','DELETE', '<?php echo $incident_id; ?>');">Delete</a></li>
 											</ul>
 										</td>

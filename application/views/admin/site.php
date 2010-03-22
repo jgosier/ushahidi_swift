@@ -154,8 +154,7 @@
 							</script>
 						</div>		
 						<div class="row">
-							<h4>Ushahidi Instance URL 
-							<br/><span>Pair Swift Instance with Ushahidi</span></h4>
+							<h4>Pair with Ushahidi <span>(Enter API URL)</span></h4>
 							<?php print form::input('ushahidi_url', $form['ushahidi_url'], ' class="text long"'); ?>		
 						</div>		
 						<div class="row">

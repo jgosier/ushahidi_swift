@@ -63,23 +63,28 @@ Contributing Organizations
 ===============
 CHANGE LOG
 ===============
+2010-03-22	Tag Sorting, Tag Pages
+2010-03-19	Added TagThe.net Support
+2010-03-19	Voting Fixes
+2010-03-18	Auto Verify when posting to self, Service API
+2010-03-17	Post to Self
 2010-03-15	Admin Panel Styling, Default Veracity Slider Value Changed to '0 - 100'
-2010-03-14	Design, CSS and UI (Jon Gosier)
-2010-03-11	Debug Installer, README, Added Rumba Theme, Sweeper Panel Icons (Jon Gosier)
-2010-03-10	User Roles & Tagging, UI fixes (Ivan Kavuma)
-2010-03-01  Announced Release Schedule (Jon Gosier)
-2010-02-28	Fixed Installer and .htaccess file (Matthew Griffiths)
-2010-02-26	Veracity Slider and Analytics (Ivan Kavuma)
-2010-02-25	Fixes to Scoring Algorithm (Ivan Kavuma)
-2010-02-24	Implemented Rating Algorithm (Ivan Kavuma)
-2010-02-22	Sweeper Login, Ajax Tagging, Dupe Supression, Routing Problems, Change to .sql (Ivan Kavuma & Jon Gosier)
-2010-02-18	Ajax Tagging (Ivan Kavuma)
-2010-02-16	Veracity: Tagging and Weighting (Ivan Kavuma)
-2010-02-14	Sql update (Ivan Kavuma)
-2010-02-12	Implemented Tagging (Ivan Kavuma)
-2010-02-11	Update (Ivan Kavuma)
-2010-02-10	Early Build (Jon Gosier)
-2010-01-27	Initial Push, README (Jon Gosier)
+2010-03-14	Design, CSS and UI
+2010-03-11	Debug Installer, README, Added Rumba Theme, Sweeper Panel Icons
+2010-03-10	User Roles & Tagging, UI fixes
+2010-03-01  Announced Release Schedule
+2010-02-28	Fixed Installer and .htaccess file
+2010-02-26	Veracity Slider and Analytics
+2010-02-25	Fixes to Scoring Algorithm
+2010-02-24	Implemented Rating Algorithm
+2010-02-22	Sweeper Login, Ajax Tagging, Dupe Suppression, Routing Problems, Change to .sql
+2010-02-18	Ajax Tagging
+2010-02-16	Veracity: Tagging and Weighting
+2010-02-14	Sql update
+2010-02-12	Implemented Tagging
+2010-02-11	Update
+2010-02-10	Early Build
+2010-01-27	Initial Push, README
 
 
 ==================

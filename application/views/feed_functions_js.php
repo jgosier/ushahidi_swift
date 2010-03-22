@@ -18,7 +18,7 @@
 function mark_tag_false(tagid,feedid,tablename)
 {
 		var tag = document.getElementById('tag_'+feedid);
-	  var theurl	= '<?php echo url::base(); ?>main/Ajax_mark_tag_false/'+tagid+'/'+feedid+'/'+tablename ; 
+	  var theurl  = '<?php echo url::base(); ?>main/Ajax_mark_tag_false/'+tagid+'/'+feedid+'/'+tablename ; 
 		tag.value = "";
 		showtags(feedid,theurl);
 }
@@ -38,7 +38,7 @@ function showtags(feedid,theurl)
 function submit_tags(id,tablename)
 {  
 	  var tag = document.getElementById('tag_'+id);
-	  var theurl	= '<?php echo url::base(); ?>main/Ajax_tagging/'+id+'/'+tag.value+'/'+tablename; 
+	  var theurl  = '<?php echo url::base(); ?>main/Ajax_tagging/'+id+'/'+tag.value+'/'+tablename; 
 		tag.value = "";
 		showtags(id,theurl);	     
 	}
@@ -66,21 +66,21 @@ function submitfeed_to_ushahidi(id,cat)
 function disable_feed_links(id)
 {
 		document.getElementById('feed_link_'+id).setAttribute('href','#');
-		document.getElementById('submit_feed_img'+id).setAttribute('src', '<?php echo url::base(); ?>/media/img/rsslight.png');		
-		document.getElementById('reduce_ratting_link_'+id).setAttribute('href','#');  
+		document.getElementById('submit_feed_img'+id).setAttribute('src', '<?php echo url::base(); ?>/media/img/rsslight.png');
+		document.getElementById('reduce_ratting_link_'+id).setAttribute('href','#');
 }
 function increment_feed_rating(id,cat)
 {  
 	   var theurl	= '<?php echo url::base(); ?>main/increment_source_rating/'+id+'/'+cat; 	  
-		change_feed(id,theurl);   
-		document.getElementById('increase_ratting_link_'+id).setAttribute('href','#'); 
+		change_feed(id,theurl); 
+		document.getElementById('increase_ratting_link_'+id).setAttribute('href','#');   
 }
 	
 function decrement_feed_rating(id,cat)
 {  
 	   var theurl	= '<?php echo url::base(); ?>main/decrement_source_rating/'+id+'/'+cat; 	
-		 change_feed(id,theurl);  		
-		 document.getElementById('reduce_ratting_link_'+id).setAttribute('href','#');  
+		change_feed(id,theurl); 
+		document.getElementById('reduce_ratting_link_'+id).setAttribute('href','#'); 			  
 }
 function change_feed(id,theurl)
 {
@@ -109,8 +109,8 @@ function mark_irrelevant(id,cat)
 				   		document.getElementById('lblreport_'+id).innerHTML = data['message']; 	
 				   		disable_feed_links(id);
 				   }			   
-		    });		 
-				document.getElementById('irrelevant_link_'+id).setAttribute('href','#');   
+		    });		    
+			document.getElementById('irrelevant_link_'+id).setAttribute('href','#');
 	}
 	
 	

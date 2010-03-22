@@ -26,12 +26,9 @@ class util{
 				$tags = $db->query($sql1);
 				$tagnew_tags = "";
 				foreach($tags as $tag)
-				{ //CC9966
-							$tagnew_tags .= "<a  href='".url::base()."taggedfeeds/index/page/1/tag/".$tag->tags."' >".$tag->tags."</a> &nbsp;<a href=\"javascript:mark_tag_false(".	$tag->id.",".$tag->tagged_id.",'".$tablename."')\" title='Mark tag as incorrect' >"
-													."<img src='".url::base()."/media/img/x_btn.png' alt='".$tag->tags."' align='absmiddle' style='border:0' width='18' />"
-													."</a>&nbsp;&nbsp;" ;	
-				}
-								
+				{
+					$tagnew_tags .= "<a href='".url::base()."taggedfeeds/index/page/1/tag/".$tag->tags."' >".$tag->tags."</a> &nbsp;<a href=\"javascript:mark_tag_false(".$tag->id.",".$tag->tagged_id.",'".$tablename."')\" title='Mark tag as incorrect' >"."<img src='".url::base()."/media/img/x_btn.png' alt='".$tag->tags."' align='absmiddle' style='border:0' width='18' />"."</a>&nbsp;&nbsp;" ;			
+				}				
 				return 	$tagnew_tags;	
 		}
 		/**
@@ -193,16 +190,14 @@ class Main_Controller extends Template_Controller {
     */
     
     public function increment_source_rating($feedid,$categoryid)
-    {$this->auto_render=false;
+    {
     	$increment = " + 1";
 			$this->change_source_rating($feedid,$categoryid,$increment);
     }
     public function decrement_source_rating($feedid,$categoryid)
     {
-    		$this->auto_render=false;
     		$decrement = " - ".Kohana::config('settings.on_X_feed_decrement_source_rate_by') ;// " - 1";
     		$this->change_source_rating($feedid,$categoryid,$decrement);
-    		
     }
     private function change_source_rating($feedid,$categoryid,$increment)
 		{
@@ -248,16 +243,6 @@ class Main_Controller extends Template_Controller {
 						$db = new Database();
 					  $this->auto_render=false;
 					  $sql1 = "";
-					  
-					  $ushahidi_url = ORM::factory('settings', 1)->ushahidi_url;	
-						
-						if (empty($ushahidi_url))
-						{		
-								//echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
-							$ushahidi_url = url::base();
-							//	return;
-						}	
-					  
 					
 					  //categories news,blogs,others use the feeds table.  others come from the messages table.
 					  if($categoryid == 2 || $categoryid == 10 || $categoryid == 11)
@@ -301,10 +286,10 @@ class Main_Controller extends Template_Controller {
 						$feeds = $db->query($sql1);
 						if(count($feeds) == 0)
 						{
-								echo json_encode(array('message' => '<span style=color:red >Feed already submited.</span>'));
-								return;
+							echo json_encode(array('message' => '<span style=color:red >Feed already submited.</span>'));
+							return;
 						}
-						
+							
 						$feed = $feeds[0];
 						
 						$xmlcontent = "task=report";
@@ -335,7 +320,15 @@ incident_photo[] - Optional. Photos to accompany the incident/report.
 incident_news - Optional. A news source regarding the incident/report. A news feed.
 incident_video - Optional. A video link regarding the incident/report. Video services like youtube.com, video.google.com, metacafe.com,etc
  "*/
+						$ushahidi_url = ORM::factory('settings', 1)->ushahidi_url;	
 						
+						if (empty($ushahidi_url))
+						
+						{		
+								//echo json_encode(array('message' => '<span style=color:red >The ushahidi instance url is not set. Contact Admin.</span>'));
+						$ushahidi_url = url::base();
+								//return;
+						}	
 							
 						$ch = curl_init(); 
 						curl_setopt($ch, CURLOPT_HEADER, 0); 
@@ -350,7 +343,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 						$status = false;
 						if(strlen(strstr($content,"success\":\"true"))>0)
 							$status = true;
-						
+							
 						$rattingIncrement = Kohana::config('settings.on_submit_feed_increment_source_rate_by') ;
 						
 						if ($status)
@@ -374,7 +367,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 								$weightrs = $db->query($sql3);
 								$weight_value = round($weightrs[0]->weight,0);										  							  
 	
-								echo json_encode(array('message' => '<span style=color:red >Incident has been reported to Ushahidi</span>','weight'=>$weight_value));		
+								echo json_encode(array('message' => '<span style=color:green >Success!</span>','weight'=>$weight_value));		
 						}
 						else
 								echo ($content);
@@ -411,7 +404,7 @@ incident_video - Optional. A video link regarding the incident/report. Video ser
 					$db = new Database();
 					$sql1 = "UPDATE tags SET correct_yn = 0  WHERE id = ".$tagid." ";
 					$tags = $db->query($sql1);		
-					$tagnew_tags = util::showtags($feedid,$tablename);	
+					$tagnew_tags = util::showtags($feedid,$tablename);
 					echo json_encode(array('tags' => $tagnew_tags));	
 				}
 		}
@@ -679,7 +672,7 @@ This is the index function called by default.
 										 		a.weight as weight,
 										 		a.feed_name as item_source,
 										 		a.category_id as category_id,
-										 		'feed_item' as tablename
+												'feed_item' as tablename
 												FROM feed_item f 
 														 INNER JOIN feed a ON f.feed_id = a.id 
 												WHERE submited_to_ushahidi = 0 AND ".$category_filter.$veracity_filter;
@@ -784,13 +777,12 @@ This is the index function called by default.
 		
 		// Pack the javascript using the javascriptpacker helper		
 		$this->template->header->js2 = $feedjs;
-	
-	
+		
 		//feed item content.
-		$feed_item_template	= new View('feed_item');
-		$this->template->content->feed_item_list = $feed_item_template; 
+		$feed_item_template  = new View('feed_item');
+		$this->template->content->feed_item_list = $feed_item_template;
 		$this->template->content->feed_item_list->feeds = $Feedlist; 
-	
+
 	}
 	
 	/*
