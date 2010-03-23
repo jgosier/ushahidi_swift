@@ -16,6 +16,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<?php if(!isset($_SESSION['auth_user'])){
+	url::redirect(url::base()."main");
+	}?>	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=7" />
 	<title><?php echo $site_name ?></title>
@@ -194,11 +197,7 @@
 	</div>
 	<div id="footer">
 		<div class="holder">
-			<strong>
-				<a href="http://www.ushahidi.com" target="_blank" title="Ushahidi Engine" alt="Ushahidi Engine">
-                	<sup><?php echo Kohana::config('version.ushahidi_version');?></sup>
-            	</a>
-			</strong>
+                	<img src="<?php echo url::base() ;?>media/img/admin/logo.png" width="243" height="80" alt="Logo"><sup><?php echo Kohana::config('version.ushahidi_version');?></sup>
 		</div>
 	</div>
 </body>

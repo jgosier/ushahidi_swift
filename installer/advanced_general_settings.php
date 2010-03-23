@@ -10,9 +10,9 @@
     print $header;
  ?>
 <body>
-<div id="ushahidi_login_container" class="advanced">
-    <div id="ushahidi_login_logo"><img src="../media/img/admin/logo_login.gif" /></div>
-    <div id="ushahidi_login">
+<div id="swift_login_container" class="advanced">
+    <div id="swift_login_logo"><img src="../media/img/admin/logo_login.png" /></div>
+    <div id="swift_login">
 	<ol class="progress-meter clearfix">
 		<li class=""><span>Database</span></li>
 		<li class="active"><span>General</span></li>
@@ -61,10 +61,10 @@
                             <td>
                             	<select name="select_language">
                                     <option value="en_US" selected="selected">English (US)</option>
-                                    <option value="fr_FR">Français</option>
+                                    <!-- <option value="fr_FR">Français</option> -->
                                 </select>
                             </td>
-                            <td>Each instance of Ushahidi comes with a set of built in language translations. You can also <a href="http://wiki.ushahidi.com/doku.php?id=localisation_l10n_internationlisation_i18n&s[]=language#enabling_new_languages" target="_blank">add your own</a>.</td>
+                            <td>Each instance of Swift comes with a set of built in language translations. You can also <a href="http://wiki.ushahidi.com/doku.php?id=localisation_l10n_internationlisation_i18n&s[]=language#enabling_new_languages" target="_blank">add your own</a>.</td>
                         </tr>
                         <tr>
                             <th scope="row"><label for="site_email">Site Email Address</label></th>

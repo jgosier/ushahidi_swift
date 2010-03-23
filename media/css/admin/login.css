@@ -47,23 +47,23 @@ dl {}
 
 /* LOGIN BOX */
 /*****************************/
-#ushahidi_login_container{
+#swift_login_container {
 	width:800px;
 	margin:50px auto;
 }
-#ushahidi_login_logo {
+#swift_login_logo {
 	text-align:center;
 	margin-bottom:20px;
 }
-#ushahidi_login_logo img { width:400px; height:80px;  }
+#swift_login_logo img { width:400px; height:132px;  }
 
-#ushahidi_login {
+#swift_login {
 	border:3px solid #cb0000;
 	text-align:left;
 	padding: 20px;
 	background-color: #ddd;
 }
-#ushahidi_loginbox td{
+#swift_loginbox td{
 	padding:5px;
 	vertical-align:top;
 }

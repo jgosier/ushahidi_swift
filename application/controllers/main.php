@@ -27,7 +27,7 @@ class util{
 				$tagnew_tags = "";
 				foreach($tags as $tag)
 				{
-					$tagnew_tags .= "<a href='".url::base()."taggedfeeds/index/page/1/tag/".$tag->tags."' >".$tag->tags."</a> &nbsp;<a href=\"javascript:mark_tag_false(".$tag->id.",".$tag->tagged_id.",'".$tablename."')\" title='Mark tag as incorrect' >"."<img src='".url::base()."/media/img/x_btn.png' alt='".$tag->tags."' align='absmiddle' style='border:0' width='18' />"."</a>&nbsp;&nbsp;" ;			
+					$tagnew_tags .= "<a href='".url::base()."taggedfeeds/index/page/1/tag/".$tag->tags."' class='tagged' >".$tag->tags."</a>&nbsp;<a href=\"javascript:mark_tag_false(".$tag->id.",".$tag->tagged_id.",'".$tablename."')\" title='Mark tag as incorrect' >"."x"."</a>&nbsp;&nbsp;" ;			
 				}				
 				return 	$tagnew_tags;	
 		}

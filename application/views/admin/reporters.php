@@ -1,13 +1,13 @@
 		<div class="bg">
 				<h2>
-					<a href="<?php echo url::base() . 'admin/manage' ?>">Categories</a>
+					<a href="<?php echo url::base() . 'admin/manage' ?>" class="active">Categories</a>
 					<a href="<?php echo url::base() . 'admin/manage/forms' ?>">Forms</a>
-					<a href="<?php echo url::base() . 'admin/manage/organizations' ?>">Organizations</a>
 					<a href="<?php echo url::base() . 'admin/manage/pages' ?>">Pages</a>
-					<a href="<?php echo url::base() . 'admin/manage/feeds' ?>">News Feeds</a>
+					<!-- <a href="<?php echo url::base() . 'admin/manage/feeds' ?>">News Feeds</a>
 					<a href="<?php echo url::base() . 'admin/manage/layers' ?>">Layers</a>
-					<a href="<?php echo url::base() . 'admin/manage/reporters' ?>" class="active">Reporters</a>
-					<span>(<a href="#add">Add New</a>)</span>
+					<a href="<?php echo url::base() . 'admin/manage/organizations' ?>">Organizations</a>
+					<a href="<?php echo url::base() . 'admin/manage/reporters' ?>">Reporters</a>
+					<span>(<a href="#add">Add New</a>)</span> -->
 				</h2>
 				<?php
 				if ($form_error) {

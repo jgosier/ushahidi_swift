@@ -32,13 +32,13 @@ class Contact_Controller extends Main_Controller
 			'contact_email' => '',
 			'contact_phone' => '',
 			'contact_subject' => '',			
-			'contact_message' => '',
-			'captcha' => ''
+			'contact_message' => ''
+			//'captcha' => ''
 			);
 
         // Copy the form as errors, so the errors will be stored with keys
         // corresponding to the form field names
-		$captcha = Captcha::factory();
+		// $captcha = Captcha::factory();
         $errors = $form;
         $form_error = FALSE;
         $form_sent = FALSE;
@@ -57,7 +57,7 @@ class Contact_Controller extends Main_Controller
 			$post->add_rules('contact_email', 'required','email', 'length[4,100]');
 			$post->add_rules('contact_subject', 'required', 'length[3,100]');
 			$post->add_rules('contact_message', 'required');
-			$post->add_rules('captcha', 'required', 'Captcha::valid');
+			// $post->add_rules('captcha', 'required', 'Captcha::valid');
 			
 			// Test to see if things passed the rule checks
 			if ($post->validate())
@@ -70,6 +70,7 @@ class Contact_Controller extends Main_Controller
 				$message .= "~~~~~~~~~~~~~~~~~~~~~~\n";
 				$message .= "This message was sent from your website at " . url::base();
 				// Send Admin Message
+				
 				email::send( $site_email, $post->contact_email, $post->contact_subject, $message, FALSE );
 				
 				$form_sent = TRUE;
@@ -90,6 +91,6 @@ class Contact_Controller extends Main_Controller
         $this->template->content->errors = $errors;
         $this->template->content->form_error = $form_error;
         $this->template->content->form_sent = $form_sent;
-		$this->template->content->captcha = $captcha;		
+		// $this->template->content->captcha = $captcha;		
     }	
 }

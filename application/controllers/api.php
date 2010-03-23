@@ -776,11 +776,12 @@ class Api_Controller extends Controller {
 				$incident_time = $post->incident_hour . ":" . $post->incident_minute . ":00 " . $post->incident_ampm;
 				$incident->incident_date = $incident_date . " " . $incident_time;
 				$incident->incident_dateadd = date("Y-m-d H:i:s",time());
-				$incident->save();
 				
 				//Auto verify and activate
 				$incident->incident_active = 1;
 				$incident->incident_verified = 1;
+				
+				$incident->save();
 				
 				// SAVE CATEGORIES
 				//check if data is csv or a single value.

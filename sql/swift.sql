@@ -31,16 +31,16 @@ CREATE TABLE IF NOT EXISTS `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`id`, `category_type`, `category_title`, `category_description`, `category_color`, `category_visible`) VALUES
-(1, 5, 'RIOTS', 'RIOTS', '9900CC', 1),
-(2, 5, 'DEATHS', 'DEATHS', '3300FF', 1),
-(3, 5, 'PROPERTY LOSS', 'PROPERTY LOSS', '663300', 1),
-(4, 5, 'SEXUAL ASSAULT', 'SEXUAL ASSAULT', 'CC0000', 1),
-(5, 5, 'INTERNALLY DISPLACED PEOPLE ', 'INTERNALLY DISPLACED PEOPLE 	', 'CC9933', 1),
-(6, 5, 'GOVERNMENT FORCES', 'GOVERNMENT FORCES', '9999FF', 1),
-(7, 5, 'CIVILIANS', 'CIVILIANS', '66CC00', 1),
-(8, 5, 'LOOTING', 'LOOTING', 'FFCC00', 1),
-(9, 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', 1);
+-- INSERT INTO `category` (`id`, `category_type`, `category_title`, `category_description`, `category_color`, `category_visible`) VALUES
+-- (1, 5, 'RIOTS', 'RIOTS', '9900CC', 1),
+-- (2, 5, 'DEATHS', 'DEATHS', '3300FF', 1),
+-- (3, 5, 'PROPERTY LOSS', 'PROPERTY LOSS', '663300', 1),
+-- (4, 5, 'SEXUAL ASSAULT', 'SEXUAL ASSAULT', 'CC0000', 1),
+-- (5, 5, 'INTERNALLY DISPLACED PEOPLE ', 'INTERNALLY DISPLACED PEOPLE 	', 'CC9933', 1),
+-- (6, 5, 'GOVERNMENT FORCES', 'GOVERNMENT FORCES', '9999FF', 1),
+-- (7, 5, 'CIVILIANS', 'CIVILIANS', '66CC00', 1),
+-- (8, 5, 'LOOTING', 'LOOTING', 'FFCC00', 1),
+-- (9, 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', 1);
 
 
 -- --------------------------------------------------------
@@ -1462,12 +1462,12 @@ INSERT INTO `category` (`id`, `parent_id`, `locale`, `category_type`, `category_
 (3, 0, 'en_US', 5, 'BLOGS', 'BLOGS', 'FFFFFF', NULL, NULL, 1),
 (4, 0, 'en_US', 5, 'NEWS', 'NEWS', 'FFFFFF', NULL, NULL, 1),
 (5, 0, 'en_US', 5, 'OTHERS', 'OTHERS', 'FFFFFF', NULL, NULL, 1),
-(10, 0, 'en_US', 5, 'EMAILS', 'EMAILS', 'FFFFFF', NULL, NULL, 1),
-(6, 0, 'en_US', 5, 'GOVERNMENT FORCES', 'GOVERNMENT FORCES', '9999FF', NULL, NULL, 0),
-(7, 0, 'en_US', 5, 'CIVILIANS', 'CIVILIANS', '66CC00', NULL, NULL, 0),
-(8, 0, 'en_US', 5, 'LOOTING', 'LOOTING', 'FFCC00', NULL, NULL, 0),
-(9, 0, 'en_US', 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', NULL, NULL, 0),
-(11, 0, 'en_US', 5, 'TWITTER SEARCH', 'TWITTER SEARCH', 'FFFFFF', NULL, NULL, 1);
+(10, 0, 'en_US', 5, 'EMAILS', 'EMAILS', 'FFFFFF', NULL, NULL, 1);
+-- (6, 0, 'en_US', 5, 'GOVERNMENT FORCES', 'GOVERNMENT FORCES', '9999FF', NULL, NULL, 0),
+-- (7, 0, 'en_US', 5, 'CIVILIANS', 'CIVILIANS', '66CC00', NULL, NULL, 0),
+-- (8, 0, 'en_US', 5, 'LOOTING', 'LOOTING', 'FFCC00', NULL, NULL, 0),
+-- (9, 0, 'en_US', 5, 'PEACE EFFORTS', 'PEACE EFFORTS', 'FAEBD7', NULL, NULL, 0),
+-- (11, 0, 'en_US', 5, 'TWITTER SEARCH', 'TWITTER SEARCH', 'FFFFFF', NULL, NULL, 1)
 
 
 CREATE TABLE IF NOT EXISTS `tags` (

@@ -59,7 +59,7 @@
 									<?php print form::input('contact_email', $form['contact_email'], ' class="text"'); ?>
 								</div>
 								<div class="report_row">
-									Your Phone Number:<br />
+									<strong>Your Phone Number:</strong><br />
 									<?php print form::input('contact_phone', $form['contact_phone'], ' class="text"'); ?>
 								</div>
 								<div class="report_row">
@@ -70,11 +70,11 @@
 									<strong>Message:</strong><br />
 									<?php print form::textarea('contact_message', $form['contact_message'], ' rows="4" cols="40" class="textarea long" ') ?>
 								</div>		
-								<div class="report_row">
+								<!-- <div class="report_row"> 
 									<strong>Security Code:</strong><br />
-									<?php print $captcha->render(); ?><br />
-									<?php print form::input('captcha', $form['captcha'], ' class="text"'); ?>
-								</div>
+									<?php // print $captcha->render(); ?><br />
+									<?php // print form::input('captcha', $form['captcha'], ' class="text"'); ?>
+								</div> -->
 								<div class="report_row">
 									<input name="submit" type="submit" value="Send Message" class="btn_submit" />
 								</div>

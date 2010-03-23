@@ -23,10 +23,10 @@
 </head>
 
 <body>
-<div id="ushahidi_login_container">
-    <div id="ushahidi_login_logo"><img src="<?php echo url::base() ?>media/img/admin/logo_login.gif" width="400" height="80" /></div>
-    <div id="ushahidi_login">
-      <table width="100%" border="0" cellspacing="3" cellpadding="4" background="" id="ushahidi_loginbox">
+<div id="swift_login_container">
+    <div id="swift_login_logo"><img src="<?php echo url::base() ?>media/img/admin/logo_login.png" width="400" height="132" /></div>
+    <div id="swift_login">
+      <table width="100%" border="0" cellspacing="3" cellpadding="4" background="" id="swift_loginbox">
 			<tr>
 				<td align="left">
 					<!-- green-box -->

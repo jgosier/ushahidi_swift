@@ -10,9 +10,9 @@
     print $header;
  ?>
 <body>
-<div id="ushahidi_login_container" class="advanced">
-    <div id="ushahidi_login_logo"><img src="../media/img/admin/logo_login.gif" /></div>
-    <div id="ushahidi_login">
+<div id="swift_login_container" class="advanced">
+    <div id="swift_login_logo"><img src="../media/img/admin/logo_login.png" /></div>
+    <div id="swift_login">
 	<ol class="progress-meter clearfix">
 		<li class=""><span>Database</span></li>
 		<li class=""><span>General</span></li>

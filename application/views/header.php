@@ -19,7 +19,8 @@
 <head>
 	<title><?php echo $site_name; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+	
 	<?php 
 		echo html::stylesheet('media/css/style','',true);
 		echo html::stylesheet('media/css/jquery-ui-themeroller', '', true);
@@ -106,7 +107,7 @@ $(function() {
 		   ui_click: true
 		}	
 		
-		<?php echo $js2 . "\n"; ?>
+	<?php if(isset($js2)) {echo $js2 . "\n"; } ?>
 		
 	</script>
 </head>
@@ -125,7 +126,7 @@ $(function() {
 						<?php if(isset($_SESSION['auth_user'])){ ?>
 							
 							<div class="language-box">
-								<strong>		<?php echo Kohana::lang('ui_admin.welcome');echo $_SESSION['auth_user']->name; ?>! &nbsp;&nbsp;</strong>
+								<strong><?php echo Kohana::lang('ui_admin.welcome');echo $_SESSION['auth_user']->name; ?>! &nbsp;&nbsp;</strong>
 							 </div>
 							<div class="search-form">
 				      			<a href="<?php echo url::base() ;?>admin/log_out"><?php echo Kohana::lang('ui_admin.logout');?></a>
@@ -148,10 +149,12 @@ $(function() {
 			</div>
 			<!-- / searchbox -->
 		
-			<!-- logo -->
+			<!-- Image Logo -->
 			<div id="logo">
-				<h1><?php echo $site_name; ?></h1>
-				<span><?php echo $site_tagline; ?></span>
+				<image src="<?php echo url::base() ;?>themes/default/img/site_logo.png" width="200">
+			<!-- For Text Logo and Subheader -->
+				<!-- <h1><?php echo $site_name; ?></h1> 
+				<span><?php echo $site_tagline; ?></span> -->
 			</div>
 			<!-- / logo -->
 		</div>
@@ -165,11 +168,13 @@ $(function() {
 				<div id="mainmenu" class="clearingfix">
 					<ul>
 						<li><a href="<?php echo url::base() . "main" ?>" <?php if ($this_page == 'home') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.home'); ?></a></li>
-						<<li><a href="<?php echo url::base() . "taggedfeeds/index/page/1" ?>" <?php if ($this_page == 'reports_submit') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.submit'); ?></a></li>
-						<li><a href="<?php echo url::base() . "reports/submit" ?>" <?php if ($this_page == 'reports_submit') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.submit'); ?></a></li>
-				<!-- Commenting out 'Download Reports' 
-				<li><a href="<?php echo url::base() . "alerts" ?>" <?php if ($this_page == 'alerts') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.alerts'); ?></a></li> 
-				-->
+						<li><a href="<?php echo url::base() . "taggedfeeds/index/page/1" ?>" <?php if ($this_page == 'taggedfeeds') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.tag'); ?></a></li>
+							
+		<!-- Commenting out 'Submit' -->
+					 	<li><a href="<?php echo url::base() . "reports/submit" ?>" <?php if ($this_page == 'reports_submit') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.submit'); ?></a></li>
+		
+		<!-- Commenting out 'Download Reports' -->
+						<!-- <li><a href="<?php echo url::base() . "alerts" ?>" <?php if ($this_page == 'alerts') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.alerts'); ?></a></li> -->
 						<?php
 						// Contact Page
 						if ($site_contact_page)
@@ -183,7 +188,8 @@ $(function() {
 						if ($site_help_page)
 						{
 							?>
-							<li><a href="<?php echo url::base() . "help" ?>" <?php if ($this_page == 'help') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.help'); ?></a></li>
+		<!-- Commenting out 'Help' -->					
+						<!--	<li><a href="<?php echo url::base() . "help" ?>" <?php if ($this_page == 'help') echo 'class="active"'; ?>><?php echo Kohana::lang('ui_main.help'); ?></a></li> -->
 							<?php
 						}
 						

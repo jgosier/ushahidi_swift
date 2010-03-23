@@ -1,5 +1,5 @@
 ==========================
-SWIFT RIVER v0.0.5 - Rumba
+SWIFT RIVER v0.0.8 - Rumba
 ==========================
  
 Swiftriver is a FOSS platform for determining the veracity and accuracy of news related to an event. 
@@ -12,9 +12,9 @@ Find it on Github - http://github.com/appfrica/ushahidi_swift
 DOCUMENTATION
 ===========================
  
-Architecture / Roadmap - https://docs.google.com/Doc?docid=0AXtjM3UhUoCeZGZ0azVwYjdfMWdjeDc5Y2Rj&hl=en
-Mockups / UI Design - https://docs.google.com/Doc?docid=0AXtjM3UhUoCeZGZ0azVwYjdfNGN6NXBzc2d4&hl=en
-Other Research - https://docs.google.com/View?docID=0AXtjM3UhUoCeZGZ0azVwYjdfMTBkZ2Q4OGtmMg&revision=_latest
+Installation - 
+Roadmap - 
+FAQ - 
 
 
 ====================
@@ -31,11 +31,12 @@ SiLCC (natural language processing) - http://swift.ushahidi.com/extend/silcc
 PROJECT CONTRIBUTORS
 ======================
 
-Team Swift Core
+Team Swift Core Developers
 
 	Jon Gosier (System Architect) 
 	Ivan Kavuma (Core Developer)
 	Matthew Griffiths (Lead Developer)
+	Josh Bronson (NLP Developer)
 
 Team Swift Volunteers
 
@@ -56,14 +57,15 @@ Contributing Organizations
 
 	The Ushahidi Team
 	Appfrica Labs
-	GeoRSS
+	Geo Commons
 	Meedan
 
 
 ===============
 CHANGE LOG
 ===============
-2010-03-22	Tag Sorting, Tag Pages
+2010-03-22	Changes to Reporting Panel in Admin
+2010-03-21	Tag Sorting, Tag Pages
 2010-03-19	Added TagThe.net Support
 2010-03-19	Voting Fixes
 2010-03-18	Auto Verify when posting to self, Service API
@@ -90,8 +92,8 @@ CHANGE LOG
 ==================
 RELEASE SCHEDULE
 ==================
-0.0.0	*Rumba		(Alpha)
-0.1.0	Apala
+0.0.0	Rumba		(released 2010-03-31)
+0.1.0	*Apala
 0.2.0	Batuque		
 0.3.0	Benga
 0.4.0	Bikutsi
@@ -121,3 +123,5 @@ RELEASE SCHEDULE
 2.8.0	Soukous
 2.9.0	Taarab	
 3.0.0	Zouk
+
+* = build in development

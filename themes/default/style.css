@@ -1,7 +1,7 @@
 /*
 Theme Name: Rumba
-Description: Some dark blues and browns
-Demo: http://swift.ushahidi.com/rc/
+Description: Grey, reds and browns
+Demo: http://swift.ushahidi.com
 Version: 1.0
 Author: Jon Gosier
 Author Email: jon@ushahidi.com
@@ -87,7 +87,7 @@ h7{
 div#logo{
     border: 0;
      /* background: #E2E2E2; */
-    padding: 35px 24px;
+    padding: 35px 0px;
     float: left;
     margin: 14px 0 0 0;
 }
@@ -455,9 +455,21 @@ div.score{
 
 /* Tags */
 
+.tagged a {
+	color:#333;
+}
+
 .tag_x {
 	color:#333; 
 	background:#E3D0B8; 
 	padding:0px 2px 0px 2px;
 	font-size: 10px;
+}
+
+.tag_x a {
+	color:#333; 
+	background:#E3D0B8; 
+	padding:0px 2px 0px 2px;
+	font-size: 10px;
+	text-decoration:none;
 }

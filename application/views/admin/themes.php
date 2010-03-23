@@ -58,16 +58,16 @@
 					</div>
 					<!-- column -->
 					<div class="sms_holder">
-						<!-- Default Theme -->
+						<!-- Default Theme 
 						<div class="theme_holder">
 							<div class="theme_screenshot"><?php
 								echo "<img src=\"".url::base()."media/img/default_theme.png\" width=240 height=150 border=0>";
 							?></div>
-							<strong>Default Ushahidi Theme</strong><BR />
-							The default Ushahidi Theme.<BR />
+							<strong>Default SwiftRiver Theme</strong><BR />
+							Grays browns and reds<BR />
 							<strong><u>Version</u></strong>: 1.0<BR />
-							<strong><u>Demo</u></strong>: http://www.ushahidi.com<BR />
-							<strong><u>Contact</u></strong>: team@ushahidi.com<BR />
+							<strong><u>Demo</u></strong>: http://swift.ushahidi.com/rc/<BR />
+							<strong><u>Contact</u></strong>: jon@ushahidi.com<BR />
 							<strong><u>Location</u></strong>: 
 							<div class="theme_select">
 								<input type="radio" name="site_style" value="" <?php
@@ -77,7 +77,7 @@
 								}
 								?> />Select Theme
 							</div>												
-						</div>
+						</div> -->
 						<!-- / Default Theme -->				
 						<?php
 						foreach ($themes as $theme)
@@ -93,10 +93,10 @@
 								?></div>
 								<strong><?php echo $theme['Title']." by ".$theme['Author']; ?></strong><BR />
 								<?php echo $theme['Description'] ?><BR />
-								<strong><u>Version</u></strong>: <?php echo $theme['Version'] ?><BR />
-								<strong><u>Demo</u></strong>: <?php echo $theme['Demo'] ?><BR />
-								<strong><u>Contact</u></strong>: <?php echo $theme['Author_Email'] ?><BR />
-								<strong><u>Location</u></strong>: <i>/themes/<?php echo $theme['Template_Dir'] ?>/</i>
+								<strong>Version</strong>: <?php echo $theme['Version'] ?><BR />
+								<strong>Demo</strong>: <?php echo $theme['Demo'] ?><BR />
+								<strong>Contact</strong>: <?php echo $theme['Author_Email'] ?><BR />
+								<strong>Location</strong>: <i>/themes/<?php echo $theme['Template_Dir'] ?>/</i>
 								<div class="theme_select">
 									<input type="radio" name="site_style" value="<?php echo $theme['Template_Dir'] ?>" <?php
 									if ($theme['Template_Dir'] == $form['site_style'])

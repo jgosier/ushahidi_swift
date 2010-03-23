@@ -14,23 +14,23 @@
  */
 ?>
 			<div class="bg">
-				<h2><?php echo $title; ?> <span>(<?php echo $total_items; ?>)</span><a href="<?php print url::base() ?>admin/reports/edit">Create New Report</a><a href="<?php print url::base() ?>admin/reports/download">Download Reports</a><a href="<?php print url::base() ?>admin/reports/upload">Upload Reports</a></h2>
+				<h2><?php echo $title; ?> <span>(<?php echo $total_items; ?>)</span><a href="<?php print url::base() ?>admin/reports/edit">Create New Item</a><a href="<?php print url::base() ?>admin/reports/download">Download Data</a><a href="<?php print url::base() ?>admin/reports/upload">Upload Data</a></h2>
 				<!-- tabs -->
 				<div class="tabs">
 					<!-- tabset -->
 					<ul class="tabset">
-						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v') echo "class=\"active\""; ?>>Show All</a></li>
-						<li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>>Awaiting Approval</a></li>
-						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>>Awaiting Verification</a></li>
+						<li><a href="?status=0" <?php if ($status != 'a' && $status !='v') echo "class=\"active\""; ?>>All</a></li>
+						<!-- <li><a href="?status=a" <?php if ($status == 'a') echo "class=\"active\""; ?>>Awaiting Approval</a></li>
+						<li><a href="?status=v" <?php if ($status == 'v') echo "class=\"active\""; ?>>Awaiting Verification</a></li> -->
 					</ul>
 					<!-- tab -->
 					<div class="tab">
 						<ul>
-							<!-- Useless Function in Swift, Remove Code
-							<li><a href="#" onclick="reportAction('a','APPROVE', '');">APPROVE</a></li> -->
+							<!-- Useless Functions in Swift, Remove Code
+							<li><a href="#" onclick="reportAction('a','APPROVE', '');">APPROVE</a></li> 
 							<li><a href="#" onclick="reportAction('u','UNAPPROVE', '');">UNAPPROVED</a></li>
-							<li><a href="#" onclick="reportAction('v','VERIFY', '');">VERIFY</a></li>
-							<li><a href="#" onclick="reportAction('d','DELETE', '');">DELETE</a></li>
+							<li><a href="#" onclick="reportAction('v','VERIFY', '');">VERIFY</a></li> -->
+							<li><a href="#" onclick="reportAction('d','DELETE', '');">DELETE</a></li> 
 						</ul>
 					</div>
 				</div>
@@ -63,7 +63,7 @@
 							<thead>
 								<tr>
 									<th class="col-1"><input id="checkallincidents" type="checkbox" class="check-box" onclick="CheckAll( this.id, 'incident_id[]' )" /></th>
-									<th class="col-2">Report Details</th>
+									<th class="col-2">Details</th>
 									<th class="col-3">Date</th>
 									<th class="col-4">Actions</th>
 								</tr>

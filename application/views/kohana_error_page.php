@@ -35,7 +35,7 @@ div#framework_error .ushahidi_bugs { text-align:center; font-size:12px; }
 div#framework_error .stats { padding:4px; background: #eee; border-top:solid 1px #ccc; text-align:center; font-size:10px; color:#888; }
 div#framework_error .backtrace { margin:0; padding:0 6px; list-style:none; line-height:12px; }
 </style>
-<div id="ushahidi_login_logo"><img src="<?php echo url::base(); ?>media/img/admin/logo_login.gif" /></div>
+<div id="swift_login_logo"><img src="<?php echo url::base(); ?>media/img/admin/logo_login.png" /></div>
 <div id="framework_error" style="width:42em;margin:20px auto;">
 <h3><?php echo html::specialchars($error) ?></h3>
 <p><?php echo html::specialchars($description) ?></p>

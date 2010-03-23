@@ -17,15 +17,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Ushahidi Admin</title>
+<title>SwiftRiver Admin</title>
 <link href="<?php echo url::base() ?>media/css/admin/login.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<div id="ushahidi_login_container">
-    <div id="ushahidi_login_logo"><img src="<?php echo url::base() ?>media/img/admin/logo_login.gif" width="400" height="80" /></div>
-    <div id="ushahidi_login">
-      <table width="100%" border="0" cellspacing="3" cellpadding="4" background="" id="ushahidi_loginbox">
+<div id="swift_login_container">
+    <div id="swift_login_logo"><img src="<?php echo url::base() ?>media/img/admin/logo_login.png" width="400" height="132" /></div>
+    <div id="swift_login">
+      <table width="100%" border="0" cellspacing="3" cellpadding="4" background="" id="swift_loginbox">
         <form method="POST" name="frm_login" style="line-height: 100%; margin-top: 0; margin-bottom: 0">     
 			<?php
 			 if ($form_error) { ?>
