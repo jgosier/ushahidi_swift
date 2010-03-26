@@ -120,7 +120,7 @@
 					<li><a href="log_out"><?php echo Kohana::lang('ui_admin.logout');?></a></li>
 				</ul>
                         </div>
-                        <?php if( ( $version != "" ) && ( url::current() != "admin/upgrade" ) ) { ?>
+                        <!-- <?php if( ( $version != "" ) && ( url::current() != "admin/upgrade" ) ) { ?>
                         <div id="update-info">
                         Ushahidi <?php echo $version; ?> 
                             <?php echo Kohana::lang('ui_admin.version_available');?> 
@@ -128,15 +128,15 @@
                              <?php echo Kohana::lang('ui_admin.update_link');?>
                             </a>.
                         </div>
-                        <?php } ?>
+                        <?php } ?> -->
 
 			<!-- info-nav -->
 			<div class="info-nav">
 				<h3><?php echo Kohana::lang('ui_admin.get_help');?></h3>
 				<ul>
-					<li ><a href="http://wiki.ushahididev.com/"><?php echo Kohana::lang('ui_admin.wiki');?></a></li>
-					<li><a href="http://wiki.ushahididev.com/doku.php?id=how_to_use_ushahidi_alpha"><?php echo Kohana::lang('ui_admin.faqs');?></a></li>
-					<li><a href="http://forums.ushahidi.com/"><?php echo Kohana::lang('ui_admin.forum');?></a></li>
+					<li ><a href="http://swift.ushahidi.com/doc/"><?php echo Kohana::lang('ui_admin.wiki');?></a></li>
+					<li><a href="http://swift.ushahidi.com/doc/doku.php?id=faq"><?php echo Kohana::lang('ui_admin.faqs');?></a></li>
+					<li><a href="http://groups.google.com/group/swiftriver"><?php echo Kohana::lang('ui_admin.forum');?></a></li>
 				</ul>
 				<div class="info-search"><form action="<?php echo url::base() ?>admin/reports" id="info-search"><input type="text" name="k" class="info-keyword" value=""> <a href="javascript:info_search();" class="btn">Search</a></form></div>
 				<div style="clear:both"></div>

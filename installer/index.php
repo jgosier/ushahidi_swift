@@ -16,7 +16,7 @@
     <div id="swift_login_logo"><img src="../media/img/admin/logo_login.png" /></div>
     <div id="swift_login" class="clearfix">
     
-	<p>Welcome to the SwiftRiver server install process.  Choose which type of installation you would like to use below:</p>
+	<p>Welcome to SwiftRiver Version 0.0.9 Rumba!  This is an <strong>Alpha</strong> release for evaluation purposes only, it's highly unfinished, unstable and should not be used in a production environment without additional consultation. You've been warned. ;-) Please direct questions to jon [at] ushahidi.com. All things considered, begin the installation process:</p>
 		
 	<a href="basic_summary.php" class="two-col-box tc-left btn-box">
 		<span class="btn-box-title">BASIC INSTALLATION</span>

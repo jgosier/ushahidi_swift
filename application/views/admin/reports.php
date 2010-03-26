@@ -14,7 +14,7 @@
  */
 ?>
 			<div class="bg">
-				<h2><?php echo $title; ?> <span>(<?php echo $total_items; ?>)</span><a href="<?php print url::base() ?>admin/reports/edit">Create New Item</a><a href="<?php print url::base() ?>admin/reports/download">Download Data</a><a href="<?php print url::base() ?>admin/reports/upload">Upload Data</a></h2>
+				<h2>Submitted <span>(<?php echo $total_items; ?>)</span><a href="<?php print url::base() ?>admin/reports/edit">Create New Item</a><a href="<?php print url::base() ?>admin/reports/download">Download Data</a><a href="<?php print url::base() ?>admin/reports/upload">Upload Data</a></h2>
 				<!-- tabs -->
 				<div class="tabs">
 					<!-- tabset -->
@@ -49,7 +49,7 @@
 				?>
 					<!-- green-box -->
 					<div class="green-box" id="submitStatus">
-						<h3>Reports <?php echo $form_action; ?> <a href="#" id="hideMessage" class="hide">hide this message</a></h3>
+						<h3>Items <?php echo $form_action; ?> <a href="#" id="hideMessage" class="hide">hide this message</a></h3>
 					</div>
 				<?php
 				}

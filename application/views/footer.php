@@ -37,10 +37,10 @@
 					<li><a href="http://swift.ushahidi.com"><?php echo Kohana::lang('ui_main.about'); ?></a></li>
 					<li><a href="http://ushahidi.com/contact" title="contact Swiftriver" >Contact</a></li>
 					<li><a href="http://blog.ushahidi.com/index.php/category/swift-river/" title="our blog" >Swift River Blog</a></li>
-					<li><a href="http://forums.ushahidi.com/" title="support forums" >Support</a></li>
-					<li><a href="http://groups.google.com/group/swiftriver" title="feedback" >Feedback</a></li>
+					<li><a href="http://groups.google.com/group/swiftriver" title="support forums" >Support</a></li>
+					<li><a href="http://swift.ushahidi.com/extend/" title="extending swift" >Extend</a></li>
 					<li><a href="http://http://github.com/ushahidi/Swiftriver" title="github" >Github</a></li>
-					<li><a href="#" title="documentation" >Documentation</a></li>
+					<li><a href="http://swift.ushahidi.com/doc/" title="documentation" >Documentation</a></li>
 				</ul>
 				<p><?php echo Kohana::lang('ui_main.copyright'); ?></p>
 			</div>
