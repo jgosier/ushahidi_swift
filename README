@@ -1,3 +1,5 @@
+NOTE: This is an Alpha software release for evaluation and feedback purposes only. Please do NOT use this for critical scenarios without further consultation. Contact jon [at] ushahidi.com with questions.
+
 ==========================
 SWIFT RIVER v0.0.9 - Rumba
 ==========================
@@ -11,10 +13,11 @@ Find it on Github - http://github.com/appfrica/ushahidi_swift
 ===========================
 DOCUMENTATION
 ===========================
- 
-Installation - 
-Roadmap - 
-FAQ - 
+
+Documentation - http://swift.ushahidi.com/doc/ 
+Installation - http://swift.ushahidi.com/doc/doku.php?id=install
+Roadmap - http://swift.ushahidi.com/doc/doku.php?id=roadmap
+FAQ - http://swift.ushahidi.com/doc/doku.php?id=faq
 
 
 ====================
@@ -36,7 +39,7 @@ Team Swift Core Developers
 	Jon Gosier (System Architect) 
 	Ivan Kavuma (Core Developer)
 	Matthew Griffiths (Lead Developer)
-	Josh Bronson (Core Developer)
+	Josh Bronson (Developer)
 
 Team Swift Volunteers
 
@@ -64,6 +67,7 @@ Contributing Organizations
 ===============
 CHANGE LOG
 ===============
+2010-03-26	Rumba Released
 2010-03-22	Changes to Reporting Panel in Admin
 2010-03-21	Tag Sorting, Tag Pages
 2010-03-19	Added TagThe.net Support
