@@ -1,8 +1,8 @@
 body{
 	margin:0;
 	font:12px/16px "Trebuchet MS",sans-serif;
-	background:url(../../img/admin/body-bg.gif) repeat-x;
-	color:#555;
+	background:url(../../img/admin/body-bg-red.png) repeat-x;
+	color:#555555;
 	min-width:960px;
 }
 form{
@@ -630,7 +630,7 @@ table td{
 	color:#fff;
 	font-weight:bold;
 	font-size:14px;
-	background:#bbb;
+	background:#660000;
 	margin:0;
 	padding:0;
 	text-align:left;
@@ -685,8 +685,8 @@ table td{
 .table th {
 	padding-top:0 !important;
 	padding-bottom:0 !important;
-	border:2px solid #bbb !important;
-	border-bottom:2px solid #959595 !important;
+	/* border:2px solid #bbb !important;
+	border-bottom:2px solid #959595 !important; */
 }
 ul.info,
 ul.links {

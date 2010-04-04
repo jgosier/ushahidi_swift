@@ -6,8 +6,8 @@
  * LICENSE: This source file is subject to LGPL license 
  * that is available through the world-wide-web at the following URI:
  * http://www.gnu.org/copyleft/lesser.html
- * @author     Ushahidi Team <team@ushahidi.com> 
- * @package    Ushahidi - http://source.ushahididev.com
+ * @author     Team Swift <jon@ushahidi.com> 
+ * @package    Ushahidi - http://github.com/ushahidi/Swiftriver
  * @module     API Controller
  * @copyright  Ushahidi - http://www.ushahidi.com
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
@@ -151,7 +151,7 @@ $(function() {
 		
 			<!-- Image Logo -->
 			<div id="logo">
-				<image src="<?php echo url::base() ;?>themes/default/img/site_logo.png" width="200">
+				<img src="<?php echo url::base() ;?>themes/<?php echo $site_style ;?>/img/site_logo.png" alt="<?php echo $site_name; ?>" title="<?php echo $site_tagline; ?>" width="200">
 			<!-- For Text Logo and Subheader -->
 				<!-- <h1><?php echo $site_name; ?></h1> 
 				<span><?php echo $site_tagline; ?></span> -->
