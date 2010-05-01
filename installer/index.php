@@ -1,44 +1,43 @@
-<?php 
-    require_once('install.php');
-    global $install;
+<?php include_once("header.php"); ?>
+<?php
     
-    //check if swift is installed?.
-    if( $install->is_ushahidi_installed())
-    {
-        header('Location:../');
-    }
-   
-    $header = $install->_include_html_header();
-    print $header;
- ?>
-<body>
-<div id="swift_login_container">
-    <div id="swift_login_logo"><img src="../media/img/admin/logo_login.png" /></div>
-    <div id="swift_login" class="clearfix">
-    
-	<p>Welcome to SwiftRiver Version 0.0.9 Rumba!  This is an <strong>Alpha</strong> release for evaluation purposes only, it's highly unfinished, unstable and should not be used in a production environment without additional consultation. You've been warned. ;-) Please direct questions to jon [at] ushahidi.com. All things considered, begin the installation process:</p>
-		
-	<a href="basic_summary.php" class="two-col-box tc-left btn-box">
-		<span class="btn-box-title">BASIC INSTALLATION</span>
-		<span class="btn-box-content">Simple and fast (you might even say <em>swiftly</em>).  All you need is your website's root directory and your database information.  Choose this option if you want to get up and running quickly, and you can always configure everything else later.</span>
-		<span class="last btn-action">Proceed with basic &rarr;</span>
-	</a>
-	<!-- <a href="advanced_summary.php" class="two-col-box tc-right btn-box">
-		<span class="btn-box-title">ADVANCED INSTALLATION</span>
-		<span class="btn-box-content">Get all the basic settings completed through this 5-step process.  This includes server, map, site name and contact details.</span>
-		<span class="last btn-action">Proceed with advanced &rarr;</span><br /><br />
-	</a> -->
-	
-	<!-- Generic Box
-	<div class="two-col-box tc-right">
-		<h2>Title</h2>
-		<p></p>
-		<p class="last"><a href="#" class="btn">Proceed &rarr;</a></p>
-	</div> -->    
-
-        	
-	</div>
+    $message = 
+             "Welcome to the SwiftRiver installer for v0.1 Apala. If you've ".
+             "received this message then pat yourself on the back. You are not only ".
+             "one of the first people in the world to begin using this version of Swift ".
+             "but you have also correctly uploaded the package to your server. ".
+             "During the next few minutes we'll run through some ".
+             "basic tests and setup steps in an attempt to get you up and running.";
+?>
+<div id="index">
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function(){
+            var time = GetTime("<?php echo($message); ?>");
+            DoWriteMessage(
+                "div#baloon div.mid div.message",
+                "<?php echo($message); ?>",
+                time
+            );
+            setTimeout("$('div.action').show()", (time * 1000) + 500)
+        });
+    </script>
+    <img id="logo-callout" src="assets/images/logo-callout.png" />
+    <div id="baloon">
+        <div class="top">&nbsp;</div>
+        <div class="mid">
+            <div id="messages">
+                <div class="skip"><a href="#" onclick="$('div.action').show(); return false;">skip</a></div>
+                <div class="message"></div>
+                <div class="action" style="display:none;">
+                    <p>Are you ready? Then...</p>
+                    <form action="step-php-checks.php" method="GET">
+                        <input type="submit" value="Let's Go!" class="button" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">&nbsp;</div>
+    </div>
 
 </div>
-</body>
-</html>
+<?php include_once("footer.php"); ?>

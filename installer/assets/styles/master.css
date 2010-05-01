@@ -1,0 +1,29 @@
+div, p, h1, h2, h3, h4, h5, table, tr, td, img { margin:0; padding:0; }
+div, p, h1, h2, h3, h4, h5, td { font-family:Century Gothic, sans-serif; }
+
+
+
+
+body { background: #222222; font-size: 80%; }
+body div#page { width:600px; margin-right: auto; margin-left: auto; padding-top: 50px; }
+body div#page a { text-decoration: none; color: #000; }
+body div#page a:hover { text-decoration: underline; }
+
+
+div#baloon { width: 390px; position:relative; top:-150px; left:110px;}
+div#baloon div.top { background: url('../images/baloon-top.png') no-repeat; height:28px; }
+div#baloon div.mid { background: url('../images/baloon-mid.png') repeat-y; }
+div#baloon div.mid div#messages { width:350px; margin-left: auto; margin-right: auto; }
+div#baloon div#messages div { padding-bottom: 5px; }
+div#baloon div.mid div#messages div.skip { float:right; position:relative; top:-15px;}
+div#baloon div.mid div#messages div.fail p { color: #600; padding-top: 15px; font-weight: bold; }
+div#baloon div.mid div#messages div.action p { padding-top: 15px; font-weight: bold; }
+div#baloon div.mid div#messages div.action input.button { position: relative; top:15px; left:15px; }
+div#baloon div.mid div#messages div.input table { width:100%; }
+div#baloon div.mid div#messages div.input table td { font-size: 80%; }
+div#baloon div.mid div#messages div.input table td.message { padding-top: 10px; }
+div#baloon div.mid div#messages div.input table td.submit { padding-top: 10px; }
+div#baloon div.mid div#messages div.input table td.error { color: #600; font-variant: small-caps; padding-top: 5px; padding-bottom: 5px; }
+div#baloon div.mid div#messages div.input table td input[type=text], input[type=password]  { width: 345px; }
+div#baloon div.mid div#messages div.input table td input[type=text].error, input[type=password].error { background-color: #C33;}
+div#baloon div.bottom { background: url('../images/baloon-bottom.png') no-repeat; height:28px; }

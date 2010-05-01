@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="Core Configuration">
+    <properties>
+        <property 
+         name="ModulesDirectory"
+         displayName="Enter the path to the modules directory relative to the base directory of the Core"
+         type="string"
+         value="/Modules"
+        />
+        <property
+         name="CachingDirectory"
+         displayName="Enter the path to the cache directory relative to the base directory of the Core"
+         type="string"
+         value="/Cache"
+        />
+    </properties>
+</configuration>

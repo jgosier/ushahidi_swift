@@ -1,14 +1,28 @@
-NOTE: This is an Alpha software release for evaluation and feedback purposes only. Please do NOT use this for critical scenarios without further consultation. Contact jon [at] ushahidi.com with questions.
+NOTE: This is an Alpha software release for evaluation and feedback purposes only. Please do NOT use this in critical scenarios without further consultation. Contact jon [at] ushahidi.com with additional questions or feedback.
 
 ==========================
-SWIFT RIVER v0.0.9 - Rumba
+SWIFT RIVER v0.1.0 - Apala
 ==========================
  
 Swiftriver is a FOSS platform for determining the veracity and accuracy of news related to an event. 
 
 There's a global emergency. Twitter, blogs and the news are all ablaze with rumor and reports.  Swiftriver's role in this scenario is to surface relevant information using probabilistic algorithms and crowd-sourcing, in real-time. Swift has an extremely modular design with support for plug-ins and hosted API services.  You can find out more about these at - http://swift.ushahidi.com/extend/
 
-Find it on Github - http://github.com/appfrica/ushahidi_swift
+Find it on Github - http://github.com/ushahidi/Swiftriver
+
+
+===========================
+RELEASE NOTES
+===========================
+
+	New Core written in PHP optimized for speed and structuring data
+	API
+	Plugin Architecture
+	Semantic Tagging (Who, What, Where)
+	Support for noSQL DBs like Cassandra
+	Extensible Source Parsing Service
+	Swiftriver Web Services
+
 
 ===========================
 DOCUMENTATION
@@ -18,18 +32,8 @@ Documentation - http://swift.ushahidi.com/doc/
 Installation - http://swift.ushahidi.com/doc/doku.php?id=install
 Roadmap - http://swift.ushahidi.com/doc/doku.php?id=roadmap
 FAQ - http://swift.ushahidi.com/doc/doku.php?id=faq
+ 
 
-
-====================
-MODULAR COMPONENTS
-====================
- 
-Swift is being constructed with a distributed architecture to spread load across servers.  There are two other components of the system that can also be found on GitHub. Swift User Location Services App (SULSa) and Swift Language Computation Core (SiLCC).
- 
-SULSa (location services) - http://swift.ushahidi.com/extend/sulsa
-SiLCC (natural language processing) - http://swift.ushahidi.com/extend/silcc
- 
- 
 ======================
 PROJECT CONTRIBUTORS
 ======================
@@ -67,6 +71,7 @@ Contributing Organizations
 ===============
 CHANGE LOG
 ===============
+2010-04-30	Merge New Core, New Installer
 2010-04-03	Theming Admin, Auto Logo Styles
 2010-03-26	Rumba v0.0.9 Released
 2010-03-22	Changes to Reporting Panel in Admin
@@ -98,8 +103,8 @@ CHANGE LOG
 RELEASE SCHEDULE
 ==================
 0.0.0	Rumba		(released 2010-03-31)
-0.1.0	*Apala
-0.2.0	Batuque		
+0.1.0	Apala
+0.2.0	*Batuque		
 0.3.0	Benga
 0.4.0	Bikutsi
 0.5.0	Cape Jazz
@@ -129,4 +134,4 @@ RELEASE SCHEDULE
 2.9.0	Taarab	
 3.0.0	Zouk
 
-* = build in development
+* = currently in development

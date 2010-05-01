@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="Pre Processing Steps Configuration">
+    <preProcessingSteps>
+        <step
+         className="\Swiftriver\PreProcessingSteps\GoogleLanguageServicePreProcessingStep"
+         filePath="/GoogleLanguageDetectionAndTranslationInterface/GoogleLanguageServicePreProcessingStep.php"
+        />
+        <step
+         className="\Swiftriver\PreProcessingSteps\TagTheNetPreProcessingStep"
+         filePath="/TagTheNetInterface/TagTheNetPreProcessingStep.php"
+        />
+    </preProcessingSteps>
+</configuration>

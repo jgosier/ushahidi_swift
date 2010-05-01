@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="Event Distribution Configuration">
+    <eventHandlers>
+        <handler
+         className="/SomeMockClassPath"
+         filePath="/SomeMockFilePath"
+        />
+    </eventHandlers>
+</configuration>
